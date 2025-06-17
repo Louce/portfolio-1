@@ -8,10 +8,7 @@ import * as z from 'zod';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui'; // Updated import
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
 // import { useToast } from '@/hooks/use-toast'; // Removed useToast
 import { Mail, Send } from 'lucide-react';

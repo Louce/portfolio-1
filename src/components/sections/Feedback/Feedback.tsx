@@ -5,10 +5,7 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui'; // Updated import
 import { UserPlus, LogIn, LogOut, MessageSquarePlus, MessageSquareText, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 

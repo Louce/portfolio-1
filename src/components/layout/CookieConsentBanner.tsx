@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui'; // Updated import
 import { Text } from '@/components/primitives/Text';
 import { Box } from '@/components/primitives/Box';
 import { motion, AnimatePresence } from 'framer-motion';

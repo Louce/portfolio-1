@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text } from '@/components/primitives';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui'; // Updated import
 import { KineticText } from './KineticText';
 
 interface HeroProps {
