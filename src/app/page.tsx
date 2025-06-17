@@ -18,9 +18,9 @@ const sections = [
 const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
-    y: direction > 0 ? "10vh" : "-10vh", // Reduced travel
-    scale: 1,
-    filter: 'blur(0px)',
+    y: direction > 0 ? "10vh" : "-10vh",
+    scale: 1, // Ensure scale is consistent
+    filter: 'blur(0px)', // Ensure blur is consistent
   }),
   animate: {
     opacity: 1,
@@ -28,20 +28,20 @@ const sectionVariants = {
     scale: 1,
     filter: 'blur(0px)',
     transition: {
-      type: 'spring',
-      stiffness: 350, // Slightly softer for smoothness
-      damping: 35,   // Adjusted damping
+      type: "tween", // Changed from spring for potentially faster feel
+      ease: "easeOut",
+      duration: 0.5, // Consistent duration
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? "10vh" : "-10vh", // Reduced travel
+    y: direction < 0 ? "10vh" : "-10vh",
     scale: 1,
     filter: 'blur(0px)',
     transition: {
-      type: 'spring',
-      stiffness: 350,
-      damping: 35,
+      type: "tween", // Changed from spring
+      ease: "easeIn",
+      duration: 0.4, // Consistent duration
     },
   }),
 };
@@ -73,7 +73,7 @@ export default function PortfolioPage() {
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
       if (isScrollingRef.current) {
-        event.preventDefault(); // Prevent default scroll even if we're not navigating
+        event.preventDefault(); 
         return;
       }
       
@@ -87,7 +87,7 @@ export default function PortfolioPage() {
       }
 
       if (newIndex !== activeIndex) {
-        event.preventDefault(); // Only prevent default if we are actually navigating
+        event.preventDefault(); 
         setIsScrolling(true); 
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
@@ -96,7 +96,6 @@ export default function PortfolioPage() {
     
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isScrollingRef.current) {
-        // Allow text input in forms, etc.
         const target = event.target as HTMLElement;
         if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA') {
             event.preventDefault();
@@ -153,6 +152,9 @@ export default function PortfolioPage() {
       <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
           key={sections[activeIndex].id}
+          id={`section-panel-${sections[activeIndex].id}`}
+          role="tabpanel"
+          aria-labelledby={`nav-tab-${sections[activeIndex].id}`}
           custom={direction}
           variants={sectionVariants}
           initial="initial"
@@ -161,8 +163,6 @@ export default function PortfolioPage() {
           className="absolute inset-0 w-full h-full"
           onAnimationComplete={handleAnimationComplete}
           aria-live="polite"
-          role="tabpanel"
-          aria-labelledby={`section-tab-${sections[activeIndex].id}`}
         >
           {sections[activeIndex].id === 'hero' ? (
             <ActiveComponent onNavigate={handleNavigate} />
@@ -174,4 +174,3 @@ export default function PortfolioPage() {
     </Box>
   );
 }
-
