@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion, type Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text } from '@/components/primitives';
@@ -13,25 +13,8 @@ interface HeroProps {
   onNavigate: (sectionId: string) => void;
 }
 
-const heroContentVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delay: 0.3, // Slightly increased delay for the entire block
-      staggerChildren: 0.2, // Stagger direct children
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 100, damping: 18 }, // Softer spring
-  },
-};
+// Removed heroContentVariants and itemVariants.
+// The main section animation is now handled by sectionVariants in page.tsx.
 
 const subHeadlineText = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
 
@@ -86,8 +69,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.8 }} // Delay visitor country display
-          className="absolute top-4 left-0 right-0 z-10 flex justify-center"
+          transition={{ duration: 0.3, delay: 0.8 }} // Delayed to appear after main section transition
+          className="absolute top-4 left-0 right-0 z-10 flex justify-center" // Centering using flex
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
           <Flex align="center" justify="center" gap="0.375rem" className="text-center">
@@ -97,40 +80,37 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </motion.div>
       )}
 
-      <motion.div
-        variants={heroContentVariants}
-        initial="hidden"
-        animate="visible"
-        className="h-full w-full flex flex-col items-center justify-center space-y-3 md:space-y-4 text-center"
-      >
-        <motion.div variants={itemVariants} className="text-center">
+      {/* The main content stack. No longer uses motion.div with heroContentVariants. */}
+      {/* Individual elements also no longer use itemVariants. */}
+      <div className="h-full w-full flex flex-col items-center justify-center space-y-3 md:space-y-4 text-center">
+        <div className="text-center">
           <KineticText 
             text="Frontend Architect" 
-            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-primary"
+            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-primary text-center"
           />
-        </motion.div>
+        </div>
 
-        <motion.div variants={itemVariants} className="text-center">
+        <div className="text-center">
           <Text 
             as="h2" 
-            className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider"
+            className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider text-center"
           >
             KINETICODE <span className="text-primary font-normal">//</span> INNOVATE <span className="text-accent">//</span> CREATE
           </Text>
-        </motion.div>
+        </div>
         
-        <motion.div variants={itemVariants} className="max-w-2xl text-center">
+        <div className="max-w-2xl text-center">
             <Text 
               as="p" 
               variant="default"
-              className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed"
+              className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed text-center"
               aria-label={subHeadlineText}
             >
               {subHeadlineText}
             </Text>
-        </motion.div>
+        </div>
 
-        <motion.div variants={itemVariants}>
+        <div>
           <Button 
             size="lg" 
             className="font-headline bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform hover:scale-105 transition-transform duration-300"
@@ -139,8 +119,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           >
             View My Work
           </Button>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
