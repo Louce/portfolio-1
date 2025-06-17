@@ -123,25 +123,30 @@ export const Projects: React.FC = React.memo(() => {
           {selectedProject && (
             <Dialog open={!!selectedProject} onOpenChange={(isOpen) => !isOpen && setSelectedProject(null)}>
               <DialogContent className="max-w-3xl w-[90vw] p-0 bg-card shadow-2xl rounded-lg overflow-hidden">
-                {/* The inner motion.div is removed here to rely on DialogContent's animations */}
                 <DialogHeader className="p-0">
-                  {selectedProject.videoUrl ? (
-                      <Box className="relative w-full aspect-video bg-black">
-                      <video src={selectedProject.videoUrl} loop autoPlay muted playsInline className="w-full h-full object-cover">
-                        Your browser does not support the video tag.
-                      </video>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+                  >
+                    {selectedProject.videoUrl ? (
+                        <Box className="relative w-full aspect-video bg-black">
+                        <video src={selectedProject.videoUrl} loop autoPlay muted playsInline className="w-full h-full object-cover">
+                          Your browser does not support the video tag.
+                        </video>
+                        </Box>
+                    ) : (
+                      <Box className="relative w-full aspect-video">
+                        <Image
+                          src={selectedProject.imageUrl}
+                          alt={selectedProject.title}
+                          data-ai-hint={selectedProject.dataAiHint}
+                          layout="fill"
+                          objectFit="cover"
+                        />
                       </Box>
-                  ) : (
-                    <Box className="relative w-full aspect-video">
-                      <Image
-                        src={selectedProject.imageUrl}
-                        alt={selectedProject.title}
-                        data-ai-hint={selectedProject.dataAiHint}
-                        layout="fill"
-                        objectFit="cover"
-                      />
-                    </Box>
-                  )}
+                    )}
+                  </motion.div>
                 </DialogHeader>
                 <Box className="p-6 md:p-8 space-y-4">
                   <DialogTitle className="font-headline text-3xl md:text-4xl text-primary">{selectedProject.title}</DialogTitle>
