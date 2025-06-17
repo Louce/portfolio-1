@@ -18,19 +18,19 @@ const sentence = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.005, // Faster stagger for words
+      staggerChildren: 0.005, 
       delayChildren: 0, 
     },
   },
 };
 
 const letter = {
-  hidden: { opacity: 0, y: 10, filter: 'blur(2px)' }, // Slightly less blur and y offset
+  hidden: { opacity: 0, y: 10, filter: 'blur(2px)' }, 
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 15, stiffness: 200 }, // Quicker spring
+    transition: { type: 'spring', damping: 15, stiffness: 200 }, 
   },
 };
 
@@ -102,30 +102,30 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-8">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ scale: 0.9, rotate: -3, opacity: 0 }} // Slightly reduced initial scale/rotate
+          initial={{ scale: 0.9, rotate: -3, opacity: 1 }} 
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{
             type: 'spring',
-            stiffness: 180, // Increased stiffness for quicker animation
-            damping: 20,    // Adjusted damping
-            mass: 0.8,      // Adjusted mass
+            stiffness: 260, 
+            damping: 20,    
+            mass: 0.8,      
             delay: 0, 
           }}
         >
           <KineticText 
             text="Frontend Architect" 
-            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary"
+            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary text-center"
           />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 15 }} // Reduced initial y
+          initial={{ opacity: 0, y: 15 }} 
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0, ease: 'easeOut' }}  // Reduced duration
+          transition={{ duration: 0.3, delay: 0, ease: 'easeOut' }}  
         >
           <Text 
             as="h2" 
-            className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider"
+            className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider text-center"
           >
             KINETICODE <span className="text-primary font-normal">//</span> INNOVATE <span className="text-accent">//</span> CREATE
           </Text>
@@ -140,7 +140,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           <Text 
             as="p" 
             variant="default"
-            className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed"
+            className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed text-center"
             aria-label={subHeadlineText}
           >
             {subHeadlineText.split(' ').map((word, index) => (
@@ -158,9 +158,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 15 }} // Reduced initial y
+          initial={{ opacity: 0, y: 15 }} 
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0 }} // Reduced duration
+          transition={{ duration: 0.2, delay: 0 }} 
         >
           <Button 
             size="lg" 
@@ -188,3 +188,4 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 };
 
 Hero.displayName = 'HeroSection';
+
