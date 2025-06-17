@@ -18,19 +18,19 @@ const sentence = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.02, // Kept a very small stagger for words
-      delayChildren: 0, // No delay for the paragraph block to start
+      staggerChildren: 0.005, // Faster stagger for words
+      delayChildren: 0, 
     },
   },
 };
 
 const letter = {
-  hidden: { opacity: 0, y: 15, filter: 'blur(3px)' },
+  hidden: { opacity: 0, y: 10, filter: 'blur(2px)' }, // Slightly less blur and y offset
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 12, stiffness: 180 }, 
+    transition: { type: 'spring', damping: 15, stiffness: 200 }, // Quicker spring
   },
 };
 
@@ -89,7 +89,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0 }} 
-          className="absolute top-4 left-4 md:top-6 md:left-6 z-10"
+          className="absolute top-4 left-1/2 -translate-x-1/2 md:top-6 z-10"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
           <Flex align="center" gap="0.375rem">
@@ -102,13 +102,13 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-8">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ scale: 0.8, rotate: -5, opacity: 0 }}
+          initial={{ scale: 0.9, rotate: -3, opacity: 0 }} // Slightly reduced initial scale/rotate
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{
             type: 'spring',
-            stiffness: 150,
-            damping: 15, 
-            mass: 0.6,   
+            stiffness: 180, // Increased stiffness for quicker animation
+            damping: 20,    // Adjusted damping
+            mass: 0.8,      // Adjusted mass
             delay: 0, 
           }}
         >
@@ -119,9 +119,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }} // Reduced initial y
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0, ease: 'easeOut' }} 
+          transition={{ duration: 0.4, delay: 0, ease: 'easeOut' }}  // Reduced duration
         >
           <Text 
             as="h2" 
@@ -136,7 +136,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial="hidden"
           animate="visible"
           className="max-w-2xl"
-          // delayChildren for 'sentence' variant is set to 0 above
         >
           <Text 
             as="p" 
@@ -159,9 +158,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }} // Reduced initial y
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0 }} 
+          transition={{ duration: 0.3, delay: 0 }} // Reduced duration
         >
           <Button 
             size="lg" 
