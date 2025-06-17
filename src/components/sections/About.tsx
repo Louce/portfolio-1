@@ -32,11 +32,11 @@ export const About: React.FC = React.memo(() => {
   const aboutText = "I'm a passionate frontend architect dedicated to building intuitive, performant, and visually stunning web applications. With a keen eye for detail and a love for clean, scalable code, I transform complex problems into elegant user experiences. My philosophy revolves around the 'Crystal Cathedral' approach – crafting code that is as beautiful and robust as the final product.";
 
   return (
-    <SectionWrapper id="about" className="bg-gradient-to-br from-background to-slate-900/60">
+    <SectionWrapper id="about" className="bg-gradient-to-br from-background to-slate-900/70">
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
         <motion.div
-          initial={{ opacity: 0, scale: 0.85, x: -50 }} 
-          whileInView={{ opacity: 1, scale: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.85, x: -50, rotate: -3 }} 
+          whileInView={{ opacity: 1, scale: 1, x: 0, rotate: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
           className="w-full max-w-md lg:w-2/5"
@@ -57,8 +57,8 @@ export const About: React.FC = React.memo(() => {
 
         <Flex direction="col" justify="center" className="w-full lg:w-3/5 space-y-6 text-center lg:text-left">
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: -30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.2 }}
           >
@@ -93,7 +93,7 @@ export const About: React.FC = React.memo(() => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.5 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.5 + (aboutText.split(' ').length * 0.05) }} // Delay after paragraph animates
           >
             <Text variant="lead" className="font-body text-foreground/80">
               Let's build something amazing together.
