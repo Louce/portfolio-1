@@ -18,7 +18,6 @@ const sentence = {
   visible: {
     opacity: 1,
     transition: {
-      delayChildren: 1.0, 
       staggerChildren: 0.04,
     },
   },
@@ -45,7 +44,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
             console.log("Development environment: Simulating visitor location (USA).");
-            
+            // setVisitorCountry("USA (Simulated)"); // Optionally set for immediate testing
+            // return; 
         }
 
         const response = await fetch('https://ipwhois.app/json/', {
@@ -87,11 +87,11 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.8 }} 
+          transition={{ duration: 0.5, delay: 2.0 }} 
           className="absolute top-4 left-4 md:top-6 md:left-6 z-10"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
-          <Flex align="center" gap="0.375rem"> {/* 6px gap, can be adjusted */}
+          <Flex align="center" gap="0.375rem">
             <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
             <Text as="span" className="text-xs sm:text-sm text-foreground/70">{visitorCountry}</Text>
           </Flex>
@@ -101,17 +101,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-10">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          initial={{ scale: 0.8, rotate: -5 }} // Opacity is handled by KineticLetter
+          animate={{ scale: 1, rotate: 0 }}
           transition={{
             type: 'spring',
             stiffness: 100,
             damping: 15,
             mass: 0.8,
             delay: 0.2,
-            opacity: { duration: 0.4, ease: "easeOut", delay: 0.2 },
-            scale: { type: 'spring', stiffness: 100, damping: 15, mass: 0.8, delay: 0.2 },
-            rotate: { type: 'spring', stiffness: 100, damping: 15, mass: 0.8, delay: 0.2 },
           }}
         >
           <KineticText 
@@ -123,7 +120,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 + ( "Frontend Architect".length * 0.05 ), ease: 'easeOut' }} 
+          transition={{ duration: 0.7, delay: 1.0, ease: 'easeOut' }} 
         >
           <Text 
             as="h2" 
@@ -138,8 +135,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial="hidden"
           animate="visible"
           className="max-w-2xl"
-          
-          transition={{ delayChildren: 0.8 + ( "Frontend Architect".length * 0.05 ) , staggerChildren: 0.04 }}
+          transition={{ delayChildren: 1.3, staggerChildren: 0.04 }}
         >
           <Text 
             as="p" 
@@ -164,7 +160,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2 + ( "Frontend Architect".length * 0.05 ) }} 
+          transition={{ duration: 0.6, delay: 1.6 }} 
         >
           <Button 
             size="lg" 
@@ -180,7 +176,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.5 + ( "Frontend Architect".length * 0.05 ), repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
+        transition={{ duration: 0.6, delay: 1.9, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
