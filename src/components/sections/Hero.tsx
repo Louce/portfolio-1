@@ -1,9 +1,9 @@
 
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, MapPin } from 'lucide-react'; // Added MapPin
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/button';
@@ -37,6 +37,38 @@ const letter = {
 const subHeadlineText = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
+  const [visitorCountry, setVisitorCountry] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchVisitorLocation = async () => {
+      try {
+        const response = await fetch('https://ipwhois.app/json/', {
+          headers: {
+            'Accept': 'application/json',
+          }
+        });
+        if (!response.ok) {
+          if (response.headers.get("content-type")?.includes("application/json")) {
+            const errorData = await response.json();
+            console.warn(`IPWHOIS API error: ${response.status}`, errorData.message || errorData);
+            return;
+          }
+          throw new Error(`Failed to fetch location: ${response.statusText}`);
+        }
+        const data = await response.json();
+        if (data && data.country) {
+          setVisitorCountry(data.country);
+        } else if (data && data.success === false) {
+           console.warn('IPWHOIS API reported failure:', data.message);
+        }
+      } catch (error) {
+        console.warn('Could not fetch visitor location:', error);
+      }
+    };
+
+    fetchVisitorLocation();
+  }, []); // Empty dependency array ensures this runs once on mount
+
   return (
     <SectionWrapper id="hero" className="relative text-center overflow-hidden">
       <motion.div
@@ -46,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-10">
         <motion.div
-          style={{ transform: 'translateZ(0px)' }} // Promotes to its own compositing layer
+          style={{ transform: 'translateZ(0px)' }}
           initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{
@@ -115,6 +147,20 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           </Button>
         </motion.div>
       </Flex>
+
+      {/* Visitor Location Display - Positioned above the scroll down chevron */}
+      {visitorCountry && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 2.2 }} // Delayed slightly after other hero elements
+          className="absolute bottom-24 left-1/2 -translate-x-1/2 text-xs sm:text-sm text-foreground/70 flex items-center"
+          aria-label={`Visitor location detected as ${visitorCountry}`}
+        >
+          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 text-primary/80" />
+          <span>{visitorCountry}</span>
+        </motion.div>
+      )}
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
