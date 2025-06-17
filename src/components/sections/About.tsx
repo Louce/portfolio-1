@@ -8,22 +8,24 @@ import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
 
 export const About: React.FC = () => {
-  const sentence = {
-    hidden: { opacity: 1 },
+  const paragraphAnimation = {
+    hidden: { opacity: 1 }, // Parent itself is visible to allow stagger
     visible: {
       opacity: 1,
       transition: {
-        delay: 0.3,
-        staggerChildren: 0.08,
+        staggerChildren: 0.05, // Stagger for each word
       },
     },
   };
 
-  const letter = {
-    hidden: { opacity: 0, y: 20 },
+  const wordAnimation = {
+    hidden: { opacity: 0, y: 20, filter: 'blur(3px)', scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
+      filter: 'blur(0px)',
+      scale: 1,
+      transition: { type: 'spring', damping: 15, stiffness: 100 },
     },
   };
 
@@ -33,10 +35,10 @@ export const About: React.FC = () => {
     <SectionWrapper id="about" className="bg-gradient-to-br from-background to-slate-900/60">
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          initial={{ opacity: 0, scale: 0.85, x: -50 }} // Slide in from left for image
+          whileInView={{ opacity: 1, scale: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
           className="w-full max-w-md lg:w-2/5"
         >
           <Box className="relative aspect-square rounded-lg overflow-hidden shadow-2xl group">
@@ -53,23 +55,49 @@ export const About: React.FC = () => {
         </motion.div>
 
         <Flex direction="col" justify="center" className="w-full lg:w-3/5 space-y-6 text-center lg:text-left">
-          <Text 
-            as="h2" 
-            variant="default" 
-            className="font-headline text-4xl md:text-5xl font-bold text-primary mb-4"
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.2 }}
           >
-            About Me
-          </Text>
-          <motion.div variants={sentence} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
+            <Text 
+              as="h2" 
+              variant="default" 
+              className="font-headline text-4xl md:text-5xl font-bold text-primary mb-4"
+            >
+              About Me
+            </Text>
+          </motion.div>
+          
+          <motion.div 
+            variants={paragraphAnimation} 
+            initial="hidden" 
+            whileInView="visible" 
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{delay: 0.3}} // Delay for the whole paragraph block to start its stagger
+          >
             {aboutText.split(' ').map((word, index) => (
-              <motion.span key={word + '-' + index} variants={letter} className="inline-block mr-[0.2em] font-body text-lg md:text-xl text-foreground/90 leading-relaxed">
+              <motion.span 
+                key={word + '-' + index} 
+                variants={wordAnimation} 
+                className="inline-block mr-[0.2em] font-body text-lg md:text-xl text-foreground/90 leading-relaxed"
+              >
                 {word}
               </motion.span>
             ))}
           </motion.div>
-          <Text variant="lead" className="font-body text-foreground/80">
-            Let's build something amazing together.
-          </Text>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.5 }}
+          >
+            <Text variant="lead" className="font-body text-foreground/80">
+              Let's build something amazing together.
+            </Text>
+          </motion.div>
         </Flex>
       </Flex>
     </SectionWrapper>
