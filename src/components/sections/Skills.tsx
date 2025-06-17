@@ -1,6 +1,7 @@
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
@@ -84,14 +85,13 @@ const SkillNode: React.FC<{ skill: Skill; onHover: (skillId: string | null) => v
 export const Skills: React.FC = () => {
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null);
 
-  const getRelatedSubSkills = (skillId: string | null): SubSkill[] => {
-    if (!skillId) return [];
-    const coreSkill = coreSkillsData.find(s => s.id === skillId);
+  const relatedSubSkills = useMemo(() => {
+    if (!hoveredSkillId) return [];
+    const coreSkill = coreSkillsData.find(s => s.id === hoveredSkillId);
     if (!coreSkill || !coreSkill.relatedSkills) return [];
     return subSkillsData.filter(sub => coreSkill.relatedSkills?.includes(sub.id));
-  };
+  }, [hoveredSkillId]);
   
-  const relatedSubSkills = getRelatedSubSkills(hoveredSkillId);
 
   return (
     <SectionWrapper id="skills" className="bg-gradient-to-b from-background to-slate-900/50">
