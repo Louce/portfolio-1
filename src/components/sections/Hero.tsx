@@ -13,50 +13,25 @@ interface HeroProps {
   onNavigate: (sectionId: string) => void;
 }
 
-// Variants for the main content block orchestration
 const heroContentVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      delay: 0.2, // Small delay for the entire block to start after section transition
-      staggerChildren: 0.15, // Stagger direct children
+      delay: 0.3, // Slightly increased delay for the entire block
+      staggerChildren: 0.2, // Stagger direct children
     },
   },
 };
 
-// Variants for individual items within the hero content block
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: 'spring', stiffness: 120, damping: 20 },
+    transition: { type: 'spring', stiffness: 100, damping: 18 }, // Softer spring
   },
 };
-
-// Variants for the word-by-word animation in the sub-headline
-const sentenceInHero: Variants = {
-  hidden: { opacity: 1 }, // Parent starts visible to allow children to animate
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.015,
-      delayChildren: 0, // Start immediately once parent (itemVariants block) is visible
-    },
-  },
-};
-
-const letterInHero: Variants = {
-  hidden: { opacity: 0, y: 10, filter: 'blur(2px)' },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 12, stiffness: 100, delay: 0 },
-  },
-};
-
 
 const subHeadlineText = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
 
@@ -107,30 +82,27 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         aria-hidden="true"
       />
       
-      
       {visitorCountry && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.5 }}  // Delay slightly after main content starts
+          transition={{ duration: 0.3, delay: 0.8 }} // Delay visitor country display
           className="absolute top-4 left-0 right-0 z-10 flex justify-center"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
-          <Flex align="center" justify="center" gap="0.375rem">
+          <Flex align="center" justify="center" gap="0.375rem" className="text-center">
             <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
             <Text as="span" className="text-xs sm:text-sm text-foreground/70">You're from {visitorCountry}</Text>
           </Flex>
         </motion.div>
       )}
 
-      {/* Orchestrating parent for the main content stack */}
       <motion.div
         variants={heroContentVariants}
         initial="hidden"
         animate="visible"
-        className="h-full w-full flex flex-col items-center justify-center space-y-3 md:space-y-4"
+        className="h-full w-full flex flex-col items-center justify-center space-y-3 md:space-y-4 text-center"
       >
-        {/* Item 1: KineticText (Title) */}
         <motion.div variants={itemVariants} className="text-center">
           <KineticText 
             text="Frontend Architect" 
@@ -138,7 +110,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           />
         </motion.div>
 
-        {/* Item 2: Subtitle */}
         <motion.div variants={itemVariants} className="text-center">
           <Text 
             as="h2" 
@@ -148,35 +119,17 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           </Text>
         </motion.div>
         
-        {/* Item 3: Paragraph (with its own internal word-by-word animation) */}
         <motion.div variants={itemVariants} className="max-w-2xl text-center">
-          <motion.div // This div handles the word-by-word stagger
-            variants={sentenceInHero}
-            initial="hidden" // It will start animating when its parent (itemVariants) becomes visible
-            animate="visible"
-          >
             <Text 
               as="p" 
               variant="default"
               className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed"
               aria-label={subHeadlineText}
             >
-              {subHeadlineText.split(' ').map((word, index) => (
-                <React.Fragment key={word + '-' + index}>
-                  <motion.span
-                    variants={letterInHero}
-                    className="inline-block"
-                  >
-                    {word}
-                  </motion.span>
-                  {index < subHeadlineText.split(' ').length -1 && <span className="inline-block">&nbsp;</span>}
-                </React.Fragment>
-              ))}
+              {subHeadlineText}
             </Text>
-          </motion.div>
         </motion.div>
 
-        {/* Item 4: Button */}
         <motion.div variants={itemVariants}>
           <Button 
             size="lg" 
@@ -192,7 +145,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 1.2, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Delay this more so content appears first
+        transition={{ duration: 0.4, delay: 1.5, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
