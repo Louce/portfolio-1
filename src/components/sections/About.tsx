@@ -7,13 +7,13 @@ import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
 
-export const About: React.FC = () => {
+export const About: React.FC = React.memo(() => {
   const paragraphAnimation = {
-    hidden: { opacity: 1 }, // Parent itself is visible to allow stagger
+    hidden: { opacity: 1 }, 
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05, // Stagger for each word
+        staggerChildren: 0.05, 
       },
     },
   };
@@ -35,7 +35,7 @@ export const About: React.FC = () => {
     <SectionWrapper id="about" className="bg-gradient-to-br from-background to-slate-900/60">
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
         <motion.div
-          initial={{ opacity: 0, scale: 0.85, x: -50 }} // Slide in from left for image
+          initial={{ opacity: 0, scale: 0.85, x: -50 }} 
           whileInView={{ opacity: 1, scale: 1, x: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
@@ -49,6 +49,7 @@ export const About: React.FC = () => {
               layout="fill"
               objectFit="cover"
               className="transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110"
+              priority 
             />
             <Box className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />
           </Box>
@@ -75,7 +76,7 @@ export const About: React.FC = () => {
             initial="hidden" 
             whileInView="visible" 
             viewport={{ once: true, amount: 0.2 }}
-            transition={{delay: 0.3}} // Delay for the whole paragraph block to start its stagger
+            transition={{delay: 0.3}} 
           >
             {aboutText.split(' ').map((word, index) => (
               <motion.span 
@@ -102,6 +103,6 @@ export const About: React.FC = () => {
       </Flex>
     </SectionWrapper>
   );
-};
+});
 
 About.displayName = 'AboutSection';

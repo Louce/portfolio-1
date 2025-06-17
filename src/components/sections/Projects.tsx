@@ -19,7 +19,7 @@ interface Project {
   longDescription?: string;
   imageUrl: string;
   dataAiHint?: string;
-  videoUrl?: string; // For auto-playing video/GIF background in modal
+  videoUrl?: string; 
   techStack: string[];
   liveSiteUrl?: string;
   githubUrl?: string;
@@ -64,7 +64,6 @@ const projectsData: Project[] = [
 const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) => void }> = ({ project, onOpenModal }) => {
   return (
     <motion.div
-      // layoutId={`project-card-${project.id}`} // Retain for potential shared layout if desired, but modal won't use it.
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -104,7 +103,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
   );
 };
 
-export const Projects: React.FC = () => {
+export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
@@ -124,60 +123,53 @@ export const Projects: React.FC = () => {
           {selectedProject && (
             <Dialog open={!!selectedProject} onOpenChange={(isOpen) => !isOpen && setSelectedProject(null)}>
               <DialogContent className="max-w-3xl w-[90vw] p-0 bg-card shadow-2xl rounded-lg overflow-hidden">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
-                >
-                  <DialogHeader className="p-0">
-                    {selectedProject.videoUrl ? (
-                       <Box className="relative w-full aspect-video bg-black">
-                        <video src={selectedProject.videoUrl} loop autoPlay muted playsInline className="w-full h-full object-cover">
-                          Your browser does not support the video tag.
-                        </video>
-                       </Box>
-                    ) : (
-                      <Box className="relative w-full aspect-video">
-                        <Image
-                          src={selectedProject.imageUrl}
-                          alt={selectedProject.title}
-                          data-ai-hint={selectedProject.dataAiHint}
-                          layout="fill"
-                          objectFit="cover"
-                        />
+                {/* The inner motion.div is removed here to rely on DialogContent's animations */}
+                <DialogHeader className="p-0">
+                  {selectedProject.videoUrl ? (
+                      <Box className="relative w-full aspect-video bg-black">
+                      <video src={selectedProject.videoUrl} loop autoPlay muted playsInline className="w-full h-full object-cover">
+                        Your browser does not support the video tag.
+                      </video>
                       </Box>
+                  ) : (
+                    <Box className="relative w-full aspect-video">
+                      <Image
+                        src={selectedProject.imageUrl}
+                        alt={selectedProject.title}
+                        data-ai-hint={selectedProject.dataAiHint}
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                    </Box>
+                  )}
+                </DialogHeader>
+                <Box className="p-6 md:p-8 space-y-4">
+                  <DialogTitle className="font-headline text-3xl md:text-4xl text-primary">{selectedProject.title}</DialogTitle>
+                  <DialogDescription className="font-body text-base md:text-lg text-foreground/90">
+                    {selectedProject.longDescription || selectedProject.description}
+                  </DialogDescription>
+                  <Flex wrap="wrap" gap="0.5rem" className="py-2">
+                    {selectedProject.techStack.map(tech => (
+                      <Badge key={tech} variant="outline" className="text-sm border-primary text-primary">{tech}</Badge>
+                    ))}
+                  </Flex>
+                  <Flex gap="1rem" className="pt-4">
+                    {selectedProject.liveSiteUrl && (
+                      <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                        <a href={selectedProject.liveSiteUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-4 w-4" /> Live Site
+                        </a>
+                      </Button>
                     )}
-                    
-                  </DialogHeader>
-                  <Box className="p-6 md:p-8 space-y-4">
-                    <DialogTitle className="font-headline text-3xl md:text-4xl text-primary">{selectedProject.title}</DialogTitle>
-                    <DialogDescription className="font-body text-base md:text-lg text-foreground/90">
-                      {selectedProject.longDescription || selectedProject.description}
-                    </DialogDescription>
-                    <Flex wrap="wrap" gap="0.5rem" className="py-2">
-                      {selectedProject.techStack.map(tech => (
-                        <Badge key={tech} variant="outline" className="text-sm border-primary text-primary">{tech}</Badge>
-                      ))}
-                    </Flex>
-                    <Flex gap="1rem" className="pt-4">
-                      {selectedProject.liveSiteUrl && (
-                        <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                          <a href={selectedProject.liveSiteUrl} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="mr-2 h-4 w-4" /> Live Site
-                          </a>
-                        </Button>
-                      )}
-                      {selectedProject.githubUrl && (
-                        <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10">
-                          <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                            <Github className="mr-2 h-4 w-4" /> GitHub
-                          </a>
-                        </Button>
-                      )}
-                    </Flex>
-                  </Box>
-                </motion.div>
+                    {selectedProject.githubUrl && (
+                      <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10">
+                        <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <Github className="mr-2 h-4 w-4" /> GitHub
+                        </a>
+                      </Button>
+                    )}
+                  </Flex>
+                </Box>
               </DialogContent>
             </Dialog>
           )}
@@ -185,6 +177,6 @@ export const Projects: React.FC = () => {
       </Flex>
     </SectionWrapper>
   );
-};
+});
 
 Projects.displayName = 'ProjectsSection';
