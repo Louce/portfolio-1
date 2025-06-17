@@ -9,12 +9,14 @@ The portfolio aims to be an interactive art installation, offering a charismatic
 
 ## Core Features
 
--   **Kinetic Hero**: A dynamic "Living Ink Sculpture" typography effect in the hero section that subtly reacts to the user's cursor.
--   **Animated Sections**: Fluid section transitions using Framer Motion, creating an unfolding narrative effect.
--   **Skill Graph**: An interactive skill showcase where hovering over a core skill reveals related sub-skills.
--   **Project Gallery**: A card-based gallery for project showcases, with detailed modals.
--   **Interactive Form**: A contact form with subtle micro-interactions and social media links.
--   **Modern Architecture**: Adherence to DRY principles and a barrel-style folder structure for clarity and maintainability.
+-   **Kinetic Hero**: A dynamic "Living Ink Sculpture" typography effect for the main headline and an animated, cycling sub-headline that subtly reacts to the user's cursor.
+-   **Animated Sections**: Fluid section transitions using Framer Motion, creating an unfolding narrative effect as users scroll or navigate.
+-   **Interactive About Section**: Features animated text and an image, along with a "Download Resume" button.
+-   **Interactive Skills Graph**: A skill showcase where hovering over a core skill reveals related sub-skills and descriptions.
+-   **Project Gallery with Carousels**: A card-based gallery for project showcases, with detailed modals that include carousels to display multiple project media (images/videos).
+-   **Interactive Contact Form**: A clean contact form with `react-hook-form` and `zod` validation, plus social media links.
+-   **Feedback Section**: A prototype feature allowing users to (mock) log in/sign up and submit, view, and delete their feedback, persisted using browser `localStorage`.
+-   **Modern Architecture**: Adherence to DRY principles and a clear, modular folder structure with barrel-style exports for maintainability.
 
 ## Technical Stack
 
@@ -22,6 +24,9 @@ The portfolio aims to be an interactive art installation, offering a charismatic
 -   **Styling**: Tailwind CSS
 -   **Language**: TypeScript
 -   **Animation**: Framer Motion
+-   **UI Components**: ShadCN UI
+-   **Carousel**: Embla Carousel React (via ShadCN UI)
+-   **Form Handling**: React Hook Form & Zod
 
 ## Setup and Run Instructions
 
@@ -45,10 +50,6 @@ The portfolio aims to be an interactive art installation, offering a charismatic
     ```bash
     npm run dev
     ```
-    or
-    ```bash
-    yarn dev
-    ```
     The application will typically be available at `http://localhost:9002` (as specified in `package.json` for this project) or `http://localhost:3000`.
 
 4.  **Build for production:**
@@ -67,28 +68,55 @@ The project follows a specific folder structure to promote clarity and maintaina
 
 ```
 /src
-├── app/                 // Next.js App Router core files
-│   ├── layout.tsx
-│   └── page.tsx         // The main one-page container
+├── app/                 // Next.js App Router core files (layout.tsx, page.tsx, globals.css)
 ├── components/
-│   ├── primitives/      // Base HTML element wrappers (Box, Flex, Text)
-│   ├── icons/           // SVG icons as components
-│   ├── layout/          // Structural components (SectionWrapper)
-│   └── sections/        // Main content sections (Hero, About, Skills, etc.)
-├── hooks/               // Custom React hooks (e.g., useToast, useIsMobile)
-├── styles/              // Global styles (globals.css) - This is app/globals.css in Next.js 13+
-└── lib/                 // Utility functions (utils.ts)
-```
-(Note: `styles/globals.css` is located at `src/app/globals.css` in modern Next.js App Router projects.)
+│   ├── icons/           // Custom SVG icons as components (e.g., GitHubIcon.tsx)
+│   │   └── index.ts     // Barrel export for icons
+│   ├── layout/          // Structural components (SectionWrapper.tsx, PageNavigation.tsx, CookieConsentBanner.tsx)
+│   │   └── index.ts     // Barrel export for layout components
+│   ├── primitives/      // Base HTML element wrappers (Box.tsx, Flex.tsx, Text.tsx)
+│   │   └── index.ts     // Barrel export for primitives
+│   ├── sections/        // Main content sections
+│   │   ├── About/
+│   │   │   └── About.tsx
+│   │   ├── Contact/
+│   │   │   └── Contact.tsx
+│   │   ├── Feedback/
+│   │   │   └── Feedback.tsx
+│   │   ├── Hero/
+│   │   │   ├── Hero.tsx
+│   │   │   └── KineticText.tsx
+│   │   ├── Projects/
+│   │   │   └── Projects.tsx
+│   │   └── Skills/
+│   │       └── Skills.tsx
+│   │   └── index.ts     // Barrel export for all section components
+│   └── ui/              // ShadCN UI components, each in its own subdirectory
+│       ├── Button/
+│       │   └── button.tsx
+│       ├── Card/
+│       │   └── card.tsx
+│       ├── Carousel/
+│       │   └── carousel.tsx
+│       └── ... (other ShadCN components)
+│       └── index.ts     // Barrel export for all UI components
+├── hooks/               // Custom React hooks (e.g., useToast.ts, use-mobile.tsx)
+│   └── index.ts         // Barrel export for hooks
+├── lib/                 // Utility functions (utils.ts)
+│   └── index.ts         // Barrel export for lib utilities
+└── public/              // Static assets (e.g., resume.pdf, images)
 
-Each folder containing multiple modules utilizes an `index.ts` file for barrel exports (where applicable), allowing for cleaner imports.
+```
+Each component directory (icons, layout, primitives, sections, ui, hooks, lib) utilizes an `index.ts` file for barrel exports, allowing for cleaner imports (e.g., `import { Button } from '@/components/ui';`).
 
 ## Customization
 
 -   **Content**: Update text, project details, and skill information directly in the respective components within `src/components/sections/`.
 -   **Styling**: Modify Tailwind CSS classes in components or update the theme variables in `src/app/globals.css`.
 -   **Images/Placeholders**: Replace placeholder images (`https://placehold.co/...`) with actual project visuals. Look for `data-ai-hint` attributes for guidance on image content.
--   **Social Links**: Update URLs in `src/components/sections/Contact.tsx`.
+-   **Social Links**: Update URLs in `src/components/sections/Contact/Contact.tsx`.
+-   **Resume**: Place your resume as `resume.pdf` in the `/public` directory.
 
 Enjoy your new portfolio!
 
+    
