@@ -20,13 +20,11 @@ const sectionVariants = {
     opacity: 0,
     y: direction > 0 ? "10vh" : "-10vh",
     scale: 1,
-    filter: 'blur(0px)', 
   }),
   animate: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: 'blur(0px)',
     transition: {
       type: "tween",
       ease: "easeOut",
@@ -37,11 +35,10 @@ const sectionVariants = {
     opacity: 0,
     y: direction < 0 ? "10vh" : "-10vh",
     scale: 1,
-    filter: 'blur(0px)',
     transition: {
       type: "tween",
       ease: "easeIn",
-      duration: 0.4,
+      duration: 0.5, // Changed from 0.4s to 0.5s for consistency
     },
   }),
 };
@@ -174,4 +171,3 @@ export default function PortfolioPage() {
     </Box>
   );
 }
-
