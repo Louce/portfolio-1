@@ -2,26 +2,33 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text } from '@/components/primitives';
-import { Button } from '@/components/ui'; // Updated import
+import { Button } from '@/components/ui/Button/button';
 import { KineticText } from './KineticText';
 
 interface HeroProps {
   onNavigate: (sectionId: string) => void;
 }
 
-const subHeadlineText = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
+const subHeadlineBase = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
+
+const dynamicSubHeadlines = [
+  "KINETICODE // INNOVATE // CREATE",
+  "FLUIDITY // PRECISION // IMPACT",
+  "ELEGANCE // EFFICIENCY // EXPERIENCE",
+  "MOTION // MASTERY // MODERNITY"
+];
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const [visitorLocation, setVisitorLocation] = useState<string | null>(null);
+  const [currentSubHeadlineIndex, setCurrentSubHeadlineIndex] = useState(0);
 
   useEffect(() => {
     const fetchVisitorLocation = async () => {
       try {
-        
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
             setVisitorLocation("California, USA (Simulated)"); 
             return; 
@@ -70,7 +77,19 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     };
 
     fetchVisitorLocation();
+
+    const intervalId = setInterval(() => {
+      setCurrentSubHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
+    }, 3000); // Change text every 3 seconds
+
+    return () => clearInterval(intervalId);
   }, []); 
+
+  const subHeadlineAnimation = {
+    initial: { opacity: 0, y: 10 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeInOut" } },
+    exit: { opacity: 0, y: -10, transition: { duration: 0.5, ease: "easeInOut" } },
+  };
 
   return (
     <SectionWrapper id="hero" className="relative text-center overflow-hidden">
@@ -102,13 +121,26 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           />
         </div>
 
-        <div className="text-center">
-          <Text 
-            as="h2" 
-            className="text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wider text-center"
-          >
-            KINETICODE <span className="text-primary font-normal">//</span> INNOVATE <span className="text-accent">//</span> CREATE
-          </Text>
+        <div className="text-center h-8 sm:h-10 md:h-12"> {/* Container to prevent layout shift */}
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={currentSubHeadlineIndex}
+              variants={subHeadlineAnimation}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="block text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wider text-center"
+            >
+              {dynamicSubHeadlines[currentSubHeadlineIndex].split(' // ').map((part, index, arr) => (
+                <React.Fragment key={part}>
+                  {part}
+                  {index < arr.length - 1 && (
+                    <span className={index % 2 === 0 ? "text-primary font-normal" : "text-accent"}> // </span>
+                  )}
+                </React.Fragment>
+              ))}
+            </motion.span>
+          </AnimatePresence>
         </div>
         
         <div className="max-w-xl text-center px-4">
@@ -116,9 +148,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               as="p" 
               variant="default"
               className="font-body text-base sm:text-lg text-foreground/75 leading-relaxed text-center"
-              aria-label={subHeadlineText}
+              aria-label={subHeadlineBase}
             >
-              {subHeadlineText}
+              {subHeadlineBase}
             </Text>
         </div>
 
