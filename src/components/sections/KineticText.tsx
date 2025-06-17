@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from 'framer-motion';
 import { Text } from '@/components/primitives';
 
 interface KineticTextProps {
@@ -10,7 +10,7 @@ interface KineticTextProps {
   className?: string;
 }
 
-const KineticLetter: React.FC<{ char: string; index: number; mouseX: any; mouseY: any }> = ({ char, index, mouseX, mouseY }) => {
+const KineticLetter: React.FC<{ char: string; index: number; mouseX: MotionValue<number>; mouseY: MotionValue<number> }> = ({ char, index, mouseX, mouseY }) => {
   const springConfig = { damping: 15, stiffness: 200, mass: 0.5 };
   const letterMouseX = useSpring(mouseX, springConfig);
   const letterMouseY = useSpring(mouseY, springConfig);
@@ -18,8 +18,8 @@ const KineticLetter: React.FC<{ char: string; index: number; mouseX: any; mouseY
   const dx = useTransform(letterMouseX, (latestX) => (latestX - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.02 * (index % 2 === 0 ? 1 : -1) );
   const dy = useTransform(letterMouseY, (latestY) => (latestY - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) * 0.03 * (index % 2 === 0 ? 1 : -1) );
   
-  const rotate = useTransform(dx, [-20, 20], [-3, 3]); // Slightly reduced rotation for subtlety with new entry anim
-  const scale = useTransform(dy, [-20, 20], [0.98, 1.02]); // Slightly reduced scale for subtlety
+  const rotate = useTransform(dx, [-20, 20], [-3, 3]); 
+  const scale = useTransform(dy, [-20, 20], [0.98, 1.02]); 
 
   if (char === ' ') {
     return <span className="inline-block w-2 md:w-4 lg:w-6" />;
@@ -28,7 +28,7 @@ const KineticLetter: React.FC<{ char: string; index: number; mouseX: any; mouseY
   return (
     <motion.span
       className="inline-block origin-center"
-      style={{ x: dx, y: dy, rotate, scale, perspective: 800 }} // Added perspective for 3D rotation
+      style={{ x: dx, y: dy, rotate, scale, perspective: 800 }} 
       initial={{ opacity: 0, y: 30, scale: 0.7, rotateX: -90 }}
       animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
       transition={{ 
@@ -36,7 +36,7 @@ const KineticLetter: React.FC<{ char: string; index: number; mouseX: any; mouseY
         damping: 15, 
         stiffness: 150, 
         mass: 0.8, 
-        delay: index * 0.05 // Staggered delay for each letter
+        delay: index * 0.05 
       }} 
     >
       {char}
