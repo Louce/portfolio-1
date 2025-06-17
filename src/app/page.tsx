@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Hero, About, Skills, Projects, Contact, News } from '@/components/sections';
+import { Hero, About, Skills, Projects, Contact, Feedback } from '@/components/sections';
 import { PageNavigation } from '@/components/layout';
 import { Box } from '@/components/primitives';
 
@@ -13,13 +13,13 @@ const sections = [
   { id: 'skills', label: 'Skills', component: Skills },
   { id: 'projects', label: 'Projects', component: Projects },
   { id: 'contact', label: 'Contact', component: Contact },
-  { id: 'news', label: 'News', component: News },
+  { id: 'feedback', label: 'Feedback', component: Feedback },
 ];
 
 const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
-    y: direction > 0 ? "100vh" : "-100vh", // Start from full viewport height away
+    y: direction > 0 ? "100vh" : "-100vh",
     scale: 1,
   }),
   animate: {
@@ -34,7 +34,7 @@ const sectionVariants = {
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? "100vh" : "-100vh", // Exit to full viewport height away
+    y: direction < 0 ? "100vh" : "-100vh", 
     scale: 1,
     transition: {
       type: "tween",
@@ -132,11 +132,37 @@ export default function PortfolioPage() {
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
 
+    // Update URL hash on section change
+    if (typeof window !== 'undefined') {
+      const currentSection = sections[activeIndex];
+      if (currentSection) {
+        // Check if the current hash is different before pushing to history to avoid redundant entries
+        if (window.location.hash !== `#${currentSection.id}`) {
+           // window.history.pushState(null, '', `#${currentSection.id}`);
+        }
+      }
+    }
+
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [activeIndex]); 
+
+  // Effect to set initial section based on URL hash
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        const initialIndex = sections.findIndex(s => s.id === hash);
+        if (initialIndex !== -1 && initialIndex !== activeIndex) {
+          setActiveIndex(initialIndex);
+        }
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only once on mount
+
 
   const ActiveComponent = sections[activeIndex].component;
 
@@ -172,3 +198,5 @@ export default function PortfolioPage() {
     </Box>
   );
 }
+
+    
