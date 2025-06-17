@@ -13,9 +13,6 @@ interface HeroProps {
   onNavigate: (sectionId: string) => void;
 }
 
-// Removed heroContentVariants and itemVariants.
-// The main section animation is now handled by sectionVariants in page.tsx.
-
 const subHeadlineText = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
@@ -69,8 +66,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.8 }} // Delayed to appear after main section transition
-          className="absolute top-4 left-0 right-0 z-10 flex justify-center" // Centering using flex
+          transition={{ duration: 0.3, delay: 0.8 }}
+          className="absolute top-4 left-0 right-0 z-10 flex justify-center"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
           <Flex align="center" justify="center" gap="0.375rem" className="text-center">
@@ -80,37 +77,35 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </motion.div>
       )}
 
-      {/* The main content stack. No longer uses motion.div with heroContentVariants. */}
-      {/* Individual elements also no longer use itemVariants. */}
-      <div className="h-full w-full flex flex-col items-center justify-center space-y-3 md:space-y-4 text-center">
+      <div className="h-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-6 text-center">
         <div className="text-center">
           <KineticText 
-            text="Frontend Architect" 
-            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-primary text-center"
+            text="Frontend" 
+            className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-[120px] xl:text-[150px] font-bold tracking-tight text-primary text-center leading-none"
           />
         </div>
 
         <div className="text-center">
           <Text 
             as="h2" 
-            className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider text-center"
+            className="text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wider text-center"
           >
             KINETICODE <span className="text-primary font-normal">//</span> INNOVATE <span className="text-accent">//</span> CREATE
           </Text>
         </div>
         
-        <div className="max-w-2xl text-center">
+        <div className="max-w-xl text-center px-4">
             <Text 
               as="p" 
               variant="default"
-              className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed text-center"
+              className="font-body text-base sm:text-lg text-foreground/75 leading-relaxed text-center"
               aria-label={subHeadlineText}
             >
               {subHeadlineText}
             </Text>
         </div>
 
-        <div>
+        <div className="pt-2">
           <Button 
             size="lg" 
             className="font-headline bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform hover:scale-105 transition-transform duration-300"
