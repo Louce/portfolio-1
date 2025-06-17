@@ -14,23 +14,23 @@ interface HeroProps {
 }
 
 const sentence = {
-  hidden: { opacity: 1 }, 
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.001, // Faster stagger for sub-headline words
-      delayChildren: 0, 
+      staggerChildren: 0.01, 
+      delayChildren: 0,
     },
   },
 };
 
 const letter = {
-  hidden: { opacity: 0, y: 10, filter: 'blur(2px)' }, 
+  hidden: { opacity: 0, y: 10, filter: 'blur(2px)' },
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 12, stiffness: 150 }, // Slightly softer spring for sub-headline words
+    transition: { type: 'spring', damping: 12, stiffness: 100 },
   },
 };
 
@@ -94,7 +94,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         >
           <Flex align="center" justify="center" gap="0.375rem">
             <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
-            <Text as="span" className="text-xs sm:text-sm text-foreground/70">{visitorCountry}</Text>
+            <Text as="span" className="text-xs sm:text-sm text-foreground/70">You're from {visitorCountry}</Text>
           </Flex>
         </motion.div>
       )}
@@ -102,13 +102,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-3 md:space-y-4">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ scale: 0.9, rotate: -2, opacity: 1 }} 
-          animate={{ scale: 1, rotate: 0, opacity: 1 }}
+          initial={{ opacity: 1 }} // No initial opacity animation here, KineticText handles it
+          animate={{ opacity: 1 }}
           transition={{
-            type: 'spring',
-            stiffness: 200, 
-            damping: 15,    
-            mass: 0.7,      
             delay: 0, 
           }}
         >

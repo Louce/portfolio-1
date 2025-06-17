@@ -1,9 +1,8 @@
 
 'use client';
 
-import type { MotionValue} from 'framer-motion';
-import React, { useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import type React from 'react';
+import { motion } from 'framer-motion';
 import { Text } from '@/components/primitives';
 
 interface KineticTextProps {
@@ -11,66 +10,69 @@ interface KineticTextProps {
   className?: string;
 }
 
-const KineticLetter: React.FC<{ char: string; index: number; mouseX: MotionValue<number>; mouseY: MotionValue<number> }> = ({ char, index, mouseX, mouseY }) => {
-  const springConfig = { damping: 15, stiffness: 200, mass: 0.5 };
-  const letterMouseX = useSpring(mouseX, springConfig);
-  const letterMouseY = useSpring(mouseY, springConfig);
-
-  const dx = useTransform(letterMouseX, (latestX) => (latestX - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.02 * (index % 2 === 0 ? 1 : -1) );
-  const dy = useTransform(letterMouseY, (latestY) => (latestY - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) * 0.03 * (index % 2 === 0 ? 1 : -1) );
-  
-  const rotate = useTransform(dx, [-20, 20], [-3, 3]); 
-  const scale = useTransform(dy, [-20, 20], [0.98, 1.02]); 
-
-  if (char === ' ') {
-    return <span className="inline-block w-2 md:w-4 lg:w-6" />;
-  }
-
-  return (
-    <motion.span
-      className="inline-block origin-center"
-      style={{ x: dx, y: dy, rotate, scale, perspective: 800 }} 
-      initial={{ opacity: 0, y: 30, scale: 0.7, rotateX: -90 }}
-      animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-      transition={{ 
-        type: "spring", 
-        damping: 12, 
-        stiffness: 180, 
-        mass: 0.7,    
-        delay: index * 0.005 // Extremely short stagger for near-simultaneous appearance
-      }} 
-    >
-      {char}
-    </motion.span>
-  );
+const letterVariants = {
+  hidden: { opacity: 0, y: 20, filter: 'blur(1px)' },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      delay: i * 0.03, // Faster stagger
+      type: 'spring',
+      damping: 15,
+      stiffness: 200,
+    },
+  }),
 };
 
+const wordWrapperVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1, // Stagger words if there are multiple
+      delayChildren: 0,
+    },
+  },
+};
+
+
 export const KineticText: React.FC<KineticTextProps> = ({ text, className }) => {
-  const mouseX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 0);
-  const mouseY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 0);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const handleMouseMove = (event: MouseEvent) => {
-      mouseX.set(event.clientX);
-      mouseY.set(event.clientY);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
+  const words = text.split(/(\s+)/); // Split by space, keeping spaces
 
   return (
     <Text
       as="h1"
       className={className}
       aria-label={text}
-      style={{ transform: 'translateZ(0px)' }} 
+      style={{ transform: 'translateZ(0px)' }} // For potential 3D transforms if any parent has perspective
     >
-      {text.split('').map((char, index) => (
-        <KineticLetter key={`${char}-${index}`} char={char} index={index} mouseX={mouseX} mouseY={mouseY} />
-      ))}
+      <motion.span
+        variants={wordWrapperVariants}
+        initial="hidden"
+        animate="visible"
+        className="inline-block" // Ensure the wrapper behaves as expected
+      >
+        {words.map((word, wordIndex) => {
+          if (word.match(/\s+/)) { // If it's a space
+            return <span key={`space-${wordIndex}`} className="inline-block w-2 md:w-4 lg:w-6" >{'\u00A0'}</span>;
+          }
+          return (
+            <span key={`word-${wordIndex}`} className="inline-block">
+              {word.split('').map((char, charIndex) => (
+                <motion.span
+                  key={`${char}-${wordIndex}-${charIndex}`}
+                  custom={charIndex + wordIndex * word.length} // Global index for delay
+                  variants={letterVariants}
+                  className="inline-block origin-center"
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </span>
+          );
+        })}
+      </motion.span>
     </Text>
   );
 };
