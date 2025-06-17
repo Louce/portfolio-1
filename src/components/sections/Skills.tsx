@@ -58,15 +58,18 @@ interface SkillNodeProps {
   isActive: boolean;
 }
 
-const SkillNode: React.FC<SkillNodeProps> = ({ skill, onNodeEnter, isActive }) => {
+const SkillNode: React.FC<SkillNodeProps> = React.memo(({ skill, onNodeEnter, isActive }) => {
   const Icon = skill.icon;
   return (
     <motion.div
+      tabIndex={0}
+      aria-label={`${skill.name} skill node`}
       className={cn(
-        "relative p-4 md:p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-out aspect-square flex flex-col items-center justify-center text-center",
+        "relative p-4 md:p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-out aspect-square flex flex-col items-center justify-center text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background",
         isActive ? "bg-primary text-primary-foreground scale-110 shadow-primary/50" : "bg-card hover:shadow-primary/30 hover:bg-primary/10"
       )}
       onMouseEnter={() => onNodeEnter(skill.id)}
+      onFocus={() => onNodeEnter(skill.id)}
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
@@ -86,7 +89,8 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, onNodeEnter, isActive }) =
       </AnimatePresence>
     </motion.div>
   );
-};
+});
+SkillNode.displayName = 'SkillNode';
 
 
 export const Skills: React.FC = React.memo(() => {
@@ -168,7 +172,7 @@ export const Skills: React.FC = React.memo(() => {
                       className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm shadow-sm"
                       initial={{ opacity: 0, scale: 0.5 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.05 }} 
+                      transition={{ delay: index * 0.05, type: "spring", stiffness: 260, damping: 18 }} 
                     >
                       {subSkill.name}
                     </motion.span>
