@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -60,6 +61,7 @@ export const KineticText: React.FC<KineticTextProps> = ({ text, className }) => 
       as="h1"
       className={className}
       aria-label={text}
+      style={{ transform: 'translateZ(0px)' }} // Added to promote to its own compositing layer
     >
       {text.split('').map((char, index) => (
         <KineticLetter key={`${char}-${index}`} char={char} index={index} mouseX={mouseX} mouseY={mouseY} />
