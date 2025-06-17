@@ -18,7 +18,8 @@ const sentence = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.025, // Faster stagger
+      staggerChildren: 0.02, // Kept a very small stagger for words
+      delayChildren: 0, // No delay for the paragraph block to start
     },
   },
 };
@@ -29,7 +30,7 @@ const letter = {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 12, stiffness: 180 }, // Snappier words
+    transition: { type: 'spring', damping: 12, stiffness: 180 }, 
   },
 };
 
@@ -44,7 +45,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
             console.log("Development environment: Simulating visitor location (USA).");
-            // setVisitorCountry("USA (Simulated)"); // Optionally set for immediate testing
+            // setVisitorCountry("USA (Simulated)"); 
             // return; 
         }
 
@@ -87,7 +88,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 1.3 }} // Faster animation, adjusted delay
+          transition={{ duration: 0.4, delay: 0 }} 
           className="absolute top-4 left-4 md:top-6 md:left-6 z-10"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
@@ -105,11 +106,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{
             type: 'spring',
-            stiffness: 120, // Increased stiffness
-            damping: 12,  // Adjusted damping
-            mass: 0.7,    // Reduced mass
-            delay: 0.1,   // Quicker start
-            opacity: { duration: 0.3, delay: 0.1 } // Separate opacity transition
+            stiffness: 150,
+            damping: 15, 
+            mass: 0.6,   
+            delay: 0, 
           }}
         >
           <KineticText 
@@ -121,7 +121,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5, ease: 'easeOut' }} // Faster animation, earlier start
+          transition={{ duration: 0.5, delay: 0, ease: 'easeOut' }} 
         >
           <Text 
             as="h2" 
@@ -136,7 +136,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial="hidden"
           animate="visible"
           className="max-w-2xl"
-          transition={{ delayChildren: 0.7 }} // Earlier start for paragraph
+          // delayChildren for 'sentence' variant is set to 0 above
         >
           <Text 
             as="p" 
@@ -161,7 +161,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 1.0 }} // Faster animation, earlier start
+          transition={{ duration: 0.4, delay: 0 }} 
         >
           <Button 
             size="lg" 
@@ -177,7 +177,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 1.2, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Faster entry
+        transition={{ duration: 0.4, delay: 0, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
