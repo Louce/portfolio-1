@@ -18,8 +18,8 @@ const sections = [
 const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
-    y: direction > 0 ? '10vh' : '-10vh', // Significantly reduced Y-offset
-    scale: 1, 
+    y: direction > 0 ? "20vh" : "-20vh", // Consistent, moderate travel
+    scale: 1,
     filter: 'blur(0px)',
   }),
   animate: {
@@ -29,21 +29,21 @@ const sectionVariants = {
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 400, // Increased stiffness for snappier feel
-      damping: 40,  // Adjusted damping
-      duration: 0.15, // Explicit very short duration hint
+      stiffness: 260, // Softer spring for smoothness
+      damping: 30,   // Standard damping
+      // No explicit duration, let spring physics dictate
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? '10vh' : '-10vh', // Significantly reduced Y-offset
+    y: direction < 0 ? "20vh" : "-20vh", // Consistent, moderate travel
     scale: 1,
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 400,
-      damping: 40,
-      duration: 0.1, // Explicit very short duration hint
+      stiffness: 260, // Softer spring for smoothness
+      damping: 30,
+      // No explicit duration, let spring physics dictate
     },
   }),
 };
@@ -71,7 +71,7 @@ export default function PortfolioPage() {
       setDirection(newIndex > activeIndex ? 1 : -1);
       setActiveIndex(newIndex);
     }
-  }, [activeIndex, setActiveIndex, setDirection, setIsScrolling]);
+  }, [activeIndex]);
   
   const handleAnimationComplete = () => {
     setIsScrolling(false);
@@ -101,19 +101,16 @@ export default function PortfolioPage() {
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
       } else {
-        // If trying to scroll past boundaries, still set isScrolling to true
-        // and rely on the debounce timeout to reset it.
         setIsScrolling(true); 
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 500); // Debounce timeout for boundary scrolls
+        }, 500);
       }
     };
     
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (isScrollingRef.current) return;
-
+      
       let newIndex = activeIndex;
       let relevantKeyPress = false;
 
@@ -133,6 +130,7 @@ export default function PortfolioPage() {
 
       if (!relevantKeyPress) return;
       
+      if (isScrollingRef.current) return; // Check after determining if key is relevant
       event.preventDefault(); 
 
       if (scrollDebounceTimeoutRef.current) {
@@ -145,12 +143,11 @@ export default function PortfolioPage() {
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
       } else {
-        // If trying to scroll past boundaries with keys
         setIsScrolling(true);
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 500); // Debounce timeout for boundary key presses
+        }, 500); 
       }
     };
 
@@ -165,7 +162,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = null;
       }
     };
-  }, [activeIndex, handleNavigate]); // handleNavigate is stable due to useCallback
+  }, [activeIndex]); 
 
   const ActiveComponent = sections[activeIndex].component;
 
