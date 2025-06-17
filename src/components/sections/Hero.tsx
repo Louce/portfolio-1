@@ -42,6 +42,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   useEffect(() => {
     const fetchVisitorLocation = async () => {
       try {
+        // Simulating API response for environments where external fetch might be restricted or for consistent testing
+        if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+            console.log("Development environment: Simulating visitor location (USA).");
+            // setVisitorCountry("United States (Simulated)");
+            // return; 
+            // Keeping actual fetch for now, as per original implementation
+        }
+
         const response = await fetch('https://ipwhois.app/json/', {
           headers: {
             'Accept': 'application/json',
@@ -76,9 +84,23 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         aria-hidden="true"
       />
       
+      {/* Visitor Location Display - Moved to top left */}
+      {visitorCountry && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.8 }} // Adjusted delay slightly, can be tuned
+          className="absolute top-4 left-4 md:top-6 md:left-6 text-xs sm:text-sm text-foreground/70 flex items-center z-10"
+          aria-label={`Visitor location detected as ${visitorCountry}`}
+        >
+          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 text-primary/80" />
+          <span>{visitorCountry}</span>
+        </motion.div>
+      )}
+
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-10">
         <motion.div
-          style={{ transform: 'translateZ(0px)' }}
+          style={{ transform: 'translateZ(0px)' }} 
           initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{
@@ -148,20 +170,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </motion.div>
       </Flex>
 
-      {/* Visitor Location Display - Positioned above the scroll down chevron */}
-      {visitorCountry && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 2.2 }} // Delayed slightly after other hero elements
-          className="absolute bottom-24 left-1/2 -translate-x-1/2 text-xs sm:text-sm text-foreground/70 flex items-center"
-          aria-label={`Visitor location detected as ${visitorCountry}`}
-        >
-          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 text-primary/80" />
-          <span>{visitorCountry}</span>
-        </motion.div>
-      )}
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -177,3 +185,4 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 };
 
 Hero.displayName = 'HeroSection';
+
