@@ -10,17 +10,17 @@ interface KineticTextProps {
   className?: string;
 }
 
-const letterVariants = {
-  hidden: { opacity: 0, y: 20, filter: 'blur(1px)' },
+// Renamed from letterVariants to wordVariants, and simplified
+const wordVariants = {
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: {
-      delay: i * 0.03, // Faster stagger
+      delay: i * 0.1, // Stagger delay for each word
       type: 'spring',
       damping: 15,
-      stiffness: 200,
+      stiffness: 150,
     },
   }),
 };
@@ -30,48 +30,39 @@ const wordWrapperVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1, // Stagger words if there are multiple
-      delayChildren: 0,
+      staggerChildren: 0.08, // Stagger words if there are multiple (this will be used if wordVariants doesn't have its own delay)
+      delayChildren: 0, // Start immediately once parent is visible
     },
   },
 };
 
 
 export const KineticText: React.FC<KineticTextProps> = ({ text, className }) => {
-  const words = text.split(/(\s+)/); // Split by space, keeping spaces
+  const words = text.split(' '); // Split by space to get words
 
   return (
     <Text
       as="h1"
       className={className}
       aria-label={text}
-      style={{ transform: 'translateZ(0px)' }} // For potential 3D transforms if any parent has perspective
+      style={{ transform: 'translateZ(0px)' }} 
     >
-      <motion.span
+      <motion.span // This is the container that will stagger its children (words)
         variants={wordWrapperVariants}
         initial="hidden"
         animate="visible"
-        className="inline-block" // Ensure the wrapper behaves as expected
+        className="inline-block" 
       >
-        {words.map((word, wordIndex) => {
-          if (word.match(/\s+/)) { // If it's a space
-            return <span key={`space-${wordIndex}`} className="inline-block w-2 md:w-4 lg:w-6" >{'\u00A0'}</span>;
-          }
-          return (
-            <span key={`word-${wordIndex}`} className="inline-block">
-              {word.split('').map((char, charIndex) => (
-                <motion.span
-                  key={`${char}-${wordIndex}-${charIndex}`}
-                  custom={charIndex + wordIndex * word.length} // Global index for delay
-                  variants={letterVariants}
-                  className="inline-block origin-center"
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </span>
-          );
-        })}
+        {words.map((word, wordIndex) => (
+          <motion.span
+            key={`word-${wordIndex}`}
+            custom={wordIndex} // Pass index for per-word delay in wordVariants
+            variants={wordVariants}
+            className="inline-block mr-[0.25em]" // Add some space between words if needed, adjust as per font
+          >
+            {word}
+          </motion.span>
+        ))}
       </motion.span>
     </Text>
   );
