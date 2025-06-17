@@ -122,7 +122,7 @@ export default {
         'swirl-in': 'swirl-in 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards',
         'slide-in-from-bottom': 'slide-in-from-bottom 0.5s ease-out forwards',
         'slide-out-to-top': 'slide-out-to-top 0.5s ease-in forwards',
-        'gradient-xy': 'gradient-xy 10s ease infinite alternate', // Changed duration and added alternate
+        'gradient-xy': 'gradient-xy 15s ease infinite alternate',
       },
     },
   },

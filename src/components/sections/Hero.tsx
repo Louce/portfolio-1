@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, MapPin } from 'lucide-react'; // Added MapPin
+import { ChevronDown, MapPin } from 'lucide-react';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/button';
@@ -14,11 +14,11 @@ interface HeroProps {
 }
 
 const sentence = {
-  hidden: { opacity: 1 }, // Parent opacity for stagger control
+  hidden: { opacity: 1 }, 
   visible: {
     opacity: 1,
     transition: {
-      delayChildren: 1.0, // Start after KineticText and Tagline
+      delayChildren: 1.0, 
       staggerChildren: 0.04,
     },
   },
@@ -42,12 +42,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   useEffect(() => {
     const fetchVisitorLocation = async () => {
       try {
-        // Simulating API response for environments where external fetch might be restricted or for consistent testing
+        
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
             console.log("Development environment: Simulating visitor location (USA).");
-            // setVisitorCountry("United States (Simulated)");
-            // return; 
-            // Keeping actual fetch for now, as per original implementation
+            
         }
 
         const response = await fetch('https://ipwhois.app/json/', {
@@ -75,7 +73,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     };
 
     fetchVisitorLocation();
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []); 
 
   return (
     <SectionWrapper id="hero" className="relative text-center overflow-hidden">
@@ -84,29 +82,36 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         aria-hidden="true"
       />
       
-      {/* Visitor Location Display - Moved to top left */}
+      
       {visitorCountry && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.8 }} // Adjusted delay slightly, can be tuned
-          className="absolute top-4 left-4 md:top-6 md:left-6 text-xs sm:text-sm text-foreground/70 flex items-center z-10"
+          transition={{ duration: 0.5, delay: 1.8 }} 
+          className="absolute top-4 left-4 md:top-6 md:left-6 z-10"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
-          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 text-primary/80" />
-          <span>{visitorCountry}</span>
+          <Flex align="center" gap="0.375rem"> {/* 6px gap, can be adjusted */}
+            <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
+            <Text as="span" className="text-xs sm:text-sm text-foreground/70">{visitorCountry}</Text>
+          </Flex>
         </motion.div>
       )}
 
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-10">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ opacity: 0 }} // Simplified: only opacity for the container
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{
-            duration: 0.4, // Faster container fade-in
-            delay: 0.2,    // Slight delay to let section wrapper animate
-            ease: "easeOut"
+            type: 'spring',
+            stiffness: 100,
+            damping: 15,
+            mass: 0.8,
+            delay: 0.2,
+            opacity: { duration: 0.4, ease: "easeOut", delay: 0.2 },
+            scale: { type: 'spring', stiffness: 100, damping: 15, mass: 0.8, delay: 0.2 },
+            rotate: { type: 'spring', stiffness: 100, damping: 15, mass: 0.8, delay: 0.2 },
           }}
         >
           <KineticText 
@@ -118,10 +123,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 + ( "Frontend Architect".length * 0.05 ), ease: 'easeOut' }} // Delay based on title animation
+          transition={{ duration: 0.7, delay: 0.6 + ( "Frontend Architect".length * 0.05 ), ease: 'easeOut' }} 
         >
           <Text 
-            as="h2" // More semantic for a tagline
+            as="h2" 
             className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider"
           >
             KINETICODE <span className="text-primary font-normal">//</span> INNOVATE <span className="text-accent">//</span> CREATE
@@ -133,7 +138,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial="hidden"
           animate="visible"
           className="max-w-2xl"
-           // Delay based on title animation + tagline
+          
           transition={{ delayChildren: 0.8 + ( "Frontend Architect".length * 0.05 ) , staggerChildren: 0.04 }}
         >
           <Text 
@@ -159,7 +164,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2 + ( "Frontend Architect".length * 0.05 ) }} // Adjusted delay
+          transition={{ duration: 0.6, delay: 1.2 + ( "Frontend Architect".length * 0.05 ) }} 
         >
           <Button 
             size="lg" 
@@ -175,7 +180,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.5 + ( "Frontend Architect".length * 0.05 ), repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Adjusted delay
+        transition={{ duration: 0.6, delay: 1.5 + ( "Frontend Architect".length * 0.05 ), repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
@@ -187,4 +192,3 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 };
 
 Hero.displayName = 'HeroSection';
-
