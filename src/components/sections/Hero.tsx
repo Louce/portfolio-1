@@ -18,7 +18,7 @@ const sentence = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.005, 
+      staggerChildren: 0.001, // Faster stagger for sub-headline words
       delayChildren: 0, 
     },
   },
@@ -30,7 +30,7 @@ const letter = {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 15, stiffness: 200 }, 
+    transition: { type: 'spring', damping: 12, stiffness: 150 }, // Slightly softer spring for sub-headline words
   },
 };
 
@@ -44,7 +44,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       try {
         
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-            console.log("Development environment: Simulating visitor location (USA).");
+            // console.log("Development environment: Simulating visitor location (USA).");
             // setVisitorCountry("USA (Simulated)"); 
             // return; 
         }
@@ -88,40 +88,41 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0 }} 
+          transition={{ duration: 0.3, delay: 0 }} 
           className="absolute top-4 left-1/2 -translate-x-1/2 md:top-6 z-10"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
-          <Flex align="center" gap="0.375rem">
+          <Flex align="center" justify="center" gap="0.375rem">
             <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
             <Text as="span" className="text-xs sm:text-sm text-foreground/70">{visitorCountry}</Text>
           </Flex>
         </motion.div>
       )}
 
-      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-8">
+      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-3 md:space-y-4">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ scale: 0.9, rotate: -3, opacity: 1 }} 
+          initial={{ scale: 0.9, rotate: -2, opacity: 1 }} 
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{
             type: 'spring',
-            stiffness: 260, 
-            damping: 20,    
-            mass: 0.8,      
+            stiffness: 200, 
+            damping: 15,    
+            mass: 0.7,      
             delay: 0, 
           }}
         >
           <KineticText 
             text="Frontend Architect" 
-            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary text-center"
+            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-primary text-center"
           />
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 15 }} 
+          initial={{ opacity: 0, y: 10 }} 
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0, ease: 'easeOut' }}  
+          transition={{ duration: 0.2, delay: 0, ease: 'easeOut' }}  
+          className="text-center"
         >
           <Text 
             as="h2" 
@@ -135,7 +136,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           variants={sentence}
           initial="hidden"
           animate="visible"
-          className="max-w-2xl"
+          className="max-w-2xl text-center"
         >
           <Text 
             as="p" 
@@ -158,7 +159,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 15 }} 
+          initial={{ opacity: 0, y: 10 }} 
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 0 }} 
         >
@@ -188,4 +189,3 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 };
 
 Hero.displayName = 'HeroSection';
-
