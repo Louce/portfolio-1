@@ -19,8 +19,8 @@ const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
     y: direction > 0 ? '100vh' : '-100vh',
-    scale: 0.9, // Slightly reduced scale for a more subtle effect
-    filter: 'blur(8px)', // Slightly reduced blur
+    scale: 0.9, 
+    filter: 'blur(5px)', // Reduced blur
   }),
   animate: {
     opacity: 1,
@@ -29,21 +29,21 @@ const sectionVariants = {
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 80, // Increased stiffness for faster animation
-      damping: 18,  // Adjusted damping
-      duration: 0.6, // Reduced duration
+      stiffness: 120, // Increased stiffness
+      damping: 20,  // Adjusted damping
+      duration: 0.5, // Reduced duration
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
     y: direction < 0 ? '100vh' : '-100vh',
     scale: 0.9,
-    filter: 'blur(8px)',
+    filter: 'blur(5px)', // Reduced blur
     transition: {
       type: 'spring',
-      stiffness: 80, // Increased stiffness
-      damping: 18,  // Adjusted damping
-      duration: 0.4, // Reduced duration
+      stiffness: 120, // Increased stiffness
+      damping: 20,  // Adjusted damping
+      duration: 0.3, // Reduced duration
     },
   }),
 };
@@ -87,23 +87,22 @@ export default function PortfolioPage() {
       const scrollDelta = event.deltaY;
       let newIndex = activeIndex;
 
-      if (scrollDelta > 30) { // Reduced sensitivity for faster response
+      if (scrollDelta > 20) { // Further reduced sensitivity
         newIndex = Math.min(sections.length - 1, activeIndex + 1);
-      } else if (scrollDelta < -30) { // Reduced sensitivity
+      } else if (scrollDelta < -20) { // Further reduced sensitivity
         newIndex = Math.max(0, activeIndex - 1);
       }
 
       if (newIndex !== activeIndex) {
-        setIsScrolling(true); // Set immediately before state update
+        setIsScrolling(true); 
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
       } else {
-        // No section change, but still register as a scroll attempt
         setIsScrolling(true); 
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 500); // Reduced debounce timeout
+        }, 300); // Further reduced debounce timeout
       }
     };
     
@@ -135,7 +134,7 @@ export default function PortfolioPage() {
       }
 
       if (newIndex !== activeIndex) {
-        setIsScrolling(true); // Set immediately
+        setIsScrolling(true); 
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
       } else {
@@ -143,7 +142,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 500); // Reduced debounce timeout
+        }, 300); // Further reduced debounce timeout
       }
     };
 
@@ -158,7 +157,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = null;
       }
     };
-  }, [activeIndex, isScrolling, handleNavigate]); // handleNavigate dependency includes sections
+  }, [activeIndex, isScrolling, handleNavigate]); 
 
   const ActiveComponent = sections[activeIndex].component;
 
