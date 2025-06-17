@@ -13,7 +13,7 @@ export const About: React.FC = React.memo(() => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05, 
+        staggerChildren: 0.02, // Reduced from 0.05
       },
     },
   };
@@ -93,7 +93,7 @@ export const About: React.FC = React.memo(() => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.5 + (aboutText.split(' ').length * 0.05) }} // Delay after paragraph animates
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.3 + (aboutText.split(' ').length * 0.02) }} // Adjusted delay calculation
           >
             <Text variant="lead" className="font-body text-foreground/80">
               Let's build something amazing together.
