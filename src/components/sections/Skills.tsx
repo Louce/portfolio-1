@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
@@ -12,15 +12,15 @@ interface Skill {
   id: string;
   name: string;
   icon: React.ElementType;
-  level?: number; // Optional: for a progress bar or visual indicator
-  relatedSkills?: string[]; // IDs of related sub-skills
+  level?: number; 
+  relatedSkills?: string[]; 
   description?: string;
 }
 
 interface SubSkill {
   id: string;
   name: string;
-  category: string; // e.g., 'Frontend', 'Backend', 'Tool'
+  category: string; 
 }
 
 const coreSkillsData: Skill[] = [
@@ -52,7 +52,14 @@ const subSkillsData: SubSkill[] = [
 ];
 
 
-const SkillNode: React.FC<{ skill: Skill; onHover: (skillId: string | null) => void; isActive: boolean }> = ({ skill, onHover, isActive }) => {
+interface SkillNodeProps {
+  skill: Skill;
+  onNodeEnter: (skillId: string) => void;
+  onNodeLeave: () => void;
+  isActive: boolean;
+}
+
+const SkillNode: React.FC<SkillNodeProps> = ({ skill, onNodeEnter, onNodeLeave, isActive }) => {
   const Icon = skill.icon;
   return (
     <motion.div
@@ -60,8 +67,8 @@ const SkillNode: React.FC<{ skill: Skill; onHover: (skillId: string | null) => v
         "relative p-4 md:p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-out aspect-square flex flex-col items-center justify-center text-center",
         isActive ? "bg-primary text-primary-foreground scale-110 shadow-primary/50" : "bg-card hover:shadow-accent/30 hover:bg-accent/10"
       )}
-      onMouseEnter={() => onHover(skill.id)}
-      onMouseLeave={() => onHover(null)}
+      onMouseEnter={() => onNodeEnter(skill.id)}
+      onMouseLeave={onNodeLeave}
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
@@ -84,6 +91,33 @@ const SkillNode: React.FC<{ skill: Skill; onHover: (skillId: string | null) => v
 
 export const Skills: React.FC = () => {
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null);
+  const pendingHoverIdRef = useRef<string | null>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const DEBOUNCE_DELAY = 100; // ms
+
+  const handleNodeMouseEnter = (skillId: string) => {
+    pendingHoverIdRef.current = skillId;
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    hoverTimeoutRef.current = setTimeout(() => {
+      if (pendingHoverIdRef.current === skillId) {
+        setHoveredSkillId(skillId);
+      }
+    }, DEBOUNCE_DELAY);
+  };
+
+  const handleNodeMouseLeave = () => {
+    pendingHoverIdRef.current = null; 
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    hoverTimeoutRef.current = setTimeout(() => {
+      if (pendingHoverIdRef.current === null) {
+        setHoveredSkillId(null);
+      }
+    }, DEBOUNCE_DELAY);
+  };
 
   const relatedSubSkills = useMemo(() => {
     if (!hoveredSkillId) return [];
@@ -105,7 +139,8 @@ export const Skills: React.FC = () => {
             <SkillNode 
               key={skill.id} 
               skill={skill} 
-              onHover={setHoveredSkillId}
+              onNodeEnter={handleNodeMouseEnter}
+              onNodeLeave={handleNodeMouseLeave}
               isActive={hoveredSkillId === skill.id}
             />
           ))}
@@ -130,7 +165,7 @@ export const Skills: React.FC = () => {
                     className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm shadow-sm"
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: Math.random() * 0.3 }} // Stagger effect
+                    transition={{ delay: Math.random() * 0.3 }} 
                   >
                     {subSkill.name}
                   </motion.span>
