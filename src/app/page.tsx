@@ -20,7 +20,7 @@ const sectionVariants = {
     opacity: 0,
     y: direction > 0 ? '100vh' : '-100vh',
     scale: 0.9, 
-    filter: 'blur(5px)', // Reduced blur
+    filter: 'blur(3px)', 
   }),
   animate: {
     opacity: 1,
@@ -29,21 +29,21 @@ const sectionVariants = {
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 120, // Increased stiffness
-      damping: 20,  // Adjusted damping
-      duration: 0.5, // Reduced duration
+      stiffness: 150, 
+      damping: 22,  
+      duration: 0.4, 
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
     y: direction < 0 ? '100vh' : '-100vh',
     scale: 0.9,
-    filter: 'blur(5px)', // Reduced blur
+    filter: 'blur(3px)', 
     transition: {
       type: 'spring',
-      stiffness: 120, // Increased stiffness
-      damping: 20,  // Adjusted damping
-      duration: 0.3, // Reduced duration
+      stiffness: 150, 
+      damping: 22,  
+      duration: 0.25, 
     },
   }),
 };
@@ -87,9 +87,9 @@ export default function PortfolioPage() {
       const scrollDelta = event.deltaY;
       let newIndex = activeIndex;
 
-      if (scrollDelta > 20) { // Further reduced sensitivity
+      if (scrollDelta > 20) { 
         newIndex = Math.min(sections.length - 1, activeIndex + 1);
-      } else if (scrollDelta < -20) { // Further reduced sensitivity
+      } else if (scrollDelta < -20) { 
         newIndex = Math.max(0, activeIndex - 1);
       }
 
@@ -102,7 +102,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 300); // Further reduced debounce timeout
+        }, 500); // Increased debounce timeout
       }
     };
     
@@ -142,7 +142,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 300); // Further reduced debounce timeout
+        }, 500); // Increased debounce timeout
       }
     };
 
