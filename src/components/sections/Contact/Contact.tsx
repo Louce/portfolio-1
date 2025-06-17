@@ -8,10 +8,10 @@ import * as z from 'zod';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui'; // Updated import
+import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui';
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
-// import { useToast } from '@/hooks/use-toast'; // Removed useToast
 import { Mail, Send } from 'lucide-react';
+// Removed toast import as it's not used for success notifications
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -22,7 +22,6 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export const Contact: React.FC = () => {
-  // const { toast } = useToast(); // Removed useToast
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -33,16 +32,12 @@ export const Contact: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
-    console.log('Form submitted successfully:', data);
+    // console.log('Form submitted successfully:', data); // Removed for cleaner presentation
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Removed toast notification for success
-    // toast({
-    //   title: "Message Sent!",
-    //   description: "Thanks for reaching out. I'll get back to you soon.",
-    //   variant: "default", 
-    // });
+    // For a real submission, you might show a success message here (e.g., using a toast or a dedicated state).
+    // For this prototype, we'll just reset the form.
     form.reset();
   };
 
