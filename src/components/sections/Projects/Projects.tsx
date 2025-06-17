@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
@@ -14,6 +14,7 @@ import {
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 } from '@/components/ui';
 import { ExternalLink, Github } from 'lucide-react';
+import Autoplay from 'embla-carousel-autoplay';
 
 interface MediaItem {
   type: 'image' | 'video';
@@ -26,8 +27,8 @@ interface Project {
   title: string;
   description: string;
   longDescription?: string;
-  coverImageUrl: string; // Renamed from imageUrl to be specific for the card
-  coverDataAiHint?: string; // Renamed from dataAiHint
+  coverImageUrl: string; 
+  coverDataAiHint?: string; 
   mediaGallery: MediaItem[];
   techStack: string[];
   liveSiteUrl?: string;
@@ -102,7 +103,6 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
               data-ai-hint={project.coverDataAiHint}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
-              style={{ objectFit: 'cover' }}
             />
           </Box>
         </CardHeader>
@@ -126,8 +126,13 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
   );
 };
 
+ProjectCard.displayName = 'ProjectCard';
+
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
+  );
 
   return (
     <SectionWrapper id="projects" className="bg-background">
@@ -144,7 +149,12 @@ export const Projects: React.FC = React.memo(() => {
 
         <AnimatePresence>
           {selectedProject && (
-            <Dialog open={!!selectedProject} onOpenChange={(isOpen) => !isOpen && setSelectedProject(null)}>
+            <Dialog open={!!selectedProject} onOpenChange={(isOpen) => {
+                if (!isOpen) {
+                  setSelectedProject(null);
+                }
+              }}
+            >
               <DialogContent className="max-w-3xl w-[90vw] p-0 bg-card shadow-2xl rounded-lg overflow-hidden">
                 <DialogHeader className="p-0">
                   <motion.div
@@ -158,7 +168,10 @@ export const Projects: React.FC = React.memo(() => {
                           align: "start",
                           loop: true,
                         }}
+                        plugins={[autoplayPlugin.current]}
                         className="w-full"
+                        onMouseEnter={autoplayPlugin.current.stop}
+                        onMouseLeave={autoplayPlugin.current.reset}
                       >
                         <CarouselContent>
                           {selectedProject.mediaGallery.map((media, index) => (
@@ -171,7 +184,6 @@ export const Projects: React.FC = React.memo(() => {
                                     data-ai-hint={media.dataAiHint || selectedProject.coverDataAiHint}
                                     fill
                                     className="object-contain" 
-                                    style={{ objectFit: 'contain' }}
                                   />
                                 )}
                                 {media.type === 'video' && (
@@ -234,3 +246,4 @@ export const Projects: React.FC = React.memo(() => {
 });
 
 Projects.displayName = 'ProjectsSection';
+
