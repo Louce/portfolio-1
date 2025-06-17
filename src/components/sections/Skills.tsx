@@ -55,11 +55,11 @@ const subSkillsData: SubSkill[] = [
 interface SkillNodeProps {
   skill: Skill;
   onNodeEnter: (skillId: string) => void;
-  onNodeLeave: () => void;
+  // onNodeLeave is removed as it will be handled by the parent container
   isActive: boolean;
 }
 
-const SkillNode: React.FC<SkillNodeProps> = ({ skill, onNodeEnter, onNodeLeave, isActive }) => {
+const SkillNode: React.FC<SkillNodeProps> = ({ skill, onNodeEnter, isActive }) => {
   const Icon = skill.icon;
   return (
     <motion.div
@@ -68,22 +68,24 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, onNodeEnter, onNodeLeave, 
         isActive ? "bg-primary text-primary-foreground scale-110 shadow-primary/50" : "bg-card hover:shadow-accent/30 hover:bg-accent/10"
       )}
       onMouseEnter={() => onNodeEnter(skill.id)}
-      onMouseLeave={onNodeLeave}
+      // onMouseLeave is removed
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
       <Icon className={cn("w-10 h-10 md:w-12 md:h-12 mb-3", isActive ? "text-primary-foreground" : "text-primary")} />
       <Text as="h3" className="font-headline text-base md:text-lg font-semibold">{skill.name}</Text>
-      {isActive && skill.description && (
-        <motion.p 
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          className="text-xs md:text-sm mt-2 text-primary-foreground/80 hidden md:block"
-        >
-          {skill.description}
-        </motion.p>
-      )}
+      <AnimatePresence>
+        {isActive && skill.description && (
+          <motion.p 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="text-xs md:text-sm mt-2 text-primary-foreground/80 hidden md:block"
+          >
+            {skill.description}
+          </motion.p>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
@@ -93,7 +95,7 @@ export const Skills: React.FC = () => {
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null);
   const pendingHoverIdRef = useRef<string | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const DEBOUNCE_DELAY = 100; // ms
+  const DEBOUNCE_DELAY = 150; // Slightly increased delay for more tolerance
 
   const handleNodeMouseEnter = (skillId: string) => {
     pendingHoverIdRef.current = skillId;
@@ -107,13 +109,14 @@ export const Skills: React.FC = () => {
     }, DEBOUNCE_DELAY);
   };
 
-  const handleNodeMouseLeave = () => {
+  // Renamed to handleContainerMouseLeave for clarity
+  const handleContainerMouseLeave = () => {
     pendingHoverIdRef.current = null; 
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
     hoverTimeoutRef.current = setTimeout(() => {
-      if (pendingHoverIdRef.current === null) {
+      if (pendingHoverIdRef.current === null) { // Check if still intending to leave
         setHoveredSkillId(null);
       }
     }, DEBOUNCE_DELAY);
@@ -134,46 +137,51 @@ export const Skills: React.FC = () => {
           My Expertise
         </Text>
         
-        <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full max-w-3xl">
-          {coreSkillsData.map((skill) => (
-            <SkillNode 
-              key={skill.id} 
-              skill={skill} 
-              onNodeEnter={handleNodeMouseEnter}
-              onNodeLeave={handleNodeMouseLeave}
-              isActive={hoveredSkillId === skill.id}
-            />
-          ))}
-        </Box>
+        {/* This div now acts as the main container for hover leave detection */}
+        <div 
+          className="w-full max-w-3xl" 
+          onMouseLeave={handleContainerMouseLeave} // Attach leave handler here
+        >
+          <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
+            {coreSkillsData.map((skill) => (
+              <SkillNode 
+                key={skill.id} 
+                skill={skill} 
+                onNodeEnter={handleNodeMouseEnter}
+                isActive={hoveredSkillId === skill.id}
+              />
+            ))}
+          </Box>
 
-        <AnimatePresence>
-          {hoveredSkillId && relatedSubSkills.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="mt-8 md:mt-12 p-4 md:p-6 bg-card rounded-lg shadow-xl w-full max-w-2xl"
-            >
-              <Text as="h4" className="font-headline text-lg md:text-xl font-semibold text-accent mb-3 md:mb-4 text-center">
-                Related Technologies for {coreSkillsData.find(s => s.id === hoveredSkillId)?.name}
-              </Text>
-              <Flex wrap="wrap" justify="center" gap="0.5rem">
-                {relatedSubSkills.map(subSkill => (
-                  <motion.span
-                    key={subSkill.id}
-                    className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm shadow-sm"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: Math.random() * 0.3 }} 
-                  >
-                    {subSkill.name}
-                  </motion.span>
-                ))}
-              </Flex>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          <AnimatePresence>
+            {hoveredSkillId && relatedSubSkills.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="mt-8 md:mt-12 p-4 md:p-6 bg-card rounded-lg shadow-xl w-full" // max-w-2xl removed to match parent
+              >
+                <Text as="h4" className="font-headline text-lg md:text-xl font-semibold text-accent mb-3 md:mb-4 text-center">
+                  Related Technologies for {coreSkillsData.find(s => s.id === hoveredSkillId)?.name}
+                </Text>
+                <Flex wrap="wrap" justify="center" gap="0.5rem">
+                  {relatedSubSkills.map((subSkill, index) => (
+                    <motion.span
+                      key={subSkill.id}
+                      className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm shadow-sm"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.05 }} // Staggered delay
+                    >
+                      {subSkill.name}
+                    </motion.span>
+                  ))}
+                </Flex>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div> {/* End of container div */}
       </Flex>
     </SectionWrapper>
   );
