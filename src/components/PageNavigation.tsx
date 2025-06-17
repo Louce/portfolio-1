@@ -55,3 +55,4 @@ export const PageNavigation: React.FC<PageNavigationProps> = ({
     </motion.nav>
   );
 };
+
