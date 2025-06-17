@@ -46,9 +46,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-10">
         <motion.div
-          style={{ transform: 'translateZ(0px)' }} // Added to promote to its own compositing layer
-          initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          style={{ transform: 'translateZ(0px)' }} // Promotes to its own compositing layer
+          initial={{ scale: 0.5, rotate: -180 }} // Opacity removed, will be inherited
+          animate={{ scale: 1, rotate: 0 }}       // Opacity removed, will be inherited
           transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
         >
           <KineticText 
