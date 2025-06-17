@@ -8,8 +8,6 @@ import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
 
 export const About: React.FC = () => {
-  // This is a Framer Motion variant for text animation.
-  // It creates a staggered fade-in effect for each word.
   const sentence = {
     hidden: { opacity: 1 },
     visible: {
@@ -32,7 +30,7 @@ export const About: React.FC = () => {
   const aboutText = "I'm a passionate frontend architect dedicated to building intuitive, performant, and visually stunning web applications. With a keen eye for detail and a love for clean, scalable code, I transform complex problems into elegant user experiences. My philosophy revolves around the 'Crystal Cathedral' approach – crafting code that is as beautiful and robust as the final product.";
 
   return (
-    <SectionWrapper id="about" className="bg-background">
+    <SectionWrapper id="about" className="bg-gradient-to-br from-background to-slate-900/60">
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}

@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
-import { useToast } from '@/hooks/use-toast';
+// import { useToast } from '@/hooks/use-toast'; // Removed useToast
 import { Mail, Send } from 'lucide-react';
 
 const contactFormSchema = z.object({
@@ -25,7 +25,7 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export const Contact: React.FC = () => {
-  const { toast } = useToast();
+  // const { toast } = useToast(); // Removed useToast
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -35,18 +35,17 @@ export const Contact: React.FC = () => {
     },
   });
 
-  // This is a client-side mock submission handler.
-  // In a real application, this would make an API call.
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
-    console.log('Form submitted:', data);
+    console.log('Form submitted successfully:', data);
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    toast({
-      title: "Message Sent!",
-      description: "Thanks for reaching out. I'll get back to you soon.",
-      variant: "default", // Use 'default' for success, 'destructive' for error
-    });
+    // Removed toast notification for success
+    // toast({
+    //   title: "Message Sent!",
+    //   description: "Thanks for reaching out. I'll get back to you soon.",
+    //   variant: "default", 
+    // });
     form.reset();
   };
 
