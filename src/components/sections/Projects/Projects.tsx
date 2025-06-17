@@ -85,7 +85,7 @@ const projectsData: Project[] = [
   },
 ];
 
-const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) => void }> = ({ project, onOpenModal }) => {
+const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) => void }> = React.memo(({ project, onOpenModal }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -124,7 +124,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
       </Card>
     </motion.div>
   );
-};
+});
 
 ProjectCard.displayName = 'ProjectCard';
 
@@ -132,10 +132,9 @@ export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const autoplayPlugin = useRef(
     Autoplay({ 
-      delay: 2500, // Time each slide is visible
+      delay: 2500, 
       stopOnInteraction: true, 
       stopOnMouseEnter: true,
-      // playOnInit: true by default
     })
   );
 
