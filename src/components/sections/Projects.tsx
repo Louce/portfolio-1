@@ -8,7 +8,7 @@ import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Github } from 'lucide-react';
 
@@ -64,12 +64,12 @@ const projectsData: Project[] = [
 const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) => void }> = ({ project, onOpenModal }) => {
   return (
     <motion.div
-      layoutId={`project-card-${project.id}`}
+      // layoutId={`project-card-${project.id}`} // Retain for potential shared layout if desired, but modal won't use it.
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="w-full group" // Added group here for image hover if needed from parent
+      className="w-full group"
     >
       <Card className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 ease-out hover:-translate-y-1 bg-card">
         <CardHeader className="p-0">
@@ -80,7 +80,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
               data-ai-hint={project.dataAiHint}
               layout="fill"
               objectFit="cover"
-              className="transition-transform duration-500 group-hover:scale-105" // This group-hover refers to the parent ProjectCard motion.div
+              className="transition-transform duration-500 group-hover:scale-105"
             />
           </Box>
         </CardHeader>
@@ -125,7 +125,6 @@ export const Projects: React.FC = () => {
             <Dialog open={!!selectedProject} onOpenChange={(isOpen) => !isOpen && setSelectedProject(null)}>
               <DialogContent className="max-w-3xl w-[90vw] p-0 bg-card shadow-2xl rounded-lg overflow-hidden">
                 <motion.div
-                  layoutId={`project-card-${selectedProject.id}`}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
@@ -143,6 +142,7 @@ export const Projects: React.FC = () => {
                         <Image
                           src={selectedProject.imageUrl}
                           alt={selectedProject.title}
+                          data-ai-hint={selectedProject.dataAiHint}
                           layout="fill"
                           objectFit="cover"
                         />
