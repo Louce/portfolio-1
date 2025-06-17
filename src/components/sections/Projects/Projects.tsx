@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription, Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Badge } from '@/components/ui'; // Updated import
+import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription, Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Badge } from '@/components/ui';
 import { ExternalLink, Github } from 'lucide-react';
 
 interface Project {
@@ -74,9 +74,8 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
               src={project.imageUrl}
               alt={project.title}
               data-ai-hint={project.dataAiHint}
-              layout="fill"
-              objectFit="cover"
-              className="transition-transform duration-500 group-hover:scale-105"
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </Box>
         </CardHeader>
@@ -138,8 +137,8 @@ export const Projects: React.FC = React.memo(() => {
                           src={selectedProject.imageUrl}
                           alt={selectedProject.title}
                           data-ai-hint={selectedProject.dataAiHint}
-                          layout="fill"
-                          objectFit="cover"
+                          fill
+                          className="object-cover"
                         />
                       </Box>
                     )}
