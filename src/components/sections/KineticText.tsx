@@ -34,10 +34,10 @@ const KineticLetter: React.FC<{ char: string; index: number; mouseX: MotionValue
       animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
       transition={{ 
         type: "spring", 
-        damping: 12, // Snappier
-        stiffness: 180, // Snappier
-        mass: 0.7,    // Lighter
-        delay: index * 0.03 // Faster stagger
+        damping: 12, 
+        stiffness: 180, 
+        mass: 0.7,    
+        delay: index * 0.005 // Extremely short stagger for near-simultaneous appearance
       }} 
     >
       {char}
