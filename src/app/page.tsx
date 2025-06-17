@@ -18,7 +18,7 @@ const sections = [
 const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
-    y: direction > 0 ? "20vh" : "-20vh", // Consistent, moderate travel
+    y: direction > 0 ? "10vh" : "-10vh", // Reduced travel
     scale: 1,
     filter: 'blur(0px)',
   }),
@@ -29,21 +29,19 @@ const sectionVariants = {
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 260, // Softer spring for smoothness
-      damping: 30,   // Standard damping
-      // No explicit duration, let spring physics dictate
+      stiffness: 350, // Slightly softer for smoothness
+      damping: 35,   // Adjusted damping
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? "20vh" : "-20vh", // Consistent, moderate travel
+    y: direction < 0 ? "10vh" : "-10vh", // Reduced travel
     scale: 1,
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 260, // Softer spring for smoothness
-      damping: 30,
-      // No explicit duration, let spring physics dictate
+      stiffness: 350,
+      damping: 35,
     },
   }),
 };
@@ -53,8 +51,7 @@ export default function PortfolioPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
-  const scrollDebounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
+  
   const isScrollingRef = useRef(isScrolling);
   useEffect(() => {
     isScrollingRef.current = isScrolling;
@@ -64,10 +61,6 @@ export default function PortfolioPage() {
     const newIndex = sections.findIndex(s => s.id === sectionId);
     if (newIndex !== -1 && newIndex !== activeIndex && !isScrollingRef.current) {
       setIsScrolling(true);
-      if (scrollDebounceTimeoutRef.current) {
-        clearTimeout(scrollDebounceTimeoutRef.current);
-        scrollDebounceTimeoutRef.current = null;
-      }
       setDirection(newIndex > activeIndex ? 1 : -1);
       setActiveIndex(newIndex);
     }
@@ -79,12 +72,9 @@ export default function PortfolioPage() {
 
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
-      event.preventDefault();
-      if (isScrollingRef.current) return;
-      
-      if (scrollDebounceTimeoutRef.current) {
-          clearTimeout(scrollDebounceTimeoutRef.current);
-          scrollDebounceTimeoutRef.current = null;
+      if (isScrollingRef.current) {
+        event.preventDefault(); // Prevent default scroll even if we're not navigating
+        return;
       }
       
       const scrollDelta = event.deltaY;
@@ -97,19 +87,22 @@ export default function PortfolioPage() {
       }
 
       if (newIndex !== activeIndex) {
+        event.preventDefault(); // Only prevent default if we are actually navigating
         setIsScrolling(true); 
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
-      } else {
-        setIsScrolling(true); 
-        scrollDebounceTimeoutRef.current = setTimeout(() => {
-          setIsScrolling(false);
-          scrollDebounceTimeoutRef.current = null;
-        }, 500);
       }
     };
     
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (isScrollingRef.current) {
+        // Allow text input in forms, etc.
+        const target = event.target as HTMLElement;
+        if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA') {
+            event.preventDefault();
+        }
+        return;
+      }
       
       let newIndex = activeIndex;
       let relevantKeyPress = false;
@@ -130,24 +123,12 @@ export default function PortfolioPage() {
 
       if (!relevantKeyPress) return;
       
-      if (isScrollingRef.current) return; // Check after determining if key is relevant
       event.preventDefault(); 
-
-      if (scrollDebounceTimeoutRef.current) {
-          clearTimeout(scrollDebounceTimeoutRef.current);
-          scrollDebounceTimeoutRef.current = null;
-      }
 
       if (newIndex !== activeIndex) {
         setIsScrolling(true); 
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
-      } else {
-        setIsScrolling(true);
-        scrollDebounceTimeoutRef.current = setTimeout(() => {
-          setIsScrolling(false);
-          scrollDebounceTimeoutRef.current = null;
-        }, 500); 
       }
     };
 
@@ -157,10 +138,6 @@ export default function PortfolioPage() {
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
-      if (scrollDebounceTimeoutRef.current) {
-        clearTimeout(scrollDebounceTimeoutRef.current);
-        scrollDebounceTimeoutRef.current = null;
-      }
     };
   }, [activeIndex]); 
 
