@@ -19,8 +19,8 @@ const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
     y: direction > 0 ? '100vh' : '-100vh',
-    scale: 0.8,
-    filter: 'blur(10px)',
+    scale: 0.9, // Slightly reduced scale for a more subtle effect
+    filter: 'blur(8px)', // Slightly reduced blur
   }),
   animate: {
     opacity: 1,
@@ -29,21 +29,21 @@ const sectionVariants = {
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 50,
-      damping: 20,
-      duration: 0.8,
+      stiffness: 80, // Increased stiffness for faster animation
+      damping: 18,  // Adjusted damping
+      duration: 0.6, // Reduced duration
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
     y: direction < 0 ? '100vh' : '-100vh',
-    scale: 0.8,
-    filter: 'blur(10px)',
+    scale: 0.9,
+    filter: 'blur(8px)',
     transition: {
       type: 'spring',
-      stiffness: 50,
-      damping: 20,
-      duration: 0.6,
+      stiffness: 80, // Increased stiffness
+      damping: 18,  // Adjusted damping
+      duration: 0.4, // Reduced duration
     },
   }),
 };
@@ -67,7 +67,7 @@ export default function PortfolioPage() {
       setActiveIndex(newIndex);
       // isScrolling will be set to false by onAnimationComplete
     }
-  }, [activeIndex, isScrolling, sections]); // sections added as it's used in findIndex
+  }, [activeIndex, isScrolling]);
   
   const handleAnimationComplete = () => {
     setIsScrolling(false);
@@ -78,31 +78,32 @@ export default function PortfolioPage() {
       event.preventDefault();
       if (isScrolling) return;
 
-      setIsScrolling(true);
+      
       if (scrollDebounceTimeoutRef.current) {
           clearTimeout(scrollDebounceTimeoutRef.current);
           scrollDebounceTimeoutRef.current = null;
       }
-
+      
       const scrollDelta = event.deltaY;
       let newIndex = activeIndex;
 
-      if (scrollDelta > 50) { // Scroll down
+      if (scrollDelta > 30) { // Reduced sensitivity for faster response
         newIndex = Math.min(sections.length - 1, activeIndex + 1);
-      } else if (scrollDelta < -50) { // Scroll up
+      } else if (scrollDelta < -30) { // Reduced sensitivity
         newIndex = Math.max(0, activeIndex - 1);
       }
 
       if (newIndex !== activeIndex) {
+        setIsScrolling(true); // Set immediately before state update
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
-        // Animation will call handleAnimationComplete to set isScrolling = false
       } else {
-        // No section change, set a debounce timeout to reset isScrolling
+        // No section change, but still register as a scroll attempt
+        setIsScrolling(true); 
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 800); 
+        }, 500); // Reduced debounce timeout
       }
     };
     
@@ -127,23 +128,22 @@ export default function PortfolioPage() {
       }
 
       if (!relevantKeyPress) return;
-
-      setIsScrolling(true);
+      
       if (scrollDebounceTimeoutRef.current) {
           clearTimeout(scrollDebounceTimeoutRef.current);
           scrollDebounceTimeoutRef.current = null;
       }
 
       if (newIndex !== activeIndex) {
+        setIsScrolling(true); // Set immediately
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
-        // Animation will call handleAnimationComplete to set isScrolling = false
       } else {
-        // No section change (e.g. arrow at boundary), set a debounce timeout
+        setIsScrolling(true);
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 800);
+        }, 500); // Reduced debounce timeout
       }
     };
 
@@ -158,8 +158,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = null;
       }
     };
-  }, [activeIndex, isScrolling, sections, setDirection, setActiveIndex]);
-
+  }, [activeIndex, isScrolling, handleNavigate]); // handleNavigate dependency includes sections
 
   const ActiveComponent = sections[activeIndex].component;
 
