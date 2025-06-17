@@ -18,9 +18,9 @@ const sections = [
 const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
-    y: direction > 0 ? '50vh' : '-50vh', // Reduced Y-offset for faster perceived movement
-    scale: 0.95, // Slightly less aggressive scale
-    filter: 'blur(2px)', // Reduced blur
+    y: direction > 0 ? '10vh' : '-10vh', // Significantly reduced Y-offset
+    scale: 1, 
+    filter: 'blur(0px)',
   }),
   animate: {
     opacity: 1,
@@ -29,21 +29,21 @@ const sectionVariants = {
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 250, // Increased stiffness
-      damping: 30,  // Adjusted damping
-      duration: 0.3, // Explicit shorter duration hint
+      stiffness: 400, // Increased stiffness for snappier feel
+      damping: 40,  // Adjusted damping
+      duration: 0.15, // Explicit very short duration hint
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? '50vh' : '-50vh', // Reduced Y-offset
-    scale: 0.95,
-    filter: 'blur(2px)',
+    y: direction < 0 ? '10vh' : '-10vh', // Significantly reduced Y-offset
+    scale: 1,
+    filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 250,
-      damping: 30,
-      duration: 0.2, // Explicit shorter duration hint
+      stiffness: 400,
+      damping: 40,
+      duration: 0.1, // Explicit very short duration hint
     },
   }),
 };
@@ -101,11 +101,13 @@ export default function PortfolioPage() {
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
       } else {
+        // If trying to scroll past boundaries, still set isScrolling to true
+        // and rely on the debounce timeout to reset it.
         setIsScrolling(true); 
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 500);
+        }, 500); // Debounce timeout for boundary scrolls
       }
     };
     
@@ -131,7 +133,7 @@ export default function PortfolioPage() {
 
       if (!relevantKeyPress) return;
       
-      event.preventDefault(); // Prevent default browser scroll for handled keys
+      event.preventDefault(); 
 
       if (scrollDebounceTimeoutRef.current) {
           clearTimeout(scrollDebounceTimeoutRef.current);
@@ -143,11 +145,12 @@ export default function PortfolioPage() {
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
       } else {
+        // If trying to scroll past boundaries with keys
         setIsScrolling(true);
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 500);
+        }, 500); // Debounce timeout for boundary key presses
       }
     };
 
@@ -162,7 +165,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = null;
       }
     };
-  }, [activeIndex, handleNavigate]); 
+  }, [activeIndex, handleNavigate]); // handleNavigate is stable due to useCallback
 
   const ActiveComponent = sections[activeIndex].component;
 
