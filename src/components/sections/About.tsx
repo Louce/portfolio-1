@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -47,7 +48,7 @@ export const About: React.FC = () => {
               data-ai-hint="developer portrait"
               layout="fill"
               objectFit="cover"
-              className="transition-transform duration-500 group-hover:scale-105"
+              className="transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110"
             />
             <Box className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />
           </Box>
