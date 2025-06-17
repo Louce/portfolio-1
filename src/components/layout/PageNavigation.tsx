@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 
 interface PageNavigationProps {
   sections: Array<{ id: string; label: string }>;

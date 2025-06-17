@@ -5,7 +5,7 @@ import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { Code, Zap, Layers, Settings, Brain, Share2 } from 'lucide-react'; // Example icons
 
 interface Skill {
@@ -55,7 +55,6 @@ const subSkillsData: SubSkill[] = [
 interface SkillNodeProps {
   skill: Skill;
   onNodeEnter: (skillId: string) => void;
-  // onNodeLeave is removed as it will be handled by the parent container
   isActive: boolean;
 }
 
@@ -65,10 +64,9 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, onNodeEnter, isActive }) =
     <motion.div
       className={cn(
         "relative p-4 md:p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-out aspect-square flex flex-col items-center justify-center text-center",
-        isActive ? "bg-primary text-primary-foreground scale-110 shadow-primary/50" : "bg-card hover:shadow-accent/30 hover:bg-accent/10"
+        isActive ? "bg-primary text-primary-foreground scale-110 shadow-primary/50" : "bg-card hover:shadow-primary/30 hover:bg-primary/10"
       )}
       onMouseEnter={() => onNodeEnter(skill.id)}
-      // onMouseLeave is removed
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
@@ -91,11 +89,11 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, onNodeEnter, isActive }) =
 };
 
 
-export const Skills: React.FC = () => {
+export const Skills: React.FC = React.memo(() => {
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null);
   const pendingHoverIdRef = useRef<string | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const DEBOUNCE_DELAY = 150; // Slightly increased delay for more tolerance
+  const DEBOUNCE_DELAY = 150; 
 
   const handleNodeMouseEnter = (skillId: string) => {
     pendingHoverIdRef.current = skillId;
@@ -109,14 +107,13 @@ export const Skills: React.FC = () => {
     }, DEBOUNCE_DELAY);
   };
 
-  // Renamed to handleContainerMouseLeave for clarity
   const handleContainerMouseLeave = () => {
     pendingHoverIdRef.current = null; 
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
     hoverTimeoutRef.current = setTimeout(() => {
-      if (pendingHoverIdRef.current === null) { // Check if still intending to leave
+      if (pendingHoverIdRef.current === null) { 
         setHoveredSkillId(null);
       }
     }, DEBOUNCE_DELAY);
@@ -137,10 +134,9 @@ export const Skills: React.FC = () => {
           My Expertise
         </Text>
         
-        {/* This div now acts as the main container for hover leave detection */}
         <div 
           className="w-full max-w-3xl" 
-          onMouseLeave={handleContainerMouseLeave} // Attach leave handler here
+          onMouseLeave={handleContainerMouseLeave} 
         >
           <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
             {coreSkillsData.map((skill) => (
@@ -160,7 +156,7 @@ export const Skills: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="mt-8 md:mt-12 p-4 md:p-6 bg-card rounded-lg shadow-xl w-full" // max-w-2xl removed to match parent
+                className="mt-8 md:mt-12 p-4 md:p-6 bg-card rounded-lg shadow-xl w-full"
               >
                 <Text as="h4" className="font-headline text-lg md:text-xl font-semibold text-accent mb-3 md:mb-4 text-center">
                   Related Technologies for {coreSkillsData.find(s => s.id === hoveredSkillId)?.name}
@@ -172,7 +168,7 @@ export const Skills: React.FC = () => {
                       className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm shadow-sm"
                       initial={{ opacity: 0, scale: 0.5 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.05 }} // Staggered delay
+                      transition={{ delay: index * 0.05 }} 
                     >
                       {subSkill.name}
                     </motion.span>
@@ -181,10 +177,10 @@ export const Skills: React.FC = () => {
               </motion.div>
             )}
           </AnimatePresence>
-        </div> {/* End of container div */}
+        </div> 
       </Flex>
     </SectionWrapper>
   );
-};
+});
 
 Skills.displayName = 'SkillsSection';

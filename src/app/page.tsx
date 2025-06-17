@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Hero, About, Skills, Projects, Contact } from '@/components/sections';
-import { PageNavigation } from '@/components/PageNavigation';
+import { PageNavigation } from '@/components/layout';
 import { Box } from '@/components/primitives';
 
 const sections = [
@@ -19,8 +19,8 @@ const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
     y: direction > 0 ? "10vh" : "-10vh",
-    scale: 1, // Ensure scale is consistent
-    filter: 'blur(0px)', // Ensure blur is consistent
+    scale: 1,
+    filter: 'blur(0px)', 
   }),
   animate: {
     opacity: 1,
@@ -28,9 +28,9 @@ const sectionVariants = {
     scale: 1,
     filter: 'blur(0px)',
     transition: {
-      type: "tween", // Changed from spring for potentially faster feel
+      type: "tween",
       ease: "easeOut",
-      duration: 0.5, // Consistent duration
+      duration: 0.5,
     },
   },
   exit: (direction: number) => ({
@@ -39,9 +39,9 @@ const sectionVariants = {
     scale: 1,
     filter: 'blur(0px)',
     transition: {
-      type: "tween", // Changed from spring
+      type: "tween",
       ease: "easeIn",
-      duration: 0.4, // Consistent duration
+      duration: 0.4,
     },
   }),
 };
