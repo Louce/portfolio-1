@@ -14,6 +14,11 @@ interface PageNavigationProps {
 
 const dotTransition = { type: "spring", stiffness: 500, damping: 30, duration: 0.2 };
 
+// Resolved colors for dark theme (default)
+const primaryColor = "hsl(182, 100%, 74%)"; // --primary in dark mode
+const foregroundColorTransparent = "hsla(43, 67%, 96%, 0.5)"; // --foreground with 0.5 alpha in dark mode
+const transparentColor = "hsla(0, 0%, 0%, 0)"; // Fully transparent
+
 export const PageNavigation: React.FC<PageNavigationProps> = React.memo(({
   sections,
   activeSection,
@@ -34,19 +39,19 @@ export const PageNavigation: React.FC<PageNavigationProps> = React.memo(({
           const dotVariants = {
             active: {
               scale: 1.45,
-              backgroundColor: "hsl(var(--primary))", 
-              borderColor: "hsl(var(--primary))",
+              backgroundColor: primaryColor, 
+              borderColor: primaryColor,
             },
             inactive: {
               scale: 1,
-              backgroundColor: "rgba(0, 0, 0, 0)", 
-              borderColor: "hsla(var(--foreground), 0.5)",
+              backgroundColor: transparentColor, 
+              borderColor: foregroundColorTransparent,
             }
           };
 
           const dotHover = isActive 
             ? { scale: 1.55 } 
-            : { scale: 1.25, borderColor: "hsl(var(--primary))" };
+            : { scale: 1.25, borderColor: primaryColor };
 
           return (
             <li key={section.id} className="flex items-center justify-end" role="presentation">

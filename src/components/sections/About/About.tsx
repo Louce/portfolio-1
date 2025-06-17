@@ -13,7 +13,7 @@ export const About: React.FC = React.memo(() => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.02, // Reduced from 0.05
+        staggerChildren: 0.02,
       },
     },
   };
@@ -46,9 +46,8 @@ export const About: React.FC = React.memo(() => {
               src="https://placehold.co/600x600.png"
               alt="Portrait of the developer"
               data-ai-hint="developer portrait"
-              layout="fill"
-              objectFit="cover"
-              className="transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110"
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110"
               priority 
             />
             <Box className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />
@@ -93,7 +92,7 @@ export const About: React.FC = React.memo(() => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.3 + (aboutText.split(' ').length * 0.02) }} // Adjusted delay calculation
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.3 + (aboutText.split(' ').length * 0.02) }}
           >
             <Text variant="lead" className="font-body text-foreground/80">
               Let's build something amazing together.
