@@ -1,9 +1,7 @@
 
-export { Hero } from './Hero';
-export { About } from './About';
-export { Skills } from './Skills';
-export { Projects } from './Projects';
-export { Contact } from './Contact';
-export { Feedback } from './Feedback';
-
-    
+export { Hero } from './Hero/Hero';
+export { About } from './About/About';
+export { Skills } from './Skills/Skills';
+export { Projects } from './Projects/Projects';
+export { Contact } from './Contact/Contact';
+export { Feedback } from './Feedback/Feedback';
