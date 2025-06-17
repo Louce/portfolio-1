@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
+import { CookieConsentBanner } from '@/components/layout';
 
 export const metadata: Metadata = {
   title: 'KineticFolio - Frontend Architect',
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className="font-body antialiased bg-background text-foreground min-h-screen">
         {children}
         <Toaster />
+        <CookieConsentBanner />
       </body>
     </html>
   );
