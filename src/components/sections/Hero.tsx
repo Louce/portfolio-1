@@ -101,12 +101,12 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-10">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          initial={{ opacity: 0 }} // Simplified: only opacity for the container
+          animate={{ opacity: 1 }}
           transition={{
-            opacity: { duration: 0.6, delay: 0.2, ease: "easeOut" },
-            scale: { duration: 0.8, delay: 0.2, ease: [0.25, 1, 0.5, 1] },
-            rotate: { duration: 0.8, delay: 0.2, ease: [0.25, 1, 0.5, 1] },
+            duration: 0.4, // Faster container fade-in
+            delay: 0.2,    // Slight delay to let section wrapper animate
+            ease: "easeOut"
           }}
         >
           <KineticText 
@@ -118,7 +118,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.7, delay: 0.6 + ( "Frontend Architect".length * 0.05 ), ease: 'easeOut' }} // Delay based on title animation
         >
           <Text 
             as="h2" // More semantic for a tagline
@@ -133,6 +133,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial="hidden"
           animate="visible"
           className="max-w-2xl"
+           // Delay based on title animation + tagline
+          transition={{ delayChildren: 0.8 + ( "Frontend Architect".length * 0.05 ) , staggerChildren: 0.04 }}
         >
           <Text 
             as="p" 
@@ -157,7 +159,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.8 }} // Adjusted delay
+          transition={{ duration: 0.6, delay: 1.2 + ( "Frontend Architect".length * 0.05 ) }} // Adjusted delay
         >
           <Button 
             size="lg" 
@@ -173,7 +175,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 2.1, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Adjusted delay
+        transition={{ duration: 0.6, delay: 1.5 + ( "Frontend Architect".length * 0.05 ), repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Adjusted delay
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
