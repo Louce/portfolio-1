@@ -41,13 +41,13 @@ const projectsData: Project[] = [
     title: 'E-commerce Platform X',
     description: 'A modern, responsive e-commerce platform with advanced features.',
     longDescription: 'Developed a full-stack e-commerce solution focusing on user experience, performance, and scalability. Integrated payment gateways, order management, and a recommendation engine. The frontend was built with Next.js and Tailwind CSS, while the backend used Node.js and PostgreSQL.',
-    coverImageUrl: 'https://placehold.co/600x400.png?text=E-commerce+Cover',
+    coverImageUrl: 'https://placehold.co/600x400.png',
     coverDataAiHint: 'ecommerce website',
     mediaGallery: [
-      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Project+Image+1', dataAiHint: 'product page' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Project+Image+2', dataAiHint: 'shopping cart' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'product page' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'shopping cart' },
       { type: 'video', url: 'https://placehold.co/1280x720.mp4/000000/ffffff?text=Project+Demo' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Project+Image+3', dataAiHint: 'user dashboard' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'user dashboard' },
     ],
     techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Stripe'],
     liveSiteUrl: '#',
@@ -58,12 +58,12 @@ const projectsData: Project[] = [
     title: 'Interactive Data Dashboard',
     description: 'A real-time data visualization dashboard for business analytics.',
     longDescription: 'Created an interactive dashboard that allows users to explore complex datasets through dynamic charts and graphs. Features include customizable widgets, data filtering, and report generation. Built with React, D3.js, and Framer Motion for smooth animations.',
-    coverImageUrl: 'https://placehold.co/600x400.png?text=Dashboard+Cover',
+    coverImageUrl: 'https://placehold.co/600x400.png',
     coverDataAiHint: 'data dashboard',
     mediaGallery: [
-      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Dashboard+View+1', dataAiHint: 'main chart' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Dashboard+View+2', dataAiHint: 'filter options' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Dashboard+View+3', dataAiHint: 'report export' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'main chart' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'filter options' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'report export' },
     ],
     techStack: ['React', 'TypeScript', 'D3.js', 'Framer Motion', 'Python (Flask)'],
     liveSiteUrl: '#',
@@ -73,12 +73,12 @@ const projectsData: Project[] = [
     title: 'AI-Powered Content Generator',
     description: 'A web application that uses AI to generate creative content.',
     longDescription: 'This project leverages cutting-edge AI models to assist users in generating various forms of content, such as articles, social media posts, and scripts. The interface is designed to be intuitive and user-friendly, promoting a seamless creative workflow. Tech stack includes SvelteKit, Tailwind CSS, and Python with FastAPI for the AI backend.',
-    coverImageUrl: 'https://placehold.co/600x400.png?text=AI+App+Cover',
+    coverImageUrl: 'https://placehold.co/600x400.png',
     coverDataAiHint: 'ai application',
     mediaGallery: [
-      { type: 'image', url: 'https://placehold.co/1280x720.png?text=AI+App+Interface', dataAiHint: 'generator ui' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'generator ui' },
       { type: 'video', url: 'https://placehold.co/1280x720.mp4/111111/eeeeee?text=AI+Project+Walkthrough' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png?text=AI+Output+Example', dataAiHint: 'generated text' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'generated text' },
     ],
     techStack: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'Python', 'FastAPI', 'OpenAI API'],
     githubUrl: '#',
@@ -131,7 +131,12 @@ ProjectCard.displayName = 'ProjectCard';
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
+    Autoplay({ 
+      delay: 2500, // Time each slide is visible
+      stopOnInteraction: true, 
+      stopOnMouseEnter: true,
+      // playOnInit: true by default
+    })
   );
 
   return (
