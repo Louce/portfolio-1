@@ -33,20 +33,20 @@ export const PageNavigation: React.FC<PageNavigationProps> = ({
           
           const dotVariants = {
             active: {
-              scale: 1.45, // Increased active scale slightly
-              backgroundColor: "hsl(182, 100%, 74%)", // Electric Blue from dark theme primary
-              borderColor: "hsl(182, 100%, 74%)",
+              scale: 1.45,
+              backgroundColor: "hsl(var(--primary))", 
+              borderColor: "hsl(var(--primary))",
             },
             inactive: {
               scale: 1,
-              backgroundColor: "rgba(0, 0, 0, 0)", // Fully transparent
-              borderColor: "hsla(43, 67%, 96%, 0.5)", // Bone white at 50% opacity from dark theme foreground
+              backgroundColor: "rgba(0, 0, 0, 0)", 
+              borderColor: "hsla(var(--foreground), 0.5)", // Use foreground with opacity
             }
           };
 
           const dotHover = isActive 
             ? { scale: 1.55 } 
-            : { scale: 1.25, borderColor: "hsl(182, 100%, 74%)" };
+            : { scale: 1.25, borderColor: "hsl(var(--primary))" };
 
           return (
             <li key={section.id} className="flex items-center justify-end">
@@ -56,7 +56,7 @@ export const PageNavigation: React.FC<PageNavigationProps> = ({
                 variants={dotVariants}
                 animate={isActive ? "active" : "inactive"}
                 whileHover={dotHover}
-                transition={dotTransition}
+                transition={dotTransition} // Apply transition to hover as well
                 aria-label={`Go to ${section.label} section`}
                 aria-current={isActive ? 'page' : undefined}
               />
