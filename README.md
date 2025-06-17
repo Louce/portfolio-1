@@ -1,3 +1,4 @@
+
 # KineticFolio
 
 KineticFolio is a visually stunning, one-page portfolio website for an elite frontend developer, built with Next.js, Tailwind CSS, TypeScript, and Framer Motion. It embodies the "Kinetic Elegance" design philosophy and "Crystal Cathedral" architectural principles.
@@ -74,13 +75,13 @@ The project follows a specific folder structure to promote clarity and maintaina
 │   ├── icons/           // SVG icons as components
 │   ├── layout/          // Structural components (SectionWrapper)
 │   └── sections/        // Main content sections (Hero, About, Skills, etc.)
-├── hooks/               // Custom React hooks (e.g., useOnScreen)
+├── hooks/               // Custom React hooks (e.g., useToast, useIsMobile)
 ├── styles/              // Global styles (globals.css) - This is app/globals.css in Next.js 13+
 └── lib/                 // Utility functions (utils.ts)
 ```
 (Note: `styles/globals.css` is located at `src/app/globals.css` in modern Next.js App Router projects.)
 
-Each folder containing multiple modules utilizes an `index.ts` file for barrel exports, allowing for cleaner imports.
+Each folder containing multiple modules utilizes an `index.ts` file for barrel exports (where applicable), allowing for cleaner imports.
 
 ## Customization
 
@@ -90,3 +91,4 @@ Each folder containing multiple modules utilizes an `index.ts` file for barrel e
 -   **Social Links**: Update URLs in `src/components/sections/Contact.tsx`.
 
 Enjoy your new portfolio!
+
