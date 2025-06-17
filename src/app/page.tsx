@@ -1,11 +1,11 @@
+
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Hero, About, Skills, Projects, Contact } from '@/components/sections';
 import { PageNavigation } from '@/components/PageNavigation';
 import { Box } from '@/components/primitives';
-import { useToast } from '@/hooks/use-toast'; // For potential scroll blocking notifications
 
 const sections = [
   { id: 'hero', label: 'Home', component: Hero },
@@ -18,7 +18,7 @@ const sections = [
 const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
-    y: direction > 0 ? '100vh' : '-100vh', // Slide from bottom or top
+    y: direction > 0 ? '100vh' : '-100vh',
     scale: 0.8,
     filter: 'blur(10px)',
   }),
@@ -36,7 +36,7 @@ const sectionVariants = {
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? '100vh' : '-100vh', // Slide to bottom or top
+    y: direction < 0 ? '100vh' : '-100vh',
     scale: 0.8,
     filter: 'blur(10px)',
     transition: {
@@ -51,27 +51,38 @@ const sectionVariants = {
 
 export default function PortfolioPage() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // For animation direction: 1 for next, -1 for prev
-  const [isScrolling, setIsScrolling] = useState(false); // Debounce scroll
-  const { toast } = useToast();
+  const [direction, setDirection] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollDebounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleNavigate = useCallback((sectionId: string) => {
     const newIndex = sections.findIndex(s => s.id === sectionId);
-    if (newIndex !== -1 && newIndex !== activeIndex) {
+    if (newIndex !== -1 && newIndex !== activeIndex && !isScrolling) {
+      setIsScrolling(true);
+      if (scrollDebounceTimeoutRef.current) {
+        clearTimeout(scrollDebounceTimeoutRef.current);
+        scrollDebounceTimeoutRef.current = null;
+      }
       setDirection(newIndex > activeIndex ? 1 : -1);
       setActiveIndex(newIndex);
+      // isScrolling will be set to false by onAnimationComplete
     }
-  }, [activeIndex]);
+  }, [activeIndex, isScrolling, sections]); // sections added as it's used in findIndex
   
-  // Scroll handling for "unfolding narrative"
+  const handleAnimationComplete = () => {
+    setIsScrolling(false);
+  };
+
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
-
     const handleWheel = (event: WheelEvent) => {
-      event.preventDefault(); // Prevent default scroll behavior
-
+      event.preventDefault();
       if (isScrolling) return;
+
       setIsScrolling(true);
+      if (scrollDebounceTimeoutRef.current) {
+          clearTimeout(scrollDebounceTimeoutRef.current);
+          scrollDebounceTimeoutRef.current = null;
+      }
 
       const scrollDelta = event.deltaY;
       let newIndex = activeIndex;
@@ -85,49 +96,69 @@ export default function PortfolioPage() {
       if (newIndex !== activeIndex) {
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
+        // Animation will call handleAnimationComplete to set isScrolling = false
+      } else {
+        // No section change, set a debounce timeout to reset isScrolling
+        scrollDebounceTimeoutRef.current = setTimeout(() => {
+          setIsScrolling(false);
+          scrollDebounceTimeoutRef.current = null;
+        }, 800); 
       }
-      
-      // Debounce to prevent rapid section changes
-      scrollTimeout = setTimeout(() => {
-        setIsScrolling(false);
-      }, 800); // Adjust delay as needed, should be close to animation duration
     };
     
-    // Add passive:false to allow preventDefault
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      clearTimeout(scrollTimeout);
-    };
-  }, [activeIndex, isScrolling]);
-
-  // Keyboard navigation
-  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (isScrolling) return; // Prevent navigation during transition
+      if (isScrolling) return;
 
       let newIndex = activeIndex;
+      let relevantKeyPress = false;
+
       if (event.key === 'ArrowDown' || event.key === 'PageDown') {
         newIndex = Math.min(sections.length - 1, activeIndex + 1);
+        relevantKeyPress = true;
       } else if (event.key === 'ArrowUp' || event.key === 'PageUp') {
         newIndex = Math.max(0, activeIndex - 1);
+        relevantKeyPress = true;
       } else if (event.key === 'Home') {
         newIndex = 0;
+        relevantKeyPress = true;
       } else if (event.key === 'End') {
         newIndex = sections.length - 1;
+        relevantKeyPress = true;
+      }
+
+      if (!relevantKeyPress) return;
+
+      setIsScrolling(true);
+      if (scrollDebounceTimeoutRef.current) {
+          clearTimeout(scrollDebounceTimeoutRef.current);
+          scrollDebounceTimeoutRef.current = null;
       }
 
       if (newIndex !== activeIndex) {
-        setIsScrolling(true); // Set scrolling flag for keyboard too
         setDirection(newIndex > activeIndex ? 1 : -1);
         setActiveIndex(newIndex);
-        setTimeout(() => setIsScrolling(false), 800);
+        // Animation will call handleAnimationComplete to set isScrolling = false
+      } else {
+        // No section change (e.g. arrow at boundary), set a debounce timeout
+        scrollDebounceTimeoutRef.current = setTimeout(() => {
+          setIsScrolling(false);
+          scrollDebounceTimeoutRef.current = null;
+        }, 800);
       }
     };
 
+    window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIndex, isScrolling]);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+      if (scrollDebounceTimeoutRef.current) {
+        clearTimeout(scrollDebounceTimeoutRef.current);
+        scrollDebounceTimeoutRef.current = null;
+      }
+    };
+  }, [activeIndex, isScrolling, sections, setDirection, setActiveIndex]);
 
 
   const ActiveComponent = sections[activeIndex].component;
@@ -148,11 +179,11 @@ export default function PortfolioPage() {
           animate="animate"
           exit="exit"
           className="absolute inset-0 w-full h-full"
-          aria-live="polite" // Announce section changes to screen readers
-          role="tabpanel" // Treat sections like tabs for accessibility
-          aria-labelledby={`section-tab-${sections[activeIndex].id}`} // Assuming PageNavigation buttons have these IDs
+          onAnimationComplete={handleAnimationComplete}
+          aria-live="polite"
+          role="tabpanel"
+          aria-labelledby={`section-tab-${sections[activeIndex].id}`}
         >
-          {/* The Hero component has a specific onNavigate prop */}
           {sections[activeIndex].id === 'hero' ? (
             <ActiveComponent onNavigate={handleNavigate} />
           ) : (
