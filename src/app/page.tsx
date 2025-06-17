@@ -149,7 +149,7 @@ export default function PortfolioPage() {
         activeSection={sections[activeIndex].id} 
         onNavigate={handleNavigate} 
       />
-      <AnimatePresence initial={false} custom={direction} mode="wait">
+      <AnimatePresence custom={direction} mode="wait">
         <motion.div
           key={sections[activeIndex].id}
           id={`section-panel-${sections[activeIndex].id}`}
@@ -174,3 +174,4 @@ export default function PortfolioPage() {
     </Box>
   );
 }
+
