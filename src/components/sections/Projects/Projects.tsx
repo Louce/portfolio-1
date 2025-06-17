@@ -6,17 +6,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription, Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Badge } from '@/components/ui';
+import { 
+  Button, 
+  Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription, 
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, 
+  Badge,
+  Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
+} from '@/components/ui';
 import { ExternalLink, Github } from 'lucide-react';
+
+interface MediaItem {
+  type: 'image' | 'video';
+  url: string;
+  dataAiHint?: string;
+}
 
 interface Project {
   id: string;
   title: string;
   description: string;
   longDescription?: string;
-  imageUrl: string;
-  dataAiHint?: string;
-  videoUrl?: string; 
+  coverImageUrl: string; // Renamed from imageUrl to be specific for the card
+  coverDataAiHint?: string; // Renamed from dataAiHint
+  mediaGallery: MediaItem[];
   techStack: string[];
   liveSiteUrl?: string;
   githubUrl?: string;
@@ -28,9 +40,14 @@ const projectsData: Project[] = [
     title: 'E-commerce Platform X',
     description: 'A modern, responsive e-commerce platform with advanced features.',
     longDescription: 'Developed a full-stack e-commerce solution focusing on user experience, performance, and scalability. Integrated payment gateways, order management, and a recommendation engine. The frontend was built with Next.js and Tailwind CSS, while the backend used Node.js and PostgreSQL.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    dataAiHint: 'ecommerce website',
-    videoUrl: 'https://placehold.co/1280x720.mp4/000000/ffffff?text=Project+Video',
+    coverImageUrl: 'https://placehold.co/600x400.png?text=E-commerce+Cover',
+    coverDataAiHint: 'ecommerce website',
+    mediaGallery: [
+      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Project+Image+1', dataAiHint: 'product page' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Project+Image+2', dataAiHint: 'shopping cart' },
+      { type: 'video', url: 'https://placehold.co/1280x720.mp4/000000/ffffff?text=Project+Demo' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Project+Image+3', dataAiHint: 'user dashboard' },
+    ],
     techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Stripe'],
     liveSiteUrl: '#',
     githubUrl: '#',
@@ -40,8 +57,13 @@ const projectsData: Project[] = [
     title: 'Interactive Data Dashboard',
     description: 'A real-time data visualization dashboard for business analytics.',
     longDescription: 'Created an interactive dashboard that allows users to explore complex datasets through dynamic charts and graphs. Features include customizable widgets, data filtering, and report generation. Built with React, D3.js, and Framer Motion for smooth animations.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    dataAiHint: 'data dashboard',
+    coverImageUrl: 'https://placehold.co/600x400.png?text=Dashboard+Cover',
+    coverDataAiHint: 'data dashboard',
+    mediaGallery: [
+      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Dashboard+View+1', dataAiHint: 'main chart' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Dashboard+View+2', dataAiHint: 'filter options' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png?text=Dashboard+View+3', dataAiHint: 'report export' },
+    ],
     techStack: ['React', 'TypeScript', 'D3.js', 'Framer Motion', 'Python (Flask)'],
     liveSiteUrl: '#',
   },
@@ -50,9 +72,13 @@ const projectsData: Project[] = [
     title: 'AI-Powered Content Generator',
     description: 'A web application that uses AI to generate creative content.',
     longDescription: 'This project leverages cutting-edge AI models to assist users in generating various forms of content, such as articles, social media posts, and scripts. The interface is designed to be intuitive and user-friendly, promoting a seamless creative workflow. Tech stack includes SvelteKit, Tailwind CSS, and Python with FastAPI for the AI backend.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    dataAiHint: 'ai application',
-    videoUrl: 'https://placehold.co/1280x720.mp4/111111/eeeeee?text=AI+Project',
+    coverImageUrl: 'https://placehold.co/600x400.png?text=AI+App+Cover',
+    coverDataAiHint: 'ai application',
+    mediaGallery: [
+      { type: 'image', url: 'https://placehold.co/1280x720.png?text=AI+App+Interface', dataAiHint: 'generator ui' },
+      { type: 'video', url: 'https://placehold.co/1280x720.mp4/111111/eeeeee?text=AI+Project+Walkthrough' },
+      { type: 'image', url: 'https://placehold.co/1280x720.png?text=AI+Output+Example', dataAiHint: 'generated text' },
+    ],
     techStack: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'Python', 'FastAPI', 'OpenAI API'],
     githubUrl: '#',
   },
@@ -71,11 +97,12 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
         <CardHeader className="p-0">
           <Box className="relative w-full aspect-[16/9] overflow-hidden">
             <Image
-              src={project.imageUrl}
+              src={project.coverImageUrl}
               alt={project.title}
-              data-ai-hint={project.dataAiHint}
+              data-ai-hint={project.coverDataAiHint}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
+              style={{ objectFit: 'cover' }}
             />
           </Box>
         </CardHeader>
@@ -125,22 +152,48 @@ export const Projects: React.FC = React.memo(() => {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
                   >
-                    {selectedProject.videoUrl ? (
-                        <Box className="relative w-full aspect-video bg-black">
-                        <video src={selectedProject.videoUrl} loop autoPlay muted playsInline className="w-full h-full object-cover">
-                          Your browser does not support the video tag.
-                        </video>
-                        </Box>
+                    {selectedProject.mediaGallery && selectedProject.mediaGallery.length > 0 ? (
+                      <Carousel
+                        opts={{
+                          align: "start",
+                          loop: true,
+                        }}
+                        className="w-full"
+                      >
+                        <CarouselContent>
+                          {selectedProject.mediaGallery.map((media, index) => (
+                            <CarouselItem key={index}>
+                              <Box className="relative w-full aspect-video bg-black">
+                                {media.type === 'image' && (
+                                  <Image
+                                    src={media.url}
+                                    alt={`${selectedProject.title} - Media ${index + 1}`}
+                                    data-ai-hint={media.dataAiHint || selectedProject.coverDataAiHint}
+                                    fill
+                                    className="object-contain" 
+                                    style={{ objectFit: 'contain' }}
+                                  />
+                                )}
+                                {media.type === 'video' && (
+                                  <video src={media.url} controls loop autoPlay muted playsInline className="w-full h-full object-contain">
+                                    Your browser does not support the video tag.
+                                  </video>
+                                )}
+                              </Box>
+                            </CarouselItem>
+                          ))}
+                        </CarouselContent>
+                        {selectedProject.mediaGallery.length > 1 && (
+                          <>
+                            <CarouselPrevious className="left-4 text-white bg-black/30 hover:bg-black/50 border-none" />
+                            <CarouselNext className="right-4 text-white bg-black/30 hover:bg-black/50 border-none" />
+                          </>
+                        )}
+                      </Carousel>
                     ) : (
-                      <Box className="relative w-full aspect-video">
-                        <Image
-                          src={selectedProject.imageUrl}
-                          alt={selectedProject.title}
-                          data-ai-hint={selectedProject.dataAiHint}
-                          fill
-                          className="object-cover"
-                        />
-                      </Box>
+                       <Box className="relative w-full aspect-video bg-muted">
+                         <Text className="absolute inset-0 flex items-center justify-center text-muted-foreground">No media available</Text>
+                       </Box>
                     )}
                   </motion.div>
                 </DialogHeader>

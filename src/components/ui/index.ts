@@ -7,6 +7,7 @@ export * from './Badge/badge';
 export * from './Button/button';
 export * from './Calendar/calendar';
 export * from './Card/card';
+export * from './Carousel/carousel';
 export * from './Chart/chart';
 export * from './Checkbox/checkbox';
 export * from './Dialog/dialog';
