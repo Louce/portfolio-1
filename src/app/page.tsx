@@ -18,9 +18,9 @@ const sections = [
 const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
-    y: direction > 0 ? '100vh' : '-100vh',
-    scale: 0.9, 
-    filter: 'blur(3px)', 
+    y: direction > 0 ? '50vh' : '-50vh', // Reduced Y-offset for faster perceived movement
+    scale: 0.95, // Slightly less aggressive scale
+    filter: 'blur(2px)', // Reduced blur
   }),
   animate: {
     opacity: 1,
@@ -29,21 +29,21 @@ const sectionVariants = {
     filter: 'blur(0px)',
     transition: {
       type: 'spring',
-      stiffness: 150, 
-      damping: 22,  
-      duration: 0.4, 
+      stiffness: 250, // Increased stiffness
+      damping: 30,  // Adjusted damping
+      duration: 0.3, // Explicit shorter duration hint
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? '100vh' : '-100vh',
-    scale: 0.9,
-    filter: 'blur(3px)', 
+    y: direction < 0 ? '50vh' : '-50vh', // Reduced Y-offset
+    scale: 0.95,
+    filter: 'blur(2px)',
     transition: {
       type: 'spring',
-      stiffness: 150, 
-      damping: 22,  
-      duration: 0.25, 
+      stiffness: 250,
+      damping: 30,
+      duration: 0.2, // Explicit shorter duration hint
     },
   }),
 };
@@ -55,9 +55,14 @@ export default function PortfolioPage() {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollDebounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const isScrollingRef = useRef(isScrolling);
+  useEffect(() => {
+    isScrollingRef.current = isScrolling;
+  }, [isScrolling]);
+
   const handleNavigate = useCallback((sectionId: string) => {
     const newIndex = sections.findIndex(s => s.id === sectionId);
-    if (newIndex !== -1 && newIndex !== activeIndex && !isScrolling) {
+    if (newIndex !== -1 && newIndex !== activeIndex && !isScrollingRef.current) {
       setIsScrolling(true);
       if (scrollDebounceTimeoutRef.current) {
         clearTimeout(scrollDebounceTimeoutRef.current);
@@ -65,9 +70,8 @@ export default function PortfolioPage() {
       }
       setDirection(newIndex > activeIndex ? 1 : -1);
       setActiveIndex(newIndex);
-      // isScrolling will be set to false by onAnimationComplete
     }
-  }, [activeIndex, isScrolling]);
+  }, [activeIndex, setActiveIndex, setDirection, setIsScrolling]);
   
   const handleAnimationComplete = () => {
     setIsScrolling(false);
@@ -76,8 +80,7 @@ export default function PortfolioPage() {
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
-      if (isScrolling) return;
-
+      if (isScrollingRef.current) return;
       
       if (scrollDebounceTimeoutRef.current) {
           clearTimeout(scrollDebounceTimeoutRef.current);
@@ -102,12 +105,12 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 500); // Increased debounce timeout
+        }, 500);
       }
     };
     
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (isScrolling) return;
+      if (isScrollingRef.current) return;
 
       let newIndex = activeIndex;
       let relevantKeyPress = false;
@@ -128,6 +131,8 @@ export default function PortfolioPage() {
 
       if (!relevantKeyPress) return;
       
+      event.preventDefault(); // Prevent default browser scroll for handled keys
+
       if (scrollDebounceTimeoutRef.current) {
           clearTimeout(scrollDebounceTimeoutRef.current);
           scrollDebounceTimeoutRef.current = null;
@@ -142,7 +147,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = setTimeout(() => {
           setIsScrolling(false);
           scrollDebounceTimeoutRef.current = null;
-        }, 500); // Increased debounce timeout
+        }, 500);
       }
     };
 
@@ -157,7 +162,7 @@ export default function PortfolioPage() {
         scrollDebounceTimeoutRef.current = null;
       }
     };
-  }, [activeIndex, isScrolling, handleNavigate]); 
+  }, [activeIndex, handleNavigate]); 
 
   const ActiveComponent = sections[activeIndex].component;
 
@@ -192,3 +197,4 @@ export default function PortfolioPage() {
     </Box>
   );
 }
+
