@@ -30,7 +30,7 @@ const letter = {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 12, stiffness: 100 },
+    transition: { type: 'spring', damping: 12, stiffness: 100, delay: 0 },
   },
 };
 
@@ -89,7 +89,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0 }} 
-          className="absolute top-4 left-1/2 -translate-x-1/2 md:top-6 z-10"
+          className="absolute top-4 left-0 right-0 md:top-6 z-10 flex justify-center"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
           <Flex align="center" justify="center" gap="0.375rem">
@@ -102,15 +102,16 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-3 md:space-y-4">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ opacity: 1 }} // No initial opacity animation here, KineticText handles it
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           transition={{
             delay: 0, 
           }}
+          className="text-center"
         >
           <KineticText 
             text="Frontend Architect" 
-            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-primary text-center"
+            className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-primary"
           />
         </motion.div>
 
@@ -122,7 +123,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         >
           <Text 
             as="h2" 
-            className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider text-center"
+            className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider"
           >
             KINETICODE <span className="text-primary font-normal">//</span> INNOVATE <span className="text-accent">//</span> CREATE
           </Text>
@@ -137,7 +138,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           <Text 
             as="p" 
             variant="default"
-            className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed text-center"
+            className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed"
             aria-label={subHeadlineText}
           >
             {subHeadlineText.split(' ').map((word, index) => (
@@ -185,3 +186,4 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 };
 
 Hero.displayName = 'HeroSection';
+
