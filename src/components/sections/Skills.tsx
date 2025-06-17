@@ -55,10 +55,11 @@ const subSkillsData: SubSkill[] = [
 interface SkillNodeProps {
   skill: Skill;
   onNodeEnter: (skillId: string) => void;
+  onNodeLeave: () => void; // Added for explicit leave handling from node
   isActive: boolean;
 }
 
-const SkillNode: React.FC<SkillNodeProps> = React.memo(({ skill, onNodeEnter, isActive }) => {
+const SkillNode: React.FC<SkillNodeProps> = React.memo(({ skill, onNodeEnter, onNodeLeave, isActive }) => {
   const Icon = skill.icon;
   return (
     <motion.div
@@ -69,7 +70,9 @@ const SkillNode: React.FC<SkillNodeProps> = React.memo(({ skill, onNodeEnter, is
         isActive ? "bg-primary text-primary-foreground scale-110 shadow-primary/50" : "bg-card hover:shadow-primary/30 hover:bg-primary/10"
       )}
       onMouseEnter={() => onNodeEnter(skill.id)}
+      onMouseLeave={onNodeLeave} // Call specific leave handler
       onFocus={() => onNodeEnter(skill.id)}
+      onBlur={onNodeLeave} // Call specific leave handler also on blur
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
@@ -99,29 +102,33 @@ export const Skills: React.FC = React.memo(() => {
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const DEBOUNCE_DELAY = 150; 
 
-  const handleNodeMouseEnter = (skillId: string) => {
-    pendingHoverIdRef.current = skillId;
+  const handleNodeEnter = (skillId: string) => {
+    pendingHoverIdRef.current = skillId; // Store intended hover target
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
     hoverTimeoutRef.current = setTimeout(() => {
+      // Only update if this skillId is still the intended target
       if (pendingHoverIdRef.current === skillId) {
         setHoveredSkillId(skillId);
       }
     }, DEBOUNCE_DELAY);
   };
 
-  const handleContainerMouseLeave = () => {
-    pendingHoverIdRef.current = null; 
+  // This function is called when mouse leaves an individual skill node OR the entire container
+  const handleNodeLeave = () => {
+    pendingHoverIdRef.current = null; // Clear intended target
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
     hoverTimeoutRef.current = setTimeout(() => {
+      // Only clear hoveredSkillId if no new skill is pending
       if (pendingHoverIdRef.current === null) { 
         setHoveredSkillId(null);
       }
     }, DEBOUNCE_DELAY);
   };
+  
 
   const relatedSubSkills = useMemo(() => {
     if (!hoveredSkillId) return [];
@@ -140,14 +147,15 @@ export const Skills: React.FC = React.memo(() => {
         
         <div 
           className="w-full max-w-3xl" 
-          onMouseLeave={handleContainerMouseLeave} 
+          onMouseLeave={handleNodeLeave} // Handles leaving the general container area
         >
           <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
             {coreSkillsData.map((skill) => (
               <SkillNode 
                 key={skill.id} 
                 skill={skill} 
-                onNodeEnter={handleNodeMouseEnter}
+                onNodeEnter={handleNodeEnter}
+                onNodeLeave={handleNodeLeave} // Explicitly call leave for individual nodes
                 isActive={hoveredSkillId === skill.id}
               />
             ))}
