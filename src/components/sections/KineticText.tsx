@@ -1,8 +1,9 @@
 
 'use client';
 
+import type { MotionValue} from 'framer-motion';
 import React, { useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Text } from '@/components/primitives';
 
 interface KineticTextProps {
@@ -33,10 +34,10 @@ const KineticLetter: React.FC<{ char: string; index: number; mouseX: MotionValue
       animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
       transition={{ 
         type: "spring", 
-        damping: 15, 
-        stiffness: 150, 
-        mass: 0.8, 
-        delay: index * 0.05 
+        damping: 12, // Snappier
+        stiffness: 180, // Snappier
+        mass: 0.7,    // Lighter
+        delay: index * 0.03 // Faster stagger
       }} 
     >
       {char}

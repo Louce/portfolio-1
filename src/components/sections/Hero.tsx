@@ -18,7 +18,7 @@ const sentence = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.04,
+      staggerChildren: 0.025, // Faster stagger
     },
   },
 };
@@ -29,7 +29,7 @@ const letter = {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 15, stiffness: 150 },
+    transition: { type: 'spring', damping: 12, stiffness: 180 }, // Snappier words
   },
 };
 
@@ -87,7 +87,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 2.0 }} 
+          transition={{ duration: 0.4, delay: 1.3 }} // Faster animation, adjusted delay
           className="absolute top-4 left-4 md:top-6 md:left-6 z-10"
           aria-label={`Visitor location detected as ${visitorCountry}`}
         >
@@ -98,17 +98,18 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </motion.div>
       )}
 
-      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-10">
+      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-8">
         <motion.div
           style={{ transform: 'translateZ(0px)' }} 
-          initial={{ scale: 0.8, rotate: -5 }} // Opacity is handled by KineticLetter
-          animate={{ scale: 1, rotate: 0 }}
+          initial={{ scale: 0.8, rotate: -5, opacity: 0 }}
+          animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{
             type: 'spring',
-            stiffness: 100,
-            damping: 15,
-            mass: 0.8,
-            delay: 0.2,
+            stiffness: 120, // Increased stiffness
+            damping: 12,  // Adjusted damping
+            mass: 0.7,    // Reduced mass
+            delay: 0.1,   // Quicker start
+            opacity: { duration: 0.3, delay: 0.1 } // Separate opacity transition
           }}
         >
           <KineticText 
@@ -120,7 +121,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 1.0, ease: 'easeOut' }} 
+          transition={{ duration: 0.5, delay: 0.5, ease: 'easeOut' }} // Faster animation, earlier start
         >
           <Text 
             as="h2" 
@@ -135,7 +136,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           initial="hidden"
           animate="visible"
           className="max-w-2xl"
-          transition={{ delayChildren: 1.3, staggerChildren: 0.04 }}
+          transition={{ delayChildren: 0.7 }} // Earlier start for paragraph
         >
           <Text 
             as="p" 
@@ -160,7 +161,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.6 }} 
+          transition={{ duration: 0.4, delay: 1.0 }} // Faster animation, earlier start
         >
           <Button 
             size="lg" 
@@ -176,7 +177,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.9, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
+        transition={{ duration: 0.4, delay: 1.2, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Faster entry
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
