@@ -16,16 +16,16 @@ interface HeroProps {
 const subHeadlineText = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
-  const [visitorCountry, setVisitorCountry] = useState<string | null>(null);
+  const [visitorLocation, setVisitorLocation] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchVisitorLocation = async () => {
       try {
         
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-            // console.log("Development environment: Simulating visitor location (USA).");
-            // setVisitorCountry("USA (Simulated)"); 
-            // return; 
+            // Simulate location for development environments
+            setVisitorLocation("California, USA (Simulated)"); 
+            return; 
         }
 
         const response = await fetch('https://ipwhois.app/json/', {
@@ -42,8 +42,22 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           throw new Error(`Failed to fetch location: ${response.statusText}`);
         }
         const data = await response.json();
-        if (data && data.country) {
-          setVisitorCountry(data.country);
+
+        if (data && data.success !== false) {
+          let locationString = "";
+          if (data.country) {
+            locationString = data.country;
+            if (data.region && data.region !== data.country) {
+              locationString = `${data.region}, ${data.country}`;
+            } else if (data.city && data.city !== data.country && data.city !== data.region) {
+              locationString = `${data.city}, ${data.country}`;
+            }
+          }
+          if (locationString) {
+            setVisitorLocation(locationString);
+          } else {
+            console.warn('IPWHOIS API did not return expected country data.');
+          }
         } else if (data && data.success === false) {
            console.warn('IPWHOIS API reported failure:', data.message);
         }
@@ -62,17 +76,17 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         aria-hidden="true"
       />
       
-      {visitorCountry && (
+      {visitorLocation && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.8 }}
           className="absolute top-4 left-0 right-0 z-10 flex justify-center"
-          aria-label={`Visitor location detected as ${visitorCountry}`}
+          aria-label={`Visitor location detected: ${visitorLocation}`}
         >
           <Flex align="center" justify="center" gap="0.375rem" className="text-center">
             <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
-            <Text as="span" className="text-xs sm:text-sm text-foreground/70">You're from {visitorCountry}</Text>
+            <Text as="span" className="text-xs sm:text-sm text-foreground/70">You're from {visitorLocation}</Text>
           </Flex>
         </motion.div>
       )}
@@ -132,3 +146,4 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 };
 
 Hero.displayName = 'HeroSection';
+
