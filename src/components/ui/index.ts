@@ -1,7 +1,7 @@
 
 export * from './Accordion/accordion';
-export * from './AlertDialog/alert-dialog';
 export * from './Alert/alert';
+export * from './AlertDialog/alert-dialog';
 export * from './Avatar/avatar';
 export * from './Badge/badge';
 export * from './Button/button';
