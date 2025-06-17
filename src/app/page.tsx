@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Hero, About, Skills, Projects, Contact } from '@/components/sections';
+import { Hero, About, Skills, Projects, Contact, News } from '@/components/sections';
 import { PageNavigation } from '@/components/layout';
 import { Box } from '@/components/primitives';
 
@@ -13,12 +13,13 @@ const sections = [
   { id: 'skills', label: 'Skills', component: Skills },
   { id: 'projects', label: 'Projects', component: Projects },
   { id: 'contact', label: 'Contact', component: Contact },
+  { id: 'news', label: 'News', component: News },
 ];
 
 const sectionVariants = {
   initial: (direction: number) => ({
     opacity: 0,
-    y: direction > 0 ? "10vh" : "-10vh",
+    y: direction > 0 ? "100vh" : "-100vh", // Start from full viewport height away
     scale: 1,
   }),
   animate: {
@@ -33,12 +34,12 @@ const sectionVariants = {
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? "10vh" : "-10vh",
+    y: direction < 0 ? "100vh" : "-100vh", // Exit to full viewport height away
     scale: 1,
     transition: {
       type: "tween",
       ease: "easeIn",
-      duration: 0.5, // Changed from 0.4s to 0.5s for consistency
+      duration: 0.5,
     },
   }),
 };
