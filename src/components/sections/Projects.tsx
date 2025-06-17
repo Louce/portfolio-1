@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -68,9 +69,9 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="w-full"
+      className="w-full group" // Added group here for image hover if needed from parent
     >
-      <Card className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-primary/30 transition-shadow duration-300 bg-card">
+      <Card className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 ease-out hover:-translate-y-1 bg-card">
         <CardHeader className="p-0">
           <Box className="relative w-full aspect-[16/9] overflow-hidden">
             <Image
@@ -79,7 +80,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
               data-ai-hint={project.dataAiHint}
               layout="fill"
               objectFit="cover"
-              className="transition-transform duration-500 group-hover:scale-105"
+              className="transition-transform duration-500 group-hover:scale-105" // This group-hover refers to the parent ProjectCard motion.div
             />
           </Box>
         </CardHeader>

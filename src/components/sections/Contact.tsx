@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -78,7 +79,7 @@ export const Contact: React.FC = () => {
                       <Input 
                         placeholder="Your Name" 
                         {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-accent transition-colors" 
+                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out" 
                       />
                     </FormControl>
                     <FormMessage />
@@ -96,7 +97,7 @@ export const Contact: React.FC = () => {
                         type="email" 
                         placeholder="your.email@example.com" 
                         {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-accent transition-colors"
+                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out"
                       />
                     </FormControl>
                     <FormMessage />
@@ -113,7 +114,7 @@ export const Contact: React.FC = () => {
                       <Textarea 
                         placeholder="Let's talk about..." 
                         {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-accent transition-colors min-h-[120px]"
+                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out min-h-[120px]"
                       />
                     </FormControl>
                     <FormMessage />
