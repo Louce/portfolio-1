@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -108,6 +109,10 @@ export default {
           '0%': { transform: 'translateY(0)', opacity: '1' },
           '100%': { transform: 'translateY(-100%)', opacity: '0' },
         },
+        'gradient-xy': {
+          '0%, 100%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -117,6 +122,7 @@ export default {
         'swirl-in': 'swirl-in 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards',
         'slide-in-from-bottom': 'slide-in-from-bottom 0.5s ease-out forwards',
         'slide-out-to-top': 'slide-out-to-top 0.5s ease-in forwards',
+        'gradient-xy': 'gradient-xy 10s ease infinite alternate', // Changed duration and added alternate
       },
     },
   },

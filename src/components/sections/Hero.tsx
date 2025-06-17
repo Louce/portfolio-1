@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -12,10 +13,38 @@ interface HeroProps {
   onNavigate: (sectionId: string) => void;
 }
 
+const sentence = {
+  hidden: { opacity: 1 }, // Parent opacity for stagger control
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 1.0, // Start after KineticText and Tagline
+      staggerChildren: 0.04,
+    },
+  },
+};
+
+const letter = {
+  hidden: { opacity: 0, y: 15, filter: 'blur(3px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { type: 'spring', damping: 15, stiffness: 150 },
+  },
+};
+
+const subHeadlineText = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
+
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   return (
-    <SectionWrapper id="hero" className="relative text-center bg-gradient-to-br from-background to-slate-900">
-      <Flex direction="col" align="center" justify="center" className="h-full space-y-8 md:space-y-12">
+    <SectionWrapper id="hero" className="relative text-center overflow-hidden">
+      <motion.div
+        className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/10 via-background to-accent/10 bg-[length:200%_200%] animate-gradient-xy"
+        aria-hidden="true"
+      />
+      
+      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-6 md:space-y-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -26,21 +55,50 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary animate-swirl-in"
           />
         </motion.div>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          transition={{ duration: 0.7, delay: 0.6, ease: 'easeOut' }}
         >
-          <Text variant="lead" className="max-w-2xl text-foreground/80 font-body">
-            Crafting charismatic, elegant, and unforgettable digital experiences.
+          <Text 
+            as="h2" // More semantic for a tagline
+            className="text-lg sm:text-xl md:text-2xl font-light text-foreground/80 tracking-wider"
+          >
+            KINETICODE <span className="text-primary font-normal">//</span> INNOVATE <span className="text-accent">//</span> CREATE
+          </Text>
+        </motion.div>
+        
+        <motion.div
+          variants={sentence}
+          initial="hidden"
+          animate="visible"
+          className="max-w-2xl"
+        >
+          <Text 
+            as="p" 
+            variant="default"
+            className="font-body text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed"
+            aria-label={subHeadlineText}
+          >
+            {subHeadlineText.split(' ').map((word, index) => (
+              <React.Fragment key={word + '-' + index}>
+                <motion.span
+                  variants={letter}
+                  className="inline-block"
+                >
+                  {word}
+                </motion.span>
+                {index < subHeadlineText.split(' ').length -1 && <span className="inline-block">&nbsp;</span>}
+              </React.Fragment>
+            ))}
           </Text>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2 }}
+          transition={{ duration: 0.6, delay: 1.8 }} // Adjusted delay
         >
           <Button 
             size="lg" 
@@ -56,12 +114,12 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.5, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }}
+        transition={{ duration: 0.6, delay: 2.1, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Adjusted delay
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
       >
-        <ChevronDown className="h-10 w-10 text-primary animate-bounce" />
+        <ChevronDown className="h-10 w-10 text-primary opacity-75 hover:opacity-100 transition-opacity" />
       </motion.div>
     </SectionWrapper>
   );
