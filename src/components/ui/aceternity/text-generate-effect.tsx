@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -49,7 +50,7 @@ export const TextGenerateEffect = ({
           return (
             <motion.span
               key={word + idx}
-              className="dark:text-white text-black opacity-0"
+              className="opacity-0" // Removed hardcoded text colors
             >
               {word}{' '}
             </motion.span>
@@ -60,9 +61,9 @@ export const TextGenerateEffect = ({
   };
 
   return (
-    <div className={cn('font-bold', className)}>
+    <div className={cn('font-bold', className)}> {/* className prop (containing text-primary) is applied here */}
       <div className="mt-4">
-        <div className=" dark:text-white text-black leading-snug tracking-wide">
+        <div className="leading-snug tracking-wide"> {/* Removed hardcoded text colors, will inherit from parent */}
           {renderWords()}
         </div>
       </div>
