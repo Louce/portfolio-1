@@ -66,18 +66,22 @@ const SkillNode: React.FC<SkillNodeProps> = React.memo(({ skill, onNodeEnter, on
       tabIndex={0}
       aria-label={`${skill.name} skill node`}
       className={cn(
-        "relative p-4 md:p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-out aspect-square flex flex-col items-center justify-center text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background",
-        isActive ? "bg-primary text-primary-foreground scale-110 shadow-primary/50" : "bg-card hover:shadow-primary/30 hover:bg-primary/10"
+        "relative p-4 md:p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-out aspect-square flex flex-col items-center justify-center text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background border",
+        isActive 
+          ? "bg-primary text-primary-foreground scale-110 shadow-primary/50 border-primary" 
+          : "bg-card/70 backdrop-blur-sm border-border/20 hover:shadow-primary/30 hover:bg-card/80 hover:backdrop-blur-md hover:border-primary/40"
       )}
       onMouseEnter={() => onNodeEnter(skill.id)}
       onMouseLeave={onNodeLeave}
       onFocus={() => onNodeEnter(skill.id)}
       onBlur={onNodeLeave}
-      whileHover={{ y: -5 }}
+      whileHover={{ y: isActive ? 0 : -5 }} // Only lift if not active
       transition={{ type: 'spring', stiffness: 300 }}
     >
       <Icon className={cn("w-10 h-10 md:w-12 md:h-12 mb-3", isActive ? "text-primary-foreground" : "text-primary")} />
-      <Text as="h3" className="font-headline text-base md:text-lg font-semibold">{skill.name}</Text>
+      <Text as="h3" className={cn("font-headline text-base md:text-lg font-semibold", isActive ? "text-primary-foreground" : "text-foreground")}>
+        {skill.name}
+      </Text>
       <AnimatePresence>
         {isActive && skill.description && (
           <motion.p 
@@ -140,7 +144,7 @@ export const Skills: React.FC = React.memo(() => {
         <SectionTitle>My Expertise</SectionTitle>
         <div 
           className="w-full max-w-3xl" 
-          onMouseLeave={handleContainerMouseLeave}
+          onMouseLeave={handleContainerMouseLeave} // Changed from onNodeLeave to handle mouse leaving the entire skills area
         >
           <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
             {coreSkillsData.map((skill) => (
@@ -148,7 +152,7 @@ export const Skills: React.FC = React.memo(() => {
                 key={skill.id} 
                 skill={skill} 
                 onNodeEnter={handleNodeEnter}
-                onNodeLeave={handleContainerMouseLeave} 
+                onNodeLeave={handleContainerMouseLeave} // Pass the general leave handler
                 isActive={hoveredSkillId === skill.id}
               />
             ))}
@@ -161,7 +165,7 @@ export const Skills: React.FC = React.memo(() => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="mt-8 md:mt-12 p-4 md:p-6 bg-card rounded-lg shadow-xl w-full"
+                className="mt-8 md:mt-12 p-4 md:p-6 bg-card/70 backdrop-blur-md border border-border/30 rounded-lg shadow-xl w-full"
               >
                 <Text as="h4" className="font-headline text-lg md:text-xl font-semibold text-accent mb-3 md:mb-4 text-center">
                   Related Technologies for {coreSkillsData.find(s => s.id === hoveredSkillId)?.name}

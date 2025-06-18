@@ -31,7 +31,10 @@ export const Contact: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
+    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
+    // console.log(data);
+    // toast({ title: "Message Sent!", description: "Thanks for reaching out. I'll get back to you soon." });
     form.reset();
   };
 
@@ -45,11 +48,11 @@ export const Contact: React.FC = () => {
     <SectionWrapper id="contact" className="bg-transparent">
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-8 md:space-y-10">
         <SectionTitle>Get In Touch</SectionTitle>
-        <Text variant="lead" className="text-center max-w-xl text-foreground/80 font-body mt-[-0.5rem] md:mt-[-0.75rem]"> {/* Adjusted margin due to SectionTitle mb */}
+        <Text variant="lead" className="text-center max-w-xl text-foreground/80 font-body mt-[-0.5rem] md:mt-[-0.75rem]">
           Have a project in mind, a question, or just want to connect? Feel free to reach out.
         </Text>
 
-        <Box className="w-full max-w-lg p-6 md:p-8 bg-card rounded-xl shadow-2xl">
+        <Box className="w-full max-w-lg p-6 md:p-8 bg-card/70 backdrop-blur-md border border-border/30 rounded-xl shadow-2xl">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
