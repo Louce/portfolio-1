@@ -128,7 +128,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
         <div className="text-center pt-16 md:pt-0">
           <TextGenerateEffect
             words="Frontend"
-            className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-[120px] xl:text-[150px] font-bold tracking-tight text-primary text-center leading-none"
+            className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-display-lg xl:text-display-xl font-bold tracking-tight text-primary text-center leading-none"
             stagger={0.05}
             delay={0.3}
           />
