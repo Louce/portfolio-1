@@ -23,7 +23,7 @@ export * from './ScrollArea/scroll-area';
 export * from './Select/select';
 export * from './Separator/separator';
 export * from './Sheet/sheet';
-// export * from './Sidebar/sidebar'; // Removed Sidebar exports
+// export * from './Sidebar/sidebar'; // Sidebar exports are removed
 export * from './Skeleton/skeleton';
 export * from './Slider/slider';
 export * from './Switch/switch';
@@ -35,6 +35,5 @@ export * from './Toaster/toaster';
 export * from './Tooltip/tooltip';
 export * from './aceternity';
 export * from './3d-card';
-// Removed exports for GlowingEffect, GlowingEffectDemo as they are no longer used.
-// Removed exports for Boxes and BackgroundBoxesDemo as they are no longer used.
-// Removed Sidebar exports
+// GlowingEffect, GlowingEffectDemo exports are removed
+// Boxes and BackgroundBoxesDemo exports are removed
