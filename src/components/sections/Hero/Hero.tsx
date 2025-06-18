@@ -21,11 +21,23 @@ const dynamicSubHeadlines = [
   "CODE // BUILD // PLAY"
 ];
 
+const subHeadlineAnimation = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeInOut" } },
+  exit: { opacity: 0, y: -10, transition: { duration: 0.5, ease: "easeInOut" } },
+};
+
 export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   const [visitorLocation, setVisitorLocation] = useState<string | null>(null);
   const [currentSubHeadlineIndex, setCurrentSubHeadlineIndex] = useState(0);
+  const [startCyclingAnimation, setStartCyclingAnimation] = useState(false);
 
   useEffect(() => {
+    // Delay the start of the cycling animation to allow initial content to paint
+    const animationTimer = setTimeout(() => {
+      setStartCyclingAnimation(true);
+    }, 500); // Start animation after 500ms
+
     const fetchVisitorLocation = async () => {
       try {
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
@@ -85,17 +97,25 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
 
     fetchVisitorLocation();
 
-    const intervalId = setInterval(() => {
+    const subHeadlineIntervalId = setInterval(() => {
       setCurrentSubHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
     }, 3000); // Cycle every 3 seconds
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearTimeout(animationTimer);
+      clearInterval(subHeadlineIntervalId);
+    };
   }, []); 
 
-  const subHeadlineAnimation = {
-    initial: { opacity: 0, y: 10 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeInOut" } },
-    exit: { opacity: 0, y: -10, transition: { duration: 0.5, ease: "easeInOut" } },
+  const renderSubHeadlineContent = (text: string) => {
+    return text.split(' // ').map((part, index, arr) => (
+      <React.Fragment key={part + index}>
+        {part}
+        {index < arr.length - 1 && (
+          <span className={index % 2 === 0 ? "text-primary font-medium" : "text-accent font-medium"}> // </span>
+        )}
+      </React.Fragment>
+    ));
   };
 
   return (
@@ -131,45 +151,43 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
           />
         </h1>
 
-        <div className="text-center h-8 sm:h-10 md:h-12"> {/* Ensure consistent height for text swapping */}
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={currentSubHeadlineIndex}
-              variants={subHeadlineAnimation}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="block text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wider text-center"
-            >
-              {dynamicSubHeadlines[currentSubHeadlineIndex].split(' // ').map((part, index, arr) => (
-                <React.Fragment key={part + index}>
-                  {part}
-                  {index < arr.length - 1 && (
-                    // Apply alternating primary/accent colors to the separator
-                    <span className={index % 2 === 0 ? "text-primary font-medium" : "text-accent font-medium"}> // </span>
-                  )}
-                </React.Fragment>
-              ))}
-            </motion.span>
-          </AnimatePresence>
+        <div className="text-center h-8 sm:h-10 md:h-12">
+          {!startCyclingAnimation ? (
+            <span className="block text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wider text-center">
+              {renderSubHeadlineContent(dynamicSubHeadlines[0])}
+            </span>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentSubHeadlineIndex}
+                variants={subHeadlineAnimation}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="block text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wider text-center"
+              >
+                {renderSubHeadlineContent(dynamicSubHeadlines[currentSubHeadlineIndex])}
+              </motion.span>
+            </AnimatePresence>
+          )}
         </div>
         
-        <div className="max-w-xl text-center px-4"> {/* Added padding for smaller screens */}
+        <div className="max-w-xl text-center px-4">
             <Text 
               as="p" 
-              variant="default" // Using default variant for standard body text
-              className="font-body text-base sm:text-lg text-foreground/75 leading-relaxed text-center" // Adjusted font size and leading
+              variant="default"
+              className="font-body text-base sm:text-lg text-foreground/75 leading-relaxed text-center"
               aria-label={subHeadlineBase}
             >
               {subHeadlineBase}
             </Text>
         </div>
 
-        <div className="pt-2"> {/* Added padding top */}
+        <div className="pt-2">
           <Button 
             size="lg" 
             variant="default" 
-            className="font-headline bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform hover:scale-105 transition-transform duration-300 rounded-xl" // Enhanced button style
+            className="font-headline bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform hover:scale-105 transition-transform duration-300 rounded-xl"
             onClick={() => onNavigate('projects')}
             aria-label="View my work"
           >
@@ -178,7 +196,6 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
         </div>
       </motion.div>
 
-      {/* Scroll Down Hint */}
       <motion.button
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -194,3 +211,4 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
 });
 
 Hero.displayName = 'HeroSection';
+
