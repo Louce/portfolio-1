@@ -99,9 +99,10 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   };
 
   return (
-    <div className="relative flex flex-col h-full w-full items-center justify-center text-foreground bg-background overflow-hidden pointer-events-auto">
-      {/* New CSS Grid Background */}
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+    // Removed bg-background, it's now transparent to let global background show
+    // Retained pointer-events-auto for its content
+    <div className="relative flex flex-col h-full w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
+      {/* The CSS Grid background DIV is now removed from here and placed in page.tsx */}
       
       <motion.div 
         className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 pointer-events-auto"
