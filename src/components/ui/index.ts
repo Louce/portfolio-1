@@ -33,3 +33,4 @@ export * from './Textarea/textarea';
 export * from './Toast/toast';
 export * from './Toaster/toaster';
 export * from './Tooltip/tooltip';
+export * from './aceternity'; // Added export for Aceternity UI components

@@ -4,10 +4,9 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, MapPin } from 'lucide-react';
-// Removed SectionWrapper as AuroraBackground handles full screen
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
-import { KineticText } from '@/components/ui/aceternity/text-generate-effect'; // Updated path
+import { TextGenerateEffect } from '@/components/ui/aceternity/text-generate-effect';
 import { AuroraBackground } from '@/components/ui/aceternity/aurora-background';
 
 interface HeroProps {
@@ -23,7 +22,7 @@ const dynamicSubHeadlines = [
   "MOTION // MASTERY // MODERNITY"
 ];
 
-export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
+export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   const [visitorLocation, setVisitorLocation] = useState<string | null>(null);
   const [currentSubHeadlineIndex, setCurrentSubHeadlineIndex] = useState(0);
 
@@ -41,43 +40,47 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           }
         });
         if (!response.ok) {
-          // Check if the response is JSON, even for errors
+          let errorMsg = `Failed to fetch location: ${response.statusText}`;
           if (response.headers.get("content-type")?.includes("application/json")) {
             const errorData = await response.json();
-            console.warn(`IPWHOIS API error: ${response.status}`, errorData.message || errorData);
-            return; // Exit if API reports an error
+            errorMsg = errorData.message || errorMsg;
+            console.warn(`IPWHOIS API error: ${response.status}`, errorMsg);
+          } else {
+            console.warn(errorMsg);
           }
-          // If not JSON, throw a generic error
-          throw new Error(`Failed to fetch location: ${response.statusText}`);
+          setVisitorLocation("Location: Unknown");
+          return; 
         }
         const data = await response.json();
 
-        if (data && data.success !== false) { // API may return success: true or no success field for good responses
+        if (data && data.success !== false) { 
           let locationString = "";
-          if (data.country) { // Ensure country is present
+          if (data.country) { 
             if (data.city && data.region && data.city !== data.region) {
               locationString = `${data.city}, ${data.region}, ${data.country}`;
             } else if (data.region && data.region !== data.country) {
               locationString = `${data.region}, ${data.country}`;
-            } else if (data.city && data.city !== data.country) { // Handle cases where city might be same as country (e.g. Singapore)
+            } else if (data.city && data.city !== data.country) { 
               locationString = `${data.city}, ${data.country}`;
-            }
-             else {
+            } else {
               locationString = data.country;
             }
           }
           if (locationString) {
             setVisitorLocation(locationString);
           } else {
-            // This case means data was fetched but didn't have the expected fields or country.
             console.warn('IPWHOIS API did not return expected country data.');
+            setVisitorLocation("Location: Unknown");
           }
         } else if (data && data.success === false) {
-           // Handle explicit API failure message
            console.warn('IPWHOIS API reported failure:', data.message);
+           setVisitorLocation("Location: Unknown");
+        } else {
+          setVisitorLocation("Location: Unknown");
         }
       } catch (error) {
         console.warn('Could not fetch visitor location:', error);
+        setVisitorLocation("Location: Unknown");
       }
     };
 
@@ -98,9 +101,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
   return (
     <AuroraBackground showRadialGradient={true} className="relative text-center overflow-hidden">
-      {/* Main content wrapper, already centered by AuroraBackground's internal flex */}
       <motion.div 
-        className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4"
+        className="relative flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4"
         initial={{ opacity:0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -110,8 +112,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.8 }}
-            className="absolute top-4 left-0 right-0 flex justify-center"
-            aria-label={`Visitor location detected: ${visitorLocation}`}
+            className="absolute top-4 left-0 right-0 flex justify-center z-20"
+            aria-label={`Visitor location: ${visitorLocation}`}
           >
             <Flex align="center" justify="center" gap="0.375rem" className="text-center">
               <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
@@ -120,9 +122,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           </motion.div>
         )}
 
-        <div className="text-center pt-16 md:pt-0"> {/* Added padding top for mobile to avoid overlap with potential top elements */}
-          <KineticText 
-            words="Frontend" // Changed prop name to `words` for clarity
+        <div className="text-center pt-16 md:pt-0">
+          <TextGenerateEffect
+            words="Frontend"
             className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-[120px] xl:text-[150px] font-bold tracking-tight text-primary text-center leading-none"
             stagger={0.05}
             delay={0.3}
@@ -165,7 +167,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="pt-2">
           <Button 
             size="lg" 
-            variant="default" // Ensure it uses primary color
+            variant="default" 
             className="font-headline bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform hover:scale-105 transition-transform duration-300 rounded-xl"
             onClick={() => onNavigate('projects')}
             aria-label="View my work"
@@ -187,6 +189,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       </motion.button>
     </AuroraBackground>
   );
-};
+});
 
 Hero.displayName = 'HeroSection';
