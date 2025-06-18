@@ -1,7 +1,7 @@
 
-# KineticFolio
+# KineticFolio - Dendi Rivaldi
 
-KineticFolio is a visually stunning, one-page portfolio website for an elite frontend developer, built with Next.js, Tailwind CSS, TypeScript, and Framer Motion. It embodies the "Kinetic Elegance" design philosophy and "Crystal Cathedral" architectural principles.
+KineticFolio is a visually stunning, one-page portfolio website for Dendi Rivaldi, a Python, Automation, and Game Development enthusiast with a passion for design. Built with Next.js, Tailwind CSS, TypeScript, and Framer Motion. It embodies a "Kinetic Elegance" design philosophy and "Crystal Cathedral" architectural principles.
 
 ## Project Vision
 
@@ -9,12 +9,12 @@ The portfolio aims to be an interactive art installation, offering a charismatic
 
 ## Core Features
 
--   **Kinetic Hero**: A dynamic "Living Ink Sculpture" typography effect for the main headline and an animated, cycling sub-headline that subtly reacts to the user's cursor.
+-   **Kinetic Hero**: A dynamic "Living Ink Sculpture" typography effect for the main headline (Dendi Rivaldi) and an animated, cycling sub-headline that subtly reacts to the user's cursor.
 -   **Animated Sections**: Fluid section transitions using Framer Motion, creating an unfolding narrative effect as users scroll or navigate.
--   **Interactive About Section**: Features animated text and an image, along with a "Download Resume" button.
--   **Interactive Skills Graph**: A skill showcase where hovering over a core skill reveals related sub-skills and descriptions.
+-   **Interactive About Section**: Features animated text and an image, along with a "Download Resume" button for "DendiRivaldi_Resume.pdf".
+-   **Interactive Skills Graph**: A skill showcase where hovering over a core skill (Python, Automation, Game Dev, Design, etc.) reveals related sub-skills and descriptions.
 -   **Project Gallery with Carousels**: A card-based gallery for project showcases, with detailed modals that include carousels to display multiple project media (images/videos).
--   **Interactive Contact Form**: A clean contact form with `react-hook-form` and `zod` validation, plus social media links.
+-   **Interactive Contact Form**: A clean contact form with social media links to Dendi Rivaldi's GitHub, LinkedIn, and email.
 -   **Feedback Section**: A prototype feature allowing users to (mock) log in/sign up and submit, view, and delete their feedback, persisted using browser `localStorage`.
 -   **Modern Architecture**: Adherence to DRY principles and a clear, modular folder structure with barrel-style exports for maintainability.
 
@@ -85,7 +85,6 @@ The project follows a specific folder structure to promote clarity and maintaina
 │   │   │   └── Feedback.tsx
 │   │   ├── Hero/
 │   │   │   ├── Hero.tsx
-│   │   │   └── KineticText.tsx
 │   │   ├── Projects/
 │   │   │   └── Projects.tsx
 │   │   └── Skills/
@@ -104,19 +103,17 @@ The project follows a specific folder structure to promote clarity and maintaina
 │   └── index.ts         // Barrel export for hooks
 ├── lib/                 // Utility functions (utils.ts)
 │   └── index.ts         // Barrel export for lib utilities
-└── public/              // Static assets (e.g., resume.pdf, images)
+└── public/              // Static assets (e.g., resume.pdf, images, manifest.json, icons/)
 
 ```
 Each component directory (icons, layout, primitives, sections, ui, hooks, lib) utilizes an `index.ts` file for barrel exports, allowing for cleaner imports (e.g., `import { Button } from '@/components/ui';`).
 
 ## Customization
 
--   **Content**: Update text, project details, and skill information directly in the respective components within `src/components/sections/`.
+-   **Content**: Update text, project details (in `src/components/sections/Projects/Projects.tsx` - `projectsData` array), and skill information directly in the respective components.
 -   **Styling**: Modify Tailwind CSS classes in components or update the theme variables in `src/app/globals.css`.
--   **Images/Placeholders**: Replace placeholder images (`https://placehold.co/...`) with actual project visuals. Look for `data-ai-hint` attributes for guidance on image content.
--   **Social Links**: Update URLs in `src/components/sections/Contact/Contact.tsx`.
--   **Resume**: Place your resume as `resume.pdf` in the `/public` directory.
+-   **Images/Placeholders**: Replace placeholder images (`https://placehold.co/...`) with actual project visuals and your portrait. Look for `data-ai-hint` attributes for guidance on image content. Update Open Graph image (`og-image.png`) and icons in `/public`.
+-   **Social Links**: Already updated with Dendi Rivaldi's info.
+-   **Resume**: Place your resume as `resume.pdf` in the `/public` directory. The download link will expect `DendiRivaldi_Resume.pdf`.
 
 Enjoy your new portfolio!
-
-    

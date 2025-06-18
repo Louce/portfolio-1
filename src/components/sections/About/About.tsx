@@ -31,7 +31,7 @@ export const About: React.FC = React.memo(() => {
     },
   };
 
-  const aboutText = "I'm a passionate frontend architect dedicated to building intuitive, performant, and visually stunning web applications. With a keen eye for detail and a love for clean, scalable code, I transform complex problems into elegant user experiences. My philosophy revolves around the 'Crystal Cathedral' approach – crafting code that is as beautiful and robust as the final product.";
+  const aboutText = "I'm Dendi Rivaldi, a passionate developer with a strong interest in Python, automation, and game development. I enjoy tackling challenges and architecting efficient solutions. I also have a keen eye for design, striving to create intuitive and engaging user experiences. My approach combines analytical thinking with creative problem-solving to build impactful software.";
 
   return (
     <SectionWrapper id="about" className="bg-transparent">
@@ -46,7 +46,7 @@ export const About: React.FC = React.memo(() => {
           <Box className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group bg-card/80 backdrop-blur-lg border border-white/10">
             <Image
               src="https://placehold.co/600x600.png"
-              alt="Portrait of the developer"
+              alt="Portrait of Dendi Rivaldi"
               data-ai-hint="developer portrait"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110"
@@ -88,7 +88,7 @@ export const About: React.FC = React.memo(() => {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.3 + (aboutText.split(' ').length * 0.02) }}
           >
             <Text variant="lead" className="font-body text-foreground/80">
-              Let's build something amazing together.
+              Let's create something innovative together.
             </Text>
           </motion.div>
 
@@ -100,7 +100,7 @@ export const About: React.FC = React.memo(() => {
             className="mt-6"
           >
             <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md transform hover:scale-105 transition-transform duration-300 rounded-lg">
-              <a href="/resume.pdf" download="YourName_Resume.pdf" aria-label="Download my resume">
+              <a href="/resume.pdf" download="DendiRivaldi_Resume.pdf" aria-label="Download Dendi Rivaldi's resume">
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume
               </a>

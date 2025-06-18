@@ -1,7 +1,12 @@
+
 {
-  "name": "KineticFolio",
-  "short_name": "KineticFolio",
-  "description": "Visually stunning, interactive one-page portfolio for an elite frontend architect.",
+  "name": "Dendi Rivaldi - Portfolio",
+  "short_name": "DendiRivaldi",
+  "description": "Portfolio of Dendi Rivaldi, showcasing skills in Python, automation, game development, and design.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#121212",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
@@ -15,9 +20,5 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ],
-  "start_url": "/",
-  "display": "standalone",
-  "theme_color": "#121212",
-  "background_color": "#121212"
+  ]
 }
