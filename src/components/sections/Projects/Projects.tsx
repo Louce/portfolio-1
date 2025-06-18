@@ -9,7 +9,7 @@ import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import {
   Button,
   Card as ShadCard, CardContent as ShadCardContent, CardFooter as ShadCardFooter, CardHeader as ShadCardHeader, CardTitle as ShadCardTitle, CardDescription as ShadCardDescription,
-  Dialog, DialogContent,
+  Dialog, DialogContent, DialogHeader, DialogTitle as ShadDialogTitle, // Added DialogHeader & ShadDialogTitle
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
   CardContainer, CardBody, CardItem
@@ -187,27 +187,30 @@ export const Projects: React.FC = React.memo(() => {
             }}
           >
             <DialogContent className="p-0 bg-transparent border-none shadow-none overflow-visible max-w-3xl w-[95vw] md:w-full">
+              {/* Accessible Dialog Title (Visually Hidden) */}
+              <DialogHeader className="sr-only">
+                <ShadDialogTitle>{selectedProject.title}</ShadDialogTitle>
+              </DialogHeader>
+
               <CardContainer
-                containerClassName="w-full h-full flex items-center justify-center p-0 md:p-4" // Ensure container fills dialog and centers CardBody
-                // className prop for CardContainer's inner rotating div is intentionally omitted to let it size by CardBody
+                containerClassName="w-full h-full flex items-center justify-center p-0 md:p-4"
               >
                 <CardBody className="relative bg-card/80 backdrop-blur-xl border border-border/50 shadow-2xl rounded-xl p-0 overflow-hidden group/card w-full max-w-2xl max-h-[90vh] flex flex-col">
-                  {/* Explicit Close Button for the 3D Card */}
                   <DialogPrimitive.Close asChild>
                     <CardItem
-                      translateZ={100} // Make close button pop out significantly
-                      translateX="calc(100% - 2.75rem)" // Position to top-right, adjust as needed
-                      translateY="-calc(100% - 2.75rem)" // Position to top-right
+                      translateZ={100} 
+                      translateX="calc(100% - 2.75rem)" 
+                      translateY="-calc(100% - 2.75rem)" 
                       as="button"
-                      className="absolute right-3 top-3 z-[60] rounded-full p-1.5 bg-black/30 hover:bg-black/50 transition-colors !w-auto" // Ensure w-fit doesn't get overridden easily
+                      className="absolute right-3 top-3 z-[60] rounded-full p-1.5 bg-black/30 hover:bg-black/50 transition-colors !w-auto"
                       aria-label="Close dialog"
-                      style={{transformStyle: 'preserve-3d'}} // Ensure this button itself can be transformed
+                      style={{transformStyle: 'preserve-3d'}} 
                     >
                       <CloseIcon className="h-5 w-5 text-white/80 hover:text-white" />
                     </CardItem>
                   </DialogPrimitive.Close>
 
-                  <CardItem translateZ={30} className="w-full relative rounded-t-xl overflow-hidden !w-full"> {/* Carousel as CardItem */}
+                  <CardItem translateZ={30} className="w-full relative rounded-t-xl overflow-hidden !w-full">
                     {selectedProject.mediaGallery && selectedProject.mediaGallery.length > 0 ? (
                       <Carousel
                         opts={{
