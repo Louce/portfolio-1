@@ -45,14 +45,12 @@ export function ThemeSwitcher() {
         variant="outline"
         size="icon"
         onClick={toggleTheme}
-        className="bg-card/80 backdrop-blur-md border-border/50 hover:bg-card hover:border-border"
+        className="bg-card/80 backdrop-blur-md border-border/50 hover:bg-card hover:border-border overflow-hidden" // Added overflow-hidden
         aria-label={resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       >
-        {resolvedTheme === 'dark' ? (
-          <Sun className="h-[1.2rem] w-[1.2rem] transition-all" />
-        ) : (
-          <Moon className="h-[1.2rem] w-[1.2rem] transition-all" />
-        )}
+        {/* Apply transitions directly to the icons */}
+        <Sun className={`h-[1.2rem] w-[1.2rem] transition-all duration-500 ease-in-out ${resolvedTheme === 'dark' ? 'rotate-90 scale-0' : 'rotate-0 scale-100'}`} />
+        <Moon className={`absolute h-[1.2rem] w-[1.2rem] transition-all duration-500 ease-in-out ${resolvedTheme === 'dark' ? 'rotate-0 scale-100' : '-rotate-90 scale-0'}`} />
         <span className="sr-only">Toggle theme</span>
       </Button>
     </Box>
