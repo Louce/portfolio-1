@@ -22,11 +22,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased bg-background text-foreground min-h-screen">
+      <body className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out">
         <ThemeProvider
             attribute="class"
-            defaultTheme="system" // Keeps respecting system preference initially
-            enableSystem
+            defaultTheme="dark" // Set a specific default theme
             disableTransitionOnChange={false} // Ensure transitions are enabled
         >
           <ThemeSwitcher />
