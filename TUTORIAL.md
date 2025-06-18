@@ -159,11 +159,10 @@ This document outlines the step-by-step process for creating the KineticFolio we
 ### Step 10: Building the Hero Section (`src/components/sections/Hero/Hero.tsx`) (19:00 - 23:00)
 
 *   **Presenter**: "Our first major section!"
-1.  Create `src/components/sections/Hero/KineticText.tsx`. (Paste code, explain Framer Motion variants for word-by-word animation).
-2.  Create `src/components/sections/Hero/Hero.tsx`.
+1.  Create `src/components/sections/Hero/Hero.tsx`. (Note: `KineticText.tsx` might be removed if `TextGenerateEffect` is preferred as per current codebase).
     *   **(Paste Code & Explain)**
-        *   Import `SectionWrapper`, `Flex`, `Text`, `Button` (from `@/components/ui`), `KineticText` (from `./KineticText`).
-        *   Structure: `SectionWrapper`, `KineticText` for "Frontend", cycling sub-headline.
+        *   Import `SectionWrapper`, `Flex`, `Text`, `Button` (from `@/components/ui`), potentially `TextGenerateEffect`.
+        *   Structure: `SectionWrapper`, `TextGenerateEffect` for "Dendi Rivaldi", cycling sub-headline.
         *   **Cycling Sub-headline**: Explain `useState` for index, `useEffect` with `setInterval`, `AnimatePresence` for smooth text transitions.
         *   Animated gradient background.
         *   `ChevronDown` icon for scroll hint.
@@ -177,18 +176,18 @@ This document outlines the step-by-step process for creating the KineticFolio we
 1.  Create `src/components/sections/About/About.tsx`.
     *   **(Paste Code & Explain)**
         *   Structure: `SectionWrapper`, `Image` (from `next/image`), `Text` components.
-        *   `next/image` props: `src` (placeholder), `alt`, `data-ai-hint`, `fill`, `className="object-cover"`, `priority`.
+        *   `next/image` props: `src` (Unsplash image), `alt`, `data-ai-hint`, `fill`, `className="object-cover"`, `priority`.
         *   Image hover effect. Framer Motion animations.
         *   **Download Resume Button**: Add `Button` with `<a>` tag, `download` attribute, and `Download` icon. Explain that `resume.pdf` goes in `/public`.
         *   Use `React.memo`.
-2.  Add `next/image` placeholder domain to `next.config.ts`.
+2.  Add `images.unsplash.com` to `remotePatterns` in `next.config.ts` (if not already present).
 
 ### Step 12: Building the Skills Section (`src/components/sections/Skills/Skills.tsx`)
 
 *   **Presenter**: "Interactive skills graph."
 1.  Create `src/components/sections/Skills/Skills.tsx`.
     *   **(Paste Code & Explain)**
-        *   Data structure for skills and sub-skills.
+        *   Data structure for skills and sub-skills (tailored to Dendi's skills).
         *   `SkillNode` component with hover/focus logic.
         *   `AnimatePresence` for displaying related sub-skills.
         *   Debouncing hover for smoother UX.
@@ -200,7 +199,7 @@ This document outlines the step-by-step process for creating the KineticFolio we
 1.  Create `src/components/sections/Projects/Projects.tsx`.
     *   **(Paste Code & Explain)**
         *   `ProjectCard` component.
-        *   `projectsData` array with `mediaGallery` for multiple images/videos.
+        *   `projectsData` array with `mediaGallery` for multiple images/videos (using Unsplash for image placeholders).
         *   `Dialog` for modal.
         *   **Carousel Integration**:
             *   Import `Carousel`, `CarouselContent`, etc., from `@/components/ui`.
@@ -216,7 +215,7 @@ This document outlines the step-by-step process for creating the KineticFolio we
     *   **(Paste Code & Explain)**
         *   `react-hook-form` and `zod` for validation.
         *   ShadCN `Form` components.
-        *   Social media icons and links.
+        *   Social media icons and links (Dendi's actual links).
         *   Simulated form submission.
         *   Use `React.memo`.
 
@@ -247,11 +246,12 @@ This document outlines the step-by-step process for creating the KineticFolio we
     *   `handleNavigate`, `handleWheel`, `handleKeyDown` for full-page transitions.
     *   `AnimatePresence` and `motion.div` with `sectionVariants`.
     *   URL hash updating.
+    *   Dynamic imports for sections (except Hero).
 2.  **Presenter**: "Building the `PageNavigation` component."
     *   Open `src/components/layout/PageNavigation.tsx`.
     *   Explain how it maps `sections` to navigation dots/labels.
     *   Animation for active dot and label.
-    *   Using resolved HSL color values for Framer Motion animations to avoid issues.
+    *   Using theme-aware styling (Tailwind classes) instead of hardcoded HSL colors.
 
 ### Step 17: Custom Hooks (`src/hooks/`)
 
@@ -268,7 +268,7 @@ This document outlines the step-by-step process for creating the KineticFolio we
 ### Step 19: Final Configurations (tailwind.config.ts, next.config.ts)
 
 1.  **Presenter**: "Review `tailwind.config.ts` for custom fonts, colors, animations (like `gradient-xy`)."
-2.  **Presenter**: "Review `next.config.ts` for image remote patterns."
+2.  **Presenter**: "Review `next.config.ts` for image remote patterns (ensure `images.unsplash.com` is included)."
 
 ### Step 20: Add IP-Based Location Feature to Hero (Optional Enhancement)
 
@@ -286,11 +286,12 @@ This document outlines the step-by-step process for creating the KineticFolio we
 
 *   **Presenter**: "Now for the final touches and checks."
 1.  **Accessibility Check**: Review ARIA attributes, keyboard navigation.
-2.  **Performance**: Mention `React.memo`, `next/image`, animation smoothness.
+2.  **Performance**: Mention `React.memo`, `next/image`, `next/font`, dynamic imports, animation smoothness.
 3.  **Responsiveness**: Test on different screen sizes.
 4.  **Cross-browser Testing (Mention)**.
 5.  **Code Review**: Scan for console logs, ensure consistent style.
 6.  **`README.md`**: Briefly show the updated README.
+7.  **Web App Manifest & Icons**: Briefly mention adding `manifest.json` and necessary icons in `/public` for PWA best practices.
 
 ---
 
@@ -305,5 +306,3 @@ This document outlines the step-by-step process for creating the KineticFolio we
     *   **Presenter**: "Where could you take this next? Consider integrating a real backend for the feedback system, adding more tests, or exploring even more advanced animation techniques."
 *   **Call to Action**:
     *   **Presenter**: "If you found this tutorial helpful, please give it a like, subscribe for more content, and share it with other developers. The full source code is available on GitHub (link in the description). Let me know in the comments if you have any questions or what you'd like to see next. Thanks for watching, and happy coding!"
-
-    

@@ -112,7 +112,7 @@ Each component directory (icons, layout, primitives, sections, ui, hooks, lib) u
 
 -   **Content**: Update text, project details (in `src/components/sections/Projects/Projects.tsx` - `projectsData` array), and skill information directly in the respective components.
 -   **Styling**: Modify Tailwind CSS classes in components or update the theme variables in `src/app/globals.css`.
--   **Images/Placeholders**: Replace placeholder images (`https://placehold.co/...`) with actual project visuals and your portrait. Look for `data-ai-hint` attributes for guidance on image content. Update Open Graph image (`og-image.png`) and icons in `/public`.
+-   **Images**: Placeholder images are sourced from Unsplash to provide a better visual starting point. You should replace these with your actual project visuals and your portrait. Look for `data-ai-hint` attributes for guidance on image content. Update Open Graph image (`og-image.png`) and icons in `/public`.
 -   **Social Links**: Already updated with Dendi Rivaldi's info.
 -   **Resume**: Place your resume as `resume.pdf` in the `/public` directory. The download link will expect `DendiRivaldi_Resume.pdf`.
 
