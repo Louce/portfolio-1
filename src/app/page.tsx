@@ -1,14 +1,42 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Hero, About, Skills, Projects, Contact, Feedback } from '@/components/sections';
 import { PageNavigation } from '@/components/layout';
 import { Box } from '@/components/primitives';
-import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
+import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon, Loader2 } from 'lucide-react';
+import type { HeroProps } from '@/components/sections/Hero/Hero'; // Assuming HeroProps is exported
 
-const sectionsConfig = [
+// Statically import Hero as it's the first visible section
+import { Hero } from '@/components/sections';
+
+// Dynamically import other sections
+const About = dynamic(() => import('@/components/sections').then(mod => mod.About), {
+  suspense: true, loading: () => <SectionLoader />
+});
+const Skills = dynamic(() => import('@/components/sections').then(mod => mod.Skills), {
+  suspense: true, loading: () => <SectionLoader />
+});
+const Projects = dynamic(() => import('@/components/sections').then(mod => mod.Projects), {
+  suspense: true, loading: () => <SectionLoader />
+});
+const Contact = dynamic(() => import('@/components/sections').then(mod => mod.Contact), {
+  suspense: true, loading: () => <SectionLoader />
+});
+const Feedback = dynamic(() => import('@/components/sections').then(mod => mod.Feedback), {
+  suspense: true, loading: () => <SectionLoader />
+});
+
+interface SectionConfig {
+  id: string;
+  label: string;
+  component: React.ComponentType<any>; // Use 'any' for props with dynamic components or define a common props interface
+  icon: React.ReactNode;
+}
+
+const sectionsConfig: SectionConfig[] = [
   { id: 'hero', label: 'Home', component: Hero, icon: <HomeIcon className="w-full h-full" /> },
   { id: 'about', label: 'About', component: About, icon: <UserIcon className="w-full h-full" /> },
   { id: 'skills', label: 'Skills', component: Skills, icon: <CodeIcon className="w-full h-full" /> },
@@ -44,6 +72,12 @@ const sectionVariants = {
     },
   }),
 };
+
+const SectionLoader: React.FC = () => (
+  <Box className="w-full h-full flex items-center justify-center text-primary">
+    <Loader2 className="w-12 h-12 animate-spin" />
+  </Box>
+);
 
 
 export default function PortfolioPage() {
@@ -156,7 +190,6 @@ export default function PortfolioPage() {
 
   return (
     <Box className="relative h-screen w-screen overflow-hidden bg-background">
-      {/* Global CSS Grid Background */}
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
       
       <PageNavigation 
@@ -180,13 +213,16 @@ export default function PortfolioPage() {
           onAnimationComplete={handleAnimationComplete}
           aria-live="polite"
         >
-          {sectionsConfig[activeIndex].id === 'hero' ? (
-            <ActiveComponent onNavigate={handleNavigate} />
-          ) : (
-            <ActiveComponent />
-          )}
+          <Suspense fallback={<SectionLoader />}>
+            {sectionsConfig[activeIndex].id === 'hero' ? (
+              <ActiveComponent onNavigate={handleNavigate as HeroProps['onNavigate']} />
+            ) : (
+              <ActiveComponent />
+            )}
+          </Suspense>
         </motion.div>
       </AnimatePresence>
     </Box>
   );
 }
+

@@ -4,6 +4,14 @@ import { ThemeProvider } from 'next-themes';
 import './globals.css';
 import { Toaster } from "@/components/ui";
 import { CookieConsentBanner, ThemeSwitcher } from '@/components/layout';
+import { Inter } from 'next/font/google';
+
+// Configure Inter font
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap', // Use swap for better perceived performance
+  variable: '--font-inter' // CSS variable for Tailwind
+});
 
 export const metadata: Metadata = {
   title: 'KineticFolio - Frontend Architect',
@@ -16,17 +24,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning> {/* suppressHydrationWarning is recommended by next-themes */}
+    <html lang="en" suppressHydrationWarning className={inter.variable}> {/* Apply font variable to html tag */}
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        {/* Removed direct Google Font links, next/font handles this */}
       </head>
-      <body className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out">
+      <body 
+        className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out"
+      >
         <ThemeProvider
             attribute="class"
-            defaultTheme="dark" // Set a specific default theme
-            disableTransitionOnChange={false} // Ensure transitions are enabled
+            defaultTheme="dark"
+            disableTransitionOnChange={false}
         >
           <ThemeSwitcher />
           {children}
