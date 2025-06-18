@@ -32,8 +32,6 @@ export const CookieConsentBanner: React.FC = () => {
 
   if (typeof window === 'undefined' && !isVisible) {
     // Avoid rendering anything on the server if the banner is not supposed to be visible initially
-    // This helps prevent layout shifts or hydration issues if logic were more complex
-    // For this simple case, useEffect handles it, but good practice for more complex scenarios.
   }
 
   return (
@@ -44,7 +42,7 @@ export const CookieConsentBanner: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 100 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="fixed bottom-0 left-0 right-0 z-[200] p-4 sm:p-6 bg-card shadow-2xl border-t border-border"
+          className="fixed bottom-0 left-0 right-0 z-[200] p-4 sm:p-6 bg-card/80 backdrop-blur-md shadow-2xl border-t border-border/50"
           role="dialog"
           aria-labelledby="cookie-consent-title"
           aria-describedby="cookie-consent-description"

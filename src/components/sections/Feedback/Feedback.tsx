@@ -123,7 +123,7 @@ export const Feedback: React.FC = () => {
   
   if (!isMounted) {
     return (
-      <SectionWrapper id="feedback" className="bg-transparent"> {/* Changed background to transparent */}
+      <SectionWrapper id="feedback" className="bg-transparent">
         <Flex align="center" justify="center" className="h-full">
           <Text>Loading Feedback Section...</Text>
         </Flex>
@@ -133,7 +133,7 @@ export const Feedback: React.FC = () => {
 
   const renderAuthForm = (authType: 'login' | 'signup') => (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
-      <Card className="bg-card/80 backdrop-blur-sm">
+      <Card className="bg-card/70 backdrop-blur-md border border-border/30">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-primary flex items-center">
             {authType === 'login' ? <LogIn className="mr-2" /> : <UserPlus className="mr-2" />}
@@ -185,7 +185,7 @@ export const Feedback: React.FC = () => {
         </Button>
       </Flex>
 
-      <Card className="w-full max-w-2xl mx-auto bg-card/80 backdrop-blur-sm">
+      <Card className="w-full max-w-2xl mx-auto bg-card/70 backdrop-blur-md border border-border/30">
         <CardHeader>
           <CardTitle className="text-xl text-primary flex items-center"><MessageSquarePlus className="mr-2" /> Submit New Feedback</CardTitle>
         </CardHeader>
@@ -220,7 +220,7 @@ export const Feedback: React.FC = () => {
           <Box className="space-y-4 max-h-[calc(100vh-400px)] md:max-h-[calc(100vh-450px)] overflow-y-auto pr-2 pl-4 pb-4">
             {userFeedback.map(item => (
               <motion.div key={item.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{duration: 0.3}}>
-                <Card className="bg-card/70">
+                <Card className="bg-card/60 backdrop-blur-sm border border-border/20">
                   <CardHeader>
                     <Flex justify="between" align="start">
                       <Box>
@@ -247,7 +247,7 @@ export const Feedback: React.FC = () => {
   );
 
   return (
-    <SectionWrapper id="feedback" className="bg-transparent"> {/* Changed background to transparent */}
+    <SectionWrapper id="feedback" className="bg-transparent">
       <Flex direction="col" align="center" justify="start" className="h-auto min-h-full w-full py-8">
         {!currentUser && view === 'login' && renderAuthForm('login')}
         {!currentUser && view === 'signup' && renderAuthForm('signup')}
