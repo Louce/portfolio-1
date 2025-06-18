@@ -5,4 +5,4 @@ export { Feedback } from './Feedback/Feedback';
 export { Hero } from './Hero/Hero';
 export { Projects } from './Projects/Projects';
 export { Skills } from './Skills/Skills';
-// Removed export for GlowingDemo as it is no longer used.
+// GlowingDemo export is removed
