@@ -6,8 +6,8 @@ import Image from "next/image"; // Import next/image
 
 export default function ThreeDCardDemo() {
   return (
-    <CardContainer className="inter-var">
-      <CardBody className="bg-card relative group/card hover:shadow-2xl hover:shadow-primary/20 dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-border w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
+    <CardContainer className="inter-var" containerClassName="py-10"> {/* Added padding to container for demo visibility */}
+      <CardBody className="bg-card relative group/card hover:shadow-2xl hover:shadow-primary/20 dark:hover:shadow-primary/10 border-border w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
         <CardItem
           translateZ="50"
           className="text-xl font-bold text-foreground"
