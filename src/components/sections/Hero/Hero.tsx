@@ -4,10 +4,11 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, MapPin } from 'lucide-react';
-import { SectionWrapper } from '@/components/layout';
+// Removed SectionWrapper as AuroraBackground handles full screen
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
-import { KineticText } from './KineticText';
+import { KineticText } from '@/components/ui/aceternity/text-generate-effect'; // Updated path
+import { AuroraBackground } from '@/components/ui/aceternity/aurora-background';
 
 interface HeroProps {
   onNavigate: (sectionId: string) => void;
@@ -40,23 +41,25 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           }
         });
         if (!response.ok) {
+          // Check if the response is JSON, even for errors
           if (response.headers.get("content-type")?.includes("application/json")) {
             const errorData = await response.json();
             console.warn(`IPWHOIS API error: ${response.status}`, errorData.message || errorData);
-            return;
+            return; // Exit if API reports an error
           }
+          // If not JSON, throw a generic error
           throw new Error(`Failed to fetch location: ${response.statusText}`);
         }
         const data = await response.json();
 
-        if (data && data.success !== false) {
+        if (data && data.success !== false) { // API may return success: true or no success field for good responses
           let locationString = "";
-          if (data.country) {
+          if (data.country) { // Ensure country is present
             if (data.city && data.region && data.city !== data.region) {
               locationString = `${data.city}, ${data.region}, ${data.country}`;
             } else if (data.region && data.region !== data.country) {
               locationString = `${data.region}, ${data.country}`;
-            } else if (data.city && data.city !== data.country) {
+            } else if (data.city && data.city !== data.country) { // Handle cases where city might be same as country (e.g. Singapore)
               locationString = `${data.city}, ${data.country}`;
             }
              else {
@@ -66,9 +69,11 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           if (locationString) {
             setVisitorLocation(locationString);
           } else {
+            // This case means data was fetched but didn't have the expected fields or country.
             console.warn('IPWHOIS API did not return expected country data.');
           }
         } else if (data && data.success === false) {
+           // Handle explicit API failure message
            console.warn('IPWHOIS API reported failure:', data.message);
         }
       } catch (error) {
@@ -80,7 +85,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
     const intervalId = setInterval(() => {
       setCurrentSubHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
-    }, 3000); // Change text every 3 seconds
+    }, 3000);
 
     return () => clearInterval(intervalId);
   }, []); 
@@ -92,36 +97,39 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   };
 
   return (
-    <SectionWrapper id="hero" className="relative text-center overflow-hidden">
-      <motion.div
-        className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/10 via-background to-accent/10 bg-[length:200%_200%] animate-gradient-xy"
-        aria-hidden="true"
-      />
-      
-      {visitorLocation && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.8 }}
-          className="absolute top-4 left-0 right-0 z-10 flex justify-center"
-          aria-label={`Visitor location detected: ${visitorLocation}`}
-        >
-          <Flex align="center" justify="center" gap="0.375rem" className="text-center">
-            <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
-            <Text as="span" className="text-xs sm:text-sm text-foreground/70">You're from {visitorLocation}</Text>
-          </Flex>
-        </motion.div>
-      )}
+    <AuroraBackground showRadialGradient={true} className="relative text-center overflow-hidden">
+      {/* Main content wrapper, already centered by AuroraBackground's internal flex */}
+      <motion.div 
+        className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4"
+        initial={{ opacity:0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        {visitorLocation && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.8 }}
+            className="absolute top-4 left-0 right-0 flex justify-center"
+            aria-label={`Visitor location detected: ${visitorLocation}`}
+          >
+            <Flex align="center" justify="center" gap="0.375rem" className="text-center">
+              <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
+              <Text as="span" className="text-xs sm:text-sm text-foreground/70">{visitorLocation}</Text>
+            </Flex>
+          </motion.div>
+        )}
 
-      <div className="h-full w-full flex flex-col items-center justify-center space-y-4 md:space-y-6 text-center">
-        <div className="text-center">
+        <div className="text-center pt-16 md:pt-0"> {/* Added padding top for mobile to avoid overlap with potential top elements */}
           <KineticText 
-            text="Frontend" 
+            words="Frontend" // Changed prop name to `words` for clarity
             className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-[120px] xl:text-[150px] font-bold tracking-tight text-primary text-center leading-none"
+            stagger={0.05}
+            delay={0.3}
           />
         </div>
 
-        <div className="text-center h-8 sm:h-10 md:h-12"> {/* Container to prevent layout shift */}
+        <div className="text-center h-8 sm:h-10 md:h-12">
           <AnimatePresence mode="wait">
             <motion.span
               key={currentSubHeadlineIndex}
@@ -135,7 +143,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 <React.Fragment key={part}>
                   {part}
                   {index < arr.length - 1 && (
-                    <span className={index % 2 === 0 ? "text-primary font-normal" : "text-accent"}> // </span>
+                    <span className={index % 2 === 0 ? "text-primary font-medium" : "text-accent font-medium"}> // </span>
                   )}
                 </React.Fragment>
               ))}
@@ -157,26 +165,27 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="pt-2">
           <Button 
             size="lg" 
-            className="font-headline bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform hover:scale-105 transition-transform duration-300"
+            variant="default" // Ensure it uses primary color
+            className="font-headline bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform hover:scale-105 transition-transform duration-300 rounded-xl"
             onClick={() => onNavigate('projects')}
             aria-label="View my work"
           >
             View My Work
           </Button>
         </div>
-      </div>
+      </motion.div>
 
-      <motion.div
+      <motion.button
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 1.5, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer z-20 p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
       >
-        <ChevronDown className="h-10 w-10 text-primary opacity-75 hover:opacity-100 transition-opacity" />
-      </motion.div>
-    </SectionWrapper>
+        <ChevronDown className="h-10 w-10 text-primary transition-opacity hover:opacity-75" />
+      </motion.button>
+    </AuroraBackground>
   );
 };
 
