@@ -13,9 +13,9 @@ import {
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 } from '@/components/ui';
-import { ExternalLink, Github, PlayIcon, PauseIcon } from 'lucide-react'; // Added PlayIcon, PauseIcon
+import { ExternalLink, Github, PlayIcon, PauseIcon } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
-import type { CarouselApi } from '@/components/ui/Carousel/carousel'; // Import CarouselApi type
+import type { CarouselApi } from '@/components/ui/Carousel/carousel';
 
 interface MediaItem {
   type: 'image' | 'video';
@@ -104,7 +104,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
               data-ai-hint={project.coverDataAiHint}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
-              priority={project.id === 'project-1'} // Prioritize first image
+              priority={project.id === 'project-1'} 
             />
           </Box>
         </CardHeader>
@@ -158,10 +158,9 @@ export const Projects: React.FC = React.memo(() => {
     setIsPlaying(prev => !prev);
   };
   
-  // Reset isPlaying to true when modal opens for a new project
   useEffect(() => {
     if (selectedProject) {
-      setIsPlaying(true);
+      setIsPlaying(true); // Reset to autoplay when a new project modal opens
     }
   }, [selectedProject]);
 
@@ -201,10 +200,8 @@ export const Projects: React.FC = React.memo(() => {
                           loop: true,
                         }}
                         plugins={[autoplayPlugin.current]}
-                        setApi={setCarouselApi} // Get the API instance
+                        setApi={setCarouselApi}
                         className="w-full"
-                        // onMouseEnter={autoplayPlugin.current.stop} - Handled by plugin option
-                        // onMouseLeave={autoplayPlugin.current.reset} - Handled by plugin option
                       >
                         <CarouselContent>
                           {selectedProject.mediaGallery.map((media, index) => (
@@ -220,7 +217,7 @@ export const Projects: React.FC = React.memo(() => {
                                   />
                                 )}
                                 {media.type === 'video' && (
-                                  <video src={media.url} controls autoPlay muted playsInline className="w-full h-full object-contain">
+                                  <video src={media.url} controls autoPlay muted playsInline loop className="w-full h-full object-contain">
                                     Your browser does not support the video tag.
                                   </video>
                                 )}
@@ -236,8 +233,8 @@ export const Projects: React.FC = React.memo(() => {
                                 variant="ghost" 
                                 size="icon" 
                                 onClick={togglePlay} 
-                                className="absolute bottom-2 right-2 z-10 text-white bg-black/30 hover:bg-black/50 border-none"
-                                aria-label={isPlaying ? "Pause carousel" : "Play carousel"}
+                                className="absolute bottom-2 right-2 z-10 text-white bg-black/30 hover:bg-black/50 border-none p-2 rounded-full"
+                                aria-label={isPlaying ? "Pause carousel autoplay" : "Play carousel autoplay"}
                               >
                                 {isPlaying ? <PauseIcon className="h-5 w-5" /> : <PlayIcon className="h-5 w-5" />}
                               </Button>
@@ -270,7 +267,7 @@ export const Projects: React.FC = React.memo(() => {
                       </Button>
                     )}
                     {selectedProject.githubUrl && (
-                      <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10 hover:text-primary-foreground rounded-lg">
+                      <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10 hover:text-foreground rounded-lg">
                         <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
                           <Github className="mr-2 h-4 w-4" /> GitHub
                         </a>
@@ -288,3 +285,5 @@ export const Projects: React.FC = React.memo(() => {
 });
 
 Projects.displayName = 'ProjectsSection';
+
+    
