@@ -34,7 +34,7 @@ export const About: React.FC = React.memo(() => {
   const aboutText = "I'm a passionate frontend architect dedicated to building intuitive, performant, and visually stunning web applications. With a keen eye for detail and a love for clean, scalable code, I transform complex problems into elegant user experiences. My philosophy revolves around the 'Crystal Cathedral' approach – crafting code that is as beautiful and robust as the final product.";
 
   return (
-    <SectionWrapper id="about" className="bg-background">
+    <SectionWrapper id="about" className="bg-transparent"> {/* Changed background to transparent */}
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
         <motion.div
           initial={{ opacity: 0, scale: 0.85, x: -50, rotate: -3 }} 
@@ -79,7 +79,7 @@ export const About: React.FC = React.memo(() => {
             whileInView="visible" 
             viewport={{ once: true, amount: 0.2 }}
             transition={{delay: 0.3}} 
-            className="font-body text-lg md:text-xl text-foreground/90 leading-loose"
+            className="font-body text-lg md:text-xl text-foreground/90 leading-loose" // Increased line height
           >
             {aboutText.split(' ').map((word, index) => (
               <motion.span 
@@ -124,5 +124,3 @@ export const About: React.FC = React.memo(() => {
 });
 
 About.displayName = 'AboutSection';
-
-    

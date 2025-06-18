@@ -4,8 +4,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Hero, About, Skills, Projects, Contact, Feedback } from '@/components/sections';
-import { PageNavigation } from '@/components/layout'; // Restored PageNavigation
+import { PageNavigation } from '@/components/layout';
 import { Box } from '@/components/primitives';
+import { Boxes } from '@/components/ui/background-boxes'; // Import Boxes
 // Icons for sectionsConfig are still needed if PageNavigation is ever adapted to use them,
 // but the original PageNavigation (dots) doesn't.
 import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
@@ -32,17 +33,17 @@ const sectionVariants = {
     transition: {
       type: "tween",
       ease: "easeOut",
-      duration: 0.5,
+      duration: 0.3, // Faster transition
     },
   },
   exit: (direction: number) => ({
     opacity: 0,
-    y: direction < 0 ? "100vh" : "-100vh", 
+    y: direction < 0 ? "100vh" : "-100vh",
     scale: 1,
     transition: {
       type: "tween",
       ease: "easeIn",
-      duration: 0.5,
+      duration: 0.3, // Faster transition
     },
   }),
 };
@@ -157,7 +158,10 @@ export default function PortfolioPage() {
   const ActiveComponent = sectionsConfig[activeIndex].component;
 
   return (
-    <Box className="relative h-screen w-screen overflow-hidden">
+    <Box className="relative h-screen w-screen overflow-hidden bg-background">
+      <Boxes className="absolute inset-0 z-0" />
+      {/* Optional: Mask for Boxes if desired: <div className="absolute inset-0 w-full h-full bg-transparent z-[1] [mask-image:radial-gradient(transparent_60%,white)] pointer-events-none" /> */}
+      
       <PageNavigation 
         sections={sectionsConfig} 
         activeSection={sectionsConfig[activeIndex].id} 
@@ -175,7 +179,7 @@ export default function PortfolioPage() {
           initial="initial"
           animate="animate"
           exit="exit"
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full z-10" // z-10 to be above Boxes but below UI like PageNavigation
           onAnimationComplete={handleAnimationComplete}
           aria-live="polite"
         >
