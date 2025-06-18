@@ -9,13 +9,15 @@ import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import { 
   Button, 
   Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription, 
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, 
+  Dialog, // DialogClose is not directly used, Dialog handles close via onOpenChange or X button
   Badge,
-  Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
+  Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
+  CardContainer, CardBody, CardItem // Imported 3D Card components
 } from '@/components/ui';
-import { ExternalLink, Github, PlayIcon, PauseIcon } from 'lucide-react';
+import { ExternalLink, Github, PlayIcon, PauseIcon, X as CloseIcon } from 'lucide-react'; // Added CloseIcon
 import Autoplay from 'embla-carousel-autoplay';
 import type { CarouselApi } from '@/components/ui/Carousel/carousel';
+import { DialogClose } from '@radix-ui/react-dialog'; // For explicit close button on 3D card
 
 interface MediaItem {
   type: 'image' | 'video';
@@ -137,7 +139,7 @@ export const Projects: React.FC = React.memo(() => {
 
   const autoplayPlugin = useRef(
     Autoplay({ 
-      delay: 3000, 
+      delay: 3500, 
       stopOnInteraction: true, 
       stopOnMouseEnter: true,
     })
@@ -147,12 +149,12 @@ export const Projects: React.FC = React.memo(() => {
     if (!carouselApi) {
       return;
     }
-    if (isPlaying) {
+    if (isPlaying && selectedProject) { // Ensure autoplay only runs when modal is open
       autoplayPlugin.current.play();
     } else {
       autoplayPlugin.current.stop();
     }
-  }, [carouselApi, isPlaying]);
+  }, [carouselApi, isPlaying, selectedProject]);
 
   const togglePlay = () => {
     setIsPlaying(prev => !prev);
@@ -160,7 +162,9 @@ export const Projects: React.FC = React.memo(() => {
   
   useEffect(() => {
     if (selectedProject) {
-      setIsPlaying(true); 
+      setIsPlaying(true); // Reset to playing when modal opens
+    } else {
+      setIsPlaying(false); // Stop playing when modal closes
     }
   }, [selectedProject]);
 
@@ -182,13 +186,20 @@ export const Projects: React.FC = React.memo(() => {
               }
             }}
           >
-            <DialogContent className="max-w-3xl w-[90vw] p-0 bg-card/90 backdrop-blur-lg border border-white/10 shadow-2xl rounded-xl overflow-hidden">
-              <DialogHeader className="p-0 relative">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
-                >
+            {/* Replaced DialogContent with CardContainer/CardBody for 3D effect */}
+            <CardContainer 
+              containerClassName="fixed inset-0 z-50 flex items-center justify-center p-4" // Mimics Dialog positioning
+              className="w-full max-w-3xl" // Mimics DialogContent sizing
+            >
+              <CardBody className="relative bg-card/90 backdrop-blur-lg border border-border/30 shadow-2xl rounded-xl p-0 overflow-hidden group/card w-full max-h-[90vh] flex flex-col">
+                <DialogClose asChild>
+                  <button className="absolute right-4 top-4 z-50 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                    <CloseIcon className="h-5 w-5 text-foreground" />
+                    <span className="sr-only">Close</span>
+                  </button>
+                </DialogClose>
+
+                <CardItem translateZ="20" className="w-full relative">
                   {selectedProject.mediaGallery && selectedProject.mediaGallery.length > 0 ? (
                     <Carousel
                       opts={{
@@ -202,7 +213,7 @@ export const Projects: React.FC = React.memo(() => {
                       <CarouselContent>
                         {selectedProject.mediaGallery.map((media, index) => (
                           <CarouselItem key={index}>
-                            <Box className="relative w-full aspect-video bg-black/50">
+                            <Box className="relative w-full aspect-video bg-black/50 rounded-t-xl overflow-hidden">
                               {media.type === 'image' && (
                                 <Image
                                   src={media.url}
@@ -238,40 +249,49 @@ export const Projects: React.FC = React.memo(() => {
                       )}
                     </Carousel>
                   ) : (
-                     <Box className="relative w-full aspect-video bg-muted">
+                     <Box className="relative w-full aspect-video bg-muted rounded-t-xl overflow-hidden">
                        <Text className="absolute inset-0 flex items-center justify-center text-muted-foreground">No media available</Text>
                      </Box>
                   )}
-                </motion.div>
-              </DialogHeader>
-              <Box className="p-6 md:p-8 space-y-4 max-h-[calc(90vh-200px)] overflow-y-auto">
-                <DialogTitle className="font-headline text-3xl md:text-4xl text-primary">{selectedProject.title}</DialogTitle>
-                <DialogDescription className="font-body text-base md:text-lg text-foreground/90">
-                  {selectedProject.longDescription || selectedProject.description}
-                </DialogDescription>
-                <Flex wrap="wrap" gap="0.5rem" className="py-2">
-                  {selectedProject.techStack.map(tech => (
-                    <Badge key={tech} variant="outline" className="text-sm border-primary text-primary">{tech}</Badge>
-                  ))}
-                </Flex>
-                <Flex gap="1rem" className="pt-4">
-                  {selectedProject.liveSiteUrl && (
-                    <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground rounded-lg">
-                      <a href={selectedProject.liveSiteUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="mr-2 h-4 w-4" /> Live Site
-                      </a>
-                    </Button>
-                  )}
-                  {selectedProject.githubUrl && (
-                    <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10 hover:text-foreground rounded-lg">
-                      <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                        <Github className="mr-2 h-4 w-4" /> GitHub
-                      </a>
-                    </Button>
-                  )}
-                </Flex>
-              </Box>
-            </DialogContent>
+                </CardItem>
+                
+                <Box className="p-6 md:p-8 space-y-4 flex-grow overflow-y-auto">
+                  <CardItem translateZ="60" as="h3" className="font-headline text-3xl md:text-4xl text-primary">
+                    {selectedProject.title}
+                  </CardItem>
+                  <CardItem translateZ="50" as="p" className="font-body text-base md:text-lg text-foreground/90">
+                    {selectedProject.longDescription || selectedProject.description}
+                  </CardItem>
+                  
+                  <CardItem translateZ="40" className="w-full">
+                    <Flex wrap="wrap" gap="0.5rem" className="py-2">
+                      {selectedProject.techStack.map(tech => (
+                        <Badge key={tech} variant="outline" className="text-sm border-primary text-primary">{tech}</Badge>
+                      ))}
+                    </Flex>
+                  </CardItem>
+                  
+                  <CardItem translateZ="30" className="w-full">
+                    <Flex gap="1rem" className="pt-4">
+                      {selectedProject.liveSiteUrl && (
+                        <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground rounded-lg">
+                          <a href={selectedProject.liveSiteUrl} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="mr-2 h-4 w-4" /> Live Site
+                          </a>
+                        </Button>
+                      )}
+                      {selectedProject.githubUrl && (
+                        <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10 hover:text-foreground rounded-lg">
+                          <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                            <Github className="mr-2 h-4 w-4" /> GitHub
+                          </a>
+                        </Button>
+                      )}
+                    </Flex>
+                  </CardItem>
+                </Box>
+              </CardBody>
+            </CardContainer>
           </Dialog>
         )}
       </AnimatePresence>
