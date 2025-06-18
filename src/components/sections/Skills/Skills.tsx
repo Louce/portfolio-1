@@ -1,12 +1,12 @@
 
 'use client';
 
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import { cn } from '@/lib';
-import { CodeIcon as Code, Bot, Gamepad2, Palette, Globe, TerminalSquareIcon as Terminal } from 'lucide-react'; // Updated icons
+import { CodeIcon as Code, Bot, Gamepad2, Palette, Globe, TerminalSquareIcon as Terminal } from 'lucide-react';
 
 interface Skill {
   id: string;
@@ -67,28 +67,38 @@ const subSkillsData: SubSkill[] = [
 
 interface SkillNodeProps {
   skill: Skill;
-  onNodeEnter: (skillId: string) => void;
-  onNodeLeave: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  onFocus: () => void;
+  onBlur: () => void;
   isActive: boolean;
 }
 
-const SkillNode: React.FC<SkillNodeProps> = React.memo(({ skill, onNodeEnter, onNodeLeave, isActive }) => {
+const SkillNode: React.FC<SkillNodeProps> = React.memo(({ 
+  skill, 
+  onMouseEnter, 
+  onMouseLeave, 
+  onFocus, 
+  onBlur, 
+  isActive 
+}) => {
   const Icon = skill.icon;
   return (
     <motion.div
       tabIndex={0}
-      aria-label={`${skill.name} skill node`}
+      aria-label={`${skill.name} skill node. ${isActive ? skill.description : ''}`}
+      aria-expanded={isActive}
       className={cn(
         "relative p-4 md:p-6 rounded-xl shadow-lg cursor-pointer transition-all duration-300 ease-out aspect-square flex flex-col items-center justify-center text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background border",
         isActive 
           ? "bg-primary text-primary-foreground scale-110 shadow-primary/50 border-primary" 
           : "bg-card/70 backdrop-blur-sm border-border/20 hover:shadow-primary/30 hover:bg-card/80 hover:backdrop-blur-md hover:border-primary/40"
       )}
-      onMouseEnter={() => onNodeEnter(skill.id)}
-      onMouseLeave={onNodeLeave}
-      onFocus={() => onNodeEnter(skill.id)}
-      onBlur={onNodeLeave}
-      whileHover={{ y: isActive ? 0 : -5 }} // Only lift if not active
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      whileHover={{ y: isActive ? 0 : -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
       <Icon className={cn("w-10 h-10 md:w-12 md:h-12 mb-3", isActive ? "text-primary-foreground" : "text-primary")} />
@@ -101,7 +111,7 @@ const SkillNode: React.FC<SkillNodeProps> = React.memo(({ skill, onNodeEnter, on
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="text-xs md:text-sm mt-2 text-primary-foreground/80 hidden md:block"
+            className="text-xs md:text-sm mt-2 text-primary-foreground/80 hidden md:block pointer-events-none" // Added pointer-events-none
           >
             {skill.description}
           </motion.p>
@@ -115,33 +125,47 @@ SkillNode.displayName = 'SkillNode';
 
 export const Skills: React.FC = React.memo(() => {
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null);
-  const pendingHoverIdRef = useRef<string | null>(null);
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const DEBOUNCE_DELAY = 150; 
+  
+  const activationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const deactivationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const DEBOUNCE_DELAY = 150; // ms
 
-  const handleNodeEnter = (skillId: string) => {
-    pendingHoverIdRef.current = skillId;
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
+  const clearAllTimeouts = useCallback(() => {
+    if (activationTimeoutRef.current) {
+      clearTimeout(activationTimeoutRef.current);
+      activationTimeoutRef.current = null;
     }
-    hoverTimeoutRef.current = setTimeout(() => {
-      if (pendingHoverIdRef.current === skillId) {
-        setHoveredSkillId(skillId);
-      }
-    }, DEBOUNCE_DELAY);
-  };
+    if (deactivationTimeoutRef.current) {
+      clearTimeout(deactivationTimeoutRef.current);
+      deactivationTimeoutRef.current = null;
+    }
+  }, []);
 
-  const handleContainerMouseLeave = () => {
-    pendingHoverIdRef.current = null;
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    hoverTimeoutRef.current = setTimeout(() => {
-      if (pendingHoverIdRef.current === null) {
-        setHoveredSkillId(null);
-      }
+  const handleNodeMouseEnter = useCallback((skillId: string) => {
+    clearAllTimeouts();
+    activationTimeoutRef.current = setTimeout(() => {
+      setHoveredSkillId(skillId);
     }, DEBOUNCE_DELAY);
-  };
+  }, [clearAllTimeouts]);
+
+  const handleNodeMouseLeave = useCallback(() => {
+    clearAllTimeouts();
+    deactivationTimeoutRef.current = setTimeout(() => {
+      setHoveredSkillId(null);
+    }, DEBOUNCE_DELAY);
+  }, [clearAllTimeouts]);
+
+  const handleNodeFocus = useCallback((skillId: string) => {
+    clearAllTimeouts();
+    setHoveredSkillId(skillId); // Immediate activation on focus
+  }, [clearAllTimeouts]);
+
+  // useEffect for cleanup
+  useEffect(() => {
+    return () => {
+      clearAllTimeouts();
+    };
+  }, [clearAllTimeouts]);
   
 
   const relatedSubSkills = useMemo(() => {
@@ -157,15 +181,17 @@ export const Skills: React.FC = React.memo(() => {
         <SectionTitle>My Expertise</SectionTitle>
         <div 
           className="w-full max-w-3xl" 
-          onMouseLeave={handleContainerMouseLeave}
+          onMouseLeave={handleNodeMouseLeave} // Deactivate if mouse leaves the entire grid
         >
           <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
             {coreSkillsData.map((skill) => (
               <SkillNode 
                 key={skill.id} 
                 skill={skill} 
-                onNodeEnter={handleNodeEnter}
-                onNodeLeave={handleContainerMouseLeave} 
+                onMouseEnter={() => handleNodeMouseEnter(skill.id)}
+                onMouseLeave={handleNodeMouseLeave}
+                onFocus={() => handleNodeFocus(skill.id)}
+                onBlur={handleNodeMouseLeave} // Use mouse leave logic for blur deactivation
                 isActive={hoveredSkillId === skill.id}
               />
             ))}
