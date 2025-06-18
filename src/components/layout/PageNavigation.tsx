@@ -15,8 +15,8 @@ interface PageNavigationProps {
 const dotTransition = { type: "spring", stiffness: 500, damping: 30, duration: 0.2 };
 
 // Resolved colors for dark theme (default)
-const primaryColor = "hsl(182, 100%, 74%)"; // --primary in dark mode
-const foregroundColorTransparent = "hsla(43, 67%, 96%, 0.5)"; // --foreground with 0.5 alpha in dark mode
+const primaryColor = "hsl(182, 100%, 74%)"; // --primary in dark mode from globals.css
+const foregroundColorTransparent = "hsla(43, 67%, 96%, 0.5)"; // --foreground with 0.5 alpha in dark mode from globals.css
 const transparentColor = "hsla(0, 0%, 0%, 0)"; // Fully transparent
 
 export const PageNavigation: React.FC<PageNavigationProps> = React.memo(({
@@ -28,9 +28,9 @@ export const PageNavigation: React.FC<PageNavigationProps> = React.memo(({
   return (
     <motion.nav
       className={cn("fixed right-4 top-1/2 -translate-y-1/2 z-50 hidden md:block", className)}
-      initial={{ opacity: 0, x: 20 }}
+      initial={{ opacity: 0, x: 30 }} // Entry animation from right
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay: 1 }}
+      transition={{ duration: 0.5, delay: 1.2, ease: "circOut" }} // Adjusted delay
     >
       <ul className="space-y-3" role="tablist" aria-label="Page Sections">
         {sections.map((section) => {
@@ -58,7 +58,7 @@ export const PageNavigation: React.FC<PageNavigationProps> = React.memo(({
               <motion.button
                 id={`nav-tab-${section.id}`}
                 role="tab"
-                aria-controls={`section-panel-${section.id}`}
+                aria-controls={`section-panel-${section.id}`} // Ensure section panels have corresponding IDs
                 aria-selected={isActive}
                 onClick={() => onNavigate(section.id)}
                 className="w-3 h-3 rounded-full border-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"

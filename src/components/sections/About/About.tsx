@@ -34,7 +34,7 @@ export const About: React.FC = React.memo(() => {
   const aboutText = "I'm a passionate frontend architect dedicated to building intuitive, performant, and visually stunning web applications. With a keen eye for detail and a love for clean, scalable code, I transform complex problems into elegant user experiences. My philosophy revolves around the 'Crystal Cathedral' approach – crafting code that is as beautiful and robust as the final product.";
 
   return (
-    <SectionWrapper id="about" className="bg-gradient-to-br from-background to-slate-900/70">
+    <SectionWrapper id="about" className="bg-background"> {/* Simplified background */}
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
         <motion.div
           initial={{ opacity: 0, scale: 0.85, x: -50, rotate: -3 }} 
@@ -43,7 +43,7 @@ export const About: React.FC = React.memo(() => {
           transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
           className="w-full max-w-md lg:w-2/5"
         >
-          <Box className="relative aspect-square rounded-lg overflow-hidden shadow-2xl group">
+          <Box className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group bg-card/80 backdrop-blur-lg border border-white/10">
             <Image
               src="https://placehold.co/600x600.png"
               alt="Portrait of the developer"
@@ -53,7 +53,7 @@ export const About: React.FC = React.memo(() => {
               priority 
               style={{ objectFit: 'cover' }}
             />
-            <Box className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />
+            <Box className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
           </Box>
         </motion.div>
 
@@ -79,7 +79,7 @@ export const About: React.FC = React.memo(() => {
             whileInView="visible" 
             viewport={{ once: true, amount: 0.2 }}
             transition={{delay: 0.3}} 
-            className="font-body text-lg md:text-xl text-foreground/90 leading-relaxed"
+            className="font-body text-lg md:text-xl text-foreground/90 leading-loose" // Changed to leading-loose
           >
             {aboutText.split(' ').map((word, index) => (
               <motion.span 
@@ -110,7 +110,7 @@ export const About: React.FC = React.memo(() => {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.4 + (aboutText.split(' ').length * 0.02), duration: 0.5 }}
             className="mt-6"
           >
-            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md transform hover:scale-105 transition-transform duration-300">
+            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md transform hover:scale-105 transition-transform duration-300 rounded-lg">
               <a href="/resume.pdf" download="YourName_Resume.pdf" aria-label="Download my resume">
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume
