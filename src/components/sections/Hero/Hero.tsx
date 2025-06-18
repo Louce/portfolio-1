@@ -34,10 +34,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
 
 
   useEffect(() => {
-    // Start cycling animation after a short delay
     const animationTimer = setTimeout(() => {
       setStartCyclingAnimation(true);
-    }, 500); // Adjust delay as needed, e.g., 500ms
+    }, 500); 
 
     const fetchVisitorLocation = async () => {
       try {
@@ -146,9 +145,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
 
         <h1 className="text-center pt-16 md:pt-0">
           <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            // Removed initial, animate, and transition props for LCP optimization
             className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-display-lg xl:text-display-xl font-bold tracking-tight text-primary text-center leading-none"
           >
             Dendi Rivaldi
