@@ -99,10 +99,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   };
 
   return (
-    // Removed bg-background, it's now transparent to let global background show
-    // Retained pointer-events-auto for its content
     <div className="relative flex flex-col h-full w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
-      {/* The CSS Grid background DIV is now removed from here and placed in page.tsx */}
       
       <motion.div 
         className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 pointer-events-auto"
@@ -125,14 +122,14 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
           </motion.div>
         )}
 
-        <div className="text-center pt-16 md:pt-0">
+        <h1 className="text-center pt-16 md:pt-0"> {/* Added h1 wrapper */}
           <TextGenerateEffect
             words="Frontend"
             className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-display-lg xl:text-display-xl font-bold tracking-tight text-primary text-center leading-none"
             stagger={0.05}
             delay={0.3}
           />
-        </div>
+        </h1>
 
         <div className="text-center h-8 sm:h-10 md:h-12">
           <AnimatePresence mode="wait">
