@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
@@ -13,8 +13,9 @@ import {
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 } from '@/components/ui';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, PlayIcon, PauseIcon } from 'lucide-react'; // Added PlayIcon, PauseIcon
 import Autoplay from 'embla-carousel-autoplay';
+import type { CarouselApi } from '@/components/ui/Carousel/carousel'; // Import CarouselApi type
 
 interface MediaItem {
   type: 'image' | 'video';
@@ -94,7 +95,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="w-full group"
     >
-      <Card className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 ease-out hover:-translate-y-1 bg-card">
+      <Card className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 ease-out hover:-translate-y-1 bg-card/90 backdrop-blur-lg border border-white/10 rounded-xl">
         <CardHeader className="p-0">
           <Box className="relative w-full aspect-[16/9] overflow-hidden">
             <Image
@@ -103,6 +104,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
               data-ai-hint={project.coverDataAiHint}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
+              priority={project.id === 'project-1'} // Prioritize first image
             />
           </Box>
         </CardHeader>
@@ -116,8 +118,8 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
             {project.techStack.length > 4 && <Badge variant="outline" className="text-xs">+{project.techStack.length - 4} more</Badge>}
           </Flex>
         </CardContent>
-        <CardFooter className="p-4 md:p-6 border-t">
-          <Button onClick={() => onOpenModal(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" aria-label={`View details for ${project.title}`}>
+        <CardFooter className="p-4 md:p-6 border-t border-white/10">
+          <Button onClick={() => onOpenModal(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg" aria-label={`View details for ${project.title}`}>
             View Details
           </Button>
         </CardFooter>
@@ -130,17 +132,43 @@ ProjectCard.displayName = 'ProjectCard';
 
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | undefined>();
+  const [isPlaying, setIsPlaying] = useState(true);
+
   const autoplayPlugin = useRef(
     Autoplay({ 
-      delay: 2500, 
+      delay: 3000, 
       stopOnInteraction: true, 
       stopOnMouseEnter: true,
     })
   );
 
+  useEffect(() => {
+    if (!carouselApi) {
+      return;
+    }
+    if (isPlaying) {
+      autoplayPlugin.current.play();
+    } else {
+      autoplayPlugin.current.stop();
+    }
+  }, [carouselApi, isPlaying]);
+
+  const togglePlay = () => {
+    setIsPlaying(prev => !prev);
+  };
+  
+  // Reset isPlaying to true when modal opens for a new project
+  useEffect(() => {
+    if (selectedProject) {
+      setIsPlaying(true);
+    }
+  }, [selectedProject]);
+
+
   return (
     <SectionWrapper id="projects" className="bg-background">
-      <Flex direction="col" align="center" justify="start" className="h-full w-full space-y-10 md:space-y-16 pt-16 md:pt-24">
+      <Flex direction="col" align="center" justify="start" className="h-full w-full space-y-10 md:space-y-16 pt-16 md:pt-24 pb-8">
         <Text as="h2" variant="default" className="font-headline text-4xl md:text-5xl font-bold text-primary text-center">
           Featured Projects
         </Text>
@@ -159,8 +187,8 @@ export const Projects: React.FC = React.memo(() => {
                 }
               }}
             >
-              <DialogContent className="max-w-3xl w-[90vw] p-0 bg-card shadow-2xl rounded-lg overflow-hidden">
-                <DialogHeader className="p-0">
+              <DialogContent className="max-w-3xl w-[90vw] p-0 bg-card/90 backdrop-blur-lg border border-white/10 shadow-2xl rounded-xl overflow-hidden">
+                <DialogHeader className="p-0 relative">
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -173,14 +201,15 @@ export const Projects: React.FC = React.memo(() => {
                           loop: true,
                         }}
                         plugins={[autoplayPlugin.current]}
+                        setApi={setCarouselApi} // Get the API instance
                         className="w-full"
-                        onMouseEnter={autoplayPlugin.current.stop}
-                        onMouseLeave={autoplayPlugin.current.reset}
+                        // onMouseEnter={autoplayPlugin.current.stop} - Handled by plugin option
+                        // onMouseLeave={autoplayPlugin.current.reset} - Handled by plugin option
                       >
                         <CarouselContent>
                           {selectedProject.mediaGallery.map((media, index) => (
                             <CarouselItem key={index}>
-                              <Box className="relative w-full aspect-video bg-black">
+                              <Box className="relative w-full aspect-video bg-black/50">
                                 {media.type === 'image' && (
                                   <Image
                                     src={media.url}
@@ -191,7 +220,7 @@ export const Projects: React.FC = React.memo(() => {
                                   />
                                 )}
                                 {media.type === 'video' && (
-                                  <video src={media.url} controls loop autoPlay muted playsInline className="w-full h-full object-contain">
+                                  <video src={media.url} controls autoPlay muted playsInline className="w-full h-full object-contain">
                                     Your browser does not support the video tag.
                                   </video>
                                 )}
@@ -201,8 +230,17 @@ export const Projects: React.FC = React.memo(() => {
                         </CarouselContent>
                         {selectedProject.mediaGallery.length > 1 && (
                           <>
-                            <CarouselPrevious className="left-4 text-white bg-black/30 hover:bg-black/50 border-none" />
-                            <CarouselNext className="right-4 text-white bg-black/30 hover:bg-black/50 border-none" />
+                            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
+                            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
+                             <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                onClick={togglePlay} 
+                                className="absolute bottom-2 right-2 z-10 text-white bg-black/30 hover:bg-black/50 border-none"
+                                aria-label={isPlaying ? "Pause carousel" : "Play carousel"}
+                              >
+                                {isPlaying ? <PauseIcon className="h-5 w-5" /> : <PlayIcon className="h-5 w-5" />}
+                              </Button>
                           </>
                         )}
                       </Carousel>
@@ -213,7 +251,7 @@ export const Projects: React.FC = React.memo(() => {
                     )}
                   </motion.div>
                 </DialogHeader>
-                <Box className="p-6 md:p-8 space-y-4">
+                <Box className="p-6 md:p-8 space-y-4 max-h-[calc(90vh-200px)] overflow-y-auto">
                   <DialogTitle className="font-headline text-3xl md:text-4xl text-primary">{selectedProject.title}</DialogTitle>
                   <DialogDescription className="font-body text-base md:text-lg text-foreground/90">
                     {selectedProject.longDescription || selectedProject.description}
@@ -225,14 +263,14 @@ export const Projects: React.FC = React.memo(() => {
                   </Flex>
                   <Flex gap="1rem" className="pt-4">
                     {selectedProject.liveSiteUrl && (
-                      <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                      <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground rounded-lg">
                         <a href={selectedProject.liveSiteUrl} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="mr-2 h-4 w-4" /> Live Site
                         </a>
                       </Button>
                     )}
                     {selectedProject.githubUrl && (
-                      <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10">
+                      <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10 hover:text-primary-foreground rounded-lg">
                         <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
                           <Github className="mr-2 h-4 w-4" /> GitHub
                         </a>
@@ -250,4 +288,3 @@ export const Projects: React.FC = React.memo(() => {
 });
 
 Projects.displayName = 'ProjectsSection';
-

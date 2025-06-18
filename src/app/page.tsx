@@ -4,9 +4,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Hero, About, Skills, Projects, Contact, Feedback } from '@/components/sections';
-import { FloatingDock, type FloatingDockItem } from '@/components/ui/floating-dock'; // Updated import
+import { PageNavigation } from '@/components/layout'; // Restored PageNavigation
 import { Box } from '@/components/primitives';
-import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react'; // Lucide icons
+// Icons for sectionsConfig are still needed if PageNavigation is ever adapted to use them,
+// but the original PageNavigation (dots) doesn't.
+import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
 
 const sectionsConfig = [
   { id: 'hero', label: 'Home', component: Hero, icon: <HomeIcon className="w-full h-full" /> },
@@ -154,34 +156,20 @@ export default function PortfolioPage() {
 
   const ActiveComponent = sectionsConfig[activeIndex].component;
 
-  const floatingDockItems: FloatingDockItem[] = sectionsConfig.map(section => ({
-    title: section.label,
-    icon: section.icon,
-    href: `#${section.id}`,
-    onClick: (e) => {
-      e.preventDefault();
-      handleNavigate(section.id);
-    },
-    isActive: sectionsConfig[activeIndex].id === section.id,
-  }));
-
   return (
     <Box className="relative h-screen w-screen overflow-hidden">
-      <motion.div
-        className="fixed top-1/2 -translate-y-1/2 right-4 md:right-6 z-[50]"
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: 1.2, ease: "circOut" }}
-      >
-        <FloatingDock items={floatingDockItems} />
-      </motion.div>
+      <PageNavigation 
+        sections={sectionsConfig} 
+        activeSection={sectionsConfig[activeIndex].id} 
+        onNavigate={handleNavigate}
+      />
       
       <AnimatePresence custom={direction} mode="wait">
         <motion.div
           key={sectionsConfig[activeIndex].id}
           id={`section-panel-${sectionsConfig[activeIndex].id}`}
           role="tabpanel"
-          aria-labelledby={`nav-tab-${sectionsConfig[activeIndex].id}`} // Ensure FloatingDock items have corresponding IDs if this is used
+          aria-labelledby={`nav-tab-${sectionsConfig[activeIndex].id}`}
           custom={direction}
           variants={sectionVariants}
           initial="initial"
