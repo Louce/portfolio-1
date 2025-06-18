@@ -51,24 +51,21 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'KineticFolio - Elite Frontend Architect & Developer',
     description: 'Explore the interactive portfolio of a top-tier frontend architect.',
-    // site: '@yourtwitterhandle', // Optional: add your Twitter handle
-    // creator: '@yourtwitterhandle', // Optional: add your Twitter handle
     images: ['/og-image.png'], // Replace with your actual Twitter card image path in /public
   },
-  // Consider adding icons, manifest for PWA capabilities if desired
-  // icons: {
-  //   icon: '/favicon.ico',
-  //   apple: '/apple-touch-icon.png',
-  // },
-  // manifest: '/site.webmanifest',
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/icons/favicon.ico', // Replace with your actual favicon in /public/icons/
+    apple: '/icons/apple-touch-icon.png', // Replace with your actual apple touch icon in /public/icons/
+  },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: [ // For PWA and browser UI theming
-    { media: '(prefers-color-scheme: light)', color: '#7DF9FF' }, // Electric Blue for primary
-    { media: '(prefers-color-scheme: dark)', color: '#121212' },  // Off-black for background
+  themeColor: [ 
+    { media: '(prefers-color-scheme: light)', color: 'hsl(220 50% 98%)' }, // light background
+    { media: '(prefers-color-scheme: dark)', color: 'hsl(0 0% 7%)' },  // dark background
   ],
 };
 
@@ -81,7 +78,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
-        {/* next/font handles optimized font loading */}
+        {/* 
+          Placeholder icon links. 
+          Replace with actual icons in your /public/icons folder.
+          For example, ensure you have:
+          - /public/icons/favicon.ico
+          - /public/icons/apple-touch-icon.png
+          - /public/icons/icon-192x192.png (referenced in manifest.json)
+          - /public/icons/icon-512x512.png (referenced in manifest.json)
+        */}
       </head>
       <body 
         className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out"
