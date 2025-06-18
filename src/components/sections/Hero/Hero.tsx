@@ -33,10 +33,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   const [startCyclingAnimation, setStartCyclingAnimation] = useState(false);
 
   useEffect(() => {
-    // Delay the start of the cycling animation to allow initial content to paint
     const animationTimer = setTimeout(() => {
       setStartCyclingAnimation(true);
-    }, 500); // Start animation after 500ms
+    }, 500); 
 
     const fetchVisitorLocation = async () => {
       try {
@@ -99,7 +98,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
 
     const subHeadlineIntervalId = setInterval(() => {
       setCurrentSubHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
-    }, 3000); // Cycle every 3 seconds
+    }, 3000); 
 
     return () => {
       clearTimeout(animationTimer);
