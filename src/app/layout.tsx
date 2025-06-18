@@ -17,9 +17,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:9002'; //
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'KineticFolio - Elite Frontend Architect & Developer',
-  description: 'Visually stunning, interactive one-page portfolio for an elite frontend architect, showcasing kinetic elegance and cutting-edge web development skills with Next.js, React, and Framer Motion.',
-  keywords: ['Frontend Developer', 'Frontend Architect', 'React Developer', 'Next.js Developer', 'TypeScript', 'Framer Motion', 'Portfolio', 'Web Developer', 'UI/UX'],
+  title: 'Dendi Rivaldi - Python, Automation & Game Dev Enthusiast',
+  description: 'Portfolio of Dendi Rivaldi, showcasing skills in Python, automation, game development, and design. Explore projects and connect.',
+  keywords: ['Dendi Rivaldi', 'Python Developer', 'Automation Engineer', 'Game Developer', 'Design Enthusiast', 'Portfolio', 'Software Developer'],
   robots: {
     index: true,
     follow: true,
@@ -32,16 +32,16 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'KineticFolio - Elite Frontend Architect & Developer',
-    description: 'A dynamic portfolio showcasing cutting-edge frontend development and design.',
+    title: 'Dendi Rivaldi - Python, Automation & Game Dev Portfolio',
+    description: 'Discover the work of Dendi Rivaldi, a developer passionate about Python, automation, game creation, and design.',
     url: SITE_URL,
-    siteName: 'KineticFolio',
+    siteName: 'Dendi Rivaldi Portfolio',
     images: [
       {
         url: '/og-image.png', // Replace with your actual OG image path in /public
         width: 1200,
         height: 630,
-        alt: 'KineticFolio - Portfolio Preview',
+        alt: 'Dendi Rivaldi - Portfolio Preview',
       },
     ],
     locale: 'en_US',
@@ -49,14 +49,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KineticFolio - Elite Frontend Architect & Developer',
-    description: 'Explore the interactive portfolio of a top-tier frontend architect.',
+    title: 'Dendi Rivaldi - Developer Portfolio',
+    description: 'Explore Dendi Rivaldi\'s projects in Python, automation, game development, and design.',
     images: ['/og-image.png'], // Replace with your actual Twitter card image path in /public
   },
   manifest: '/manifest.json',
   icons: {
-    icon: '/icons/favicon.ico', // Replace with your actual favicon in /public/icons/
-    apple: '/icons/apple-touch-icon.png', // Replace with your actual apple touch icon in /public/icons/
+    icon: '/icons/favicon.ico', 
+    apple: '/icons/apple-touch-icon.png', 
   },
 };
 
@@ -79,9 +79,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
         {/* 
-          Placeholder icon links. 
-          Replace with actual icons in your /public/icons folder.
-          For example, ensure you have:
+          Ensure you have actual icons in your /public/icons folder:
           - /public/icons/favicon.ico
           - /public/icons/apple-touch-icon.png
           - /public/icons/icon-192x192.png (referenced in manifest.json)

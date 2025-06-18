@@ -12,13 +12,13 @@ interface HeroProps {
   onNavigate: (sectionId: string) => void;
 }
 
-const subHeadlineBase = "A Frontend Architect crafting digital experiences where design meets performance with kinetic elegance.";
+const subHeadlineBase = "A Python, Automation, and Game Development enthusiast, blending logic with creative design.";
 
 const dynamicSubHeadlines = [
-  "KINETICODE // INNOVATE // CREATE",
-  "FLUIDITY // PRECISION // IMPACT",
-  "ELEGANCE // EFFICIENCY // EXPERIENCE",
-  "MOTION // MASTERY // MODERNITY"
+  "PYTHON // AUTOMATION // GAME DEV",
+  "DESIGN // INNOVATION // SOLUTIONS",
+  "LOGIC // CREATIVITY // EFFICIENCY",
+  "CODE // BUILD // PLAY"
 ];
 
 export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
@@ -122,9 +122,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
           </motion.div>
         )}
 
-        <h1 className="text-center pt-16 md:pt-0"> {/* Added h1 wrapper */}
+        <h1 className="text-center pt-16 md:pt-0">
           <TextGenerateEffect
-            words="Frontend"
+            words="Dendi Rivaldi"
             className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-display-lg xl:text-display-xl font-bold tracking-tight text-primary text-center leading-none"
             stagger={0.05}
             delay={0.3}

@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui';
+import { useToast } from '@/hooks'; // Corrected import path
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
 import { Mail, Send } from 'lucide-react';
 
@@ -21,6 +22,7 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export const Contact: React.FC = () => {
+  const { toast } = useToast();
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -33,15 +35,14 @@ export const Contact: React.FC = () => {
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    // console.log(data);
-    // toast({ title: "Message Sent!", description: "Thanks for reaching out. I'll get back to you soon." });
+    toast({ title: "Message Sent!", description: "Thanks for reaching out, Dendi. I'll get back to you soon." });
     form.reset();
   };
 
   const socialLinks = [
-    { name: 'GitHub', icon: GitHubIcon, url: 'https://github.com/yourusername', ariaLabel: 'View my GitHub profile' },
-    { name: 'LinkedIn', icon: LinkedInIcon, url: 'https://linkedin.com/in/yourusername', ariaLabel: 'Connect with me on LinkedIn' },
-    { name: 'Email', icon: Mail, url: 'mailto:youremail@example.com', ariaLabel: 'Send me an email' },
+    { name: 'GitHub', icon: GitHubIcon, url: 'https://github.com/Louce', ariaLabel: 'View Dendi Rivaldi\'s GitHub profile' },
+    { name: 'LinkedIn', icon: LinkedInIcon, url: 'https://www.linkedin.com/in/dendyrivaldi/', ariaLabel: 'Connect with Dendi Rivaldi on LinkedIn' },
+    { name: 'Email', icon: Mail, url: 'mailto:rivaldydendy459@gmail.com', ariaLabel: 'Send an email to Dendi Rivaldi' },
   ];
 
   return (
@@ -65,7 +66,7 @@ export const Contact: React.FC = () => {
                       <Input 
                         placeholder="Your Name" 
                         {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out" 
+                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm" 
                       />
                     </FormControl>
                     <FormMessage />
@@ -83,7 +84,7 @@ export const Contact: React.FC = () => {
                         type="email" 
                         placeholder="your.email@example.com" 
                         {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out"
+                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm"
                       />
                     </FormControl>
                     <FormMessage />
@@ -100,7 +101,7 @@ export const Contact: React.FC = () => {
                       <Textarea 
                         placeholder="Let's talk about..." 
                         {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out min-h-[120px]"
+                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out min-h-[120px] text-sm"
                       />
                     </FormControl>
                     <FormMessage />
