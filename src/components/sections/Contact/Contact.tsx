@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
-import { Flex, Text, Box } from '@/components/primitives';
+import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui';
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
 import { Mail, Send } from 'lucide-react';
@@ -42,12 +42,10 @@ export const Contact: React.FC = () => {
   ];
 
   return (
-    <SectionWrapper id="contact" className="bg-transparent"> {/* Changed background to transparent */}
-      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-10 md:space-y-12">
-        <Text as="h2" variant="default" className="font-headline text-4xl md:text-5xl font-bold text-primary text-center">
-          Get In Touch
-        </Text>
-        <Text variant="lead" className="text-center max-w-xl text-foreground/80 font-body">
+    <SectionWrapper id="contact" className="bg-transparent">
+      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-8 md:space-y-10">
+        <SectionTitle>Get In Touch</SectionTitle>
+        <Text variant="lead" className="text-center max-w-xl text-foreground/80 font-body mt-[-0.5rem] md:mt-[-0.75rem]"> {/* Adjusted margin due to SectionTitle mb */}
           Have a project in mind, a question, or just want to connect? Feel free to reach out.
         </Text>
 
@@ -118,7 +116,7 @@ export const Contact: React.FC = () => {
           </Form>
         </Box>
 
-        <Flex justify="center" gap="1.5rem" className="mt-8 md:mt-12">
+        <Flex justify="center" gap="1.5rem" className="mt-6 md:mt-8">
           {socialLinks.map((link, index) => (
             <motion.a
               key={link.name}

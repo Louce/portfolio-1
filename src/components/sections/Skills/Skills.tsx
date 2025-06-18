@@ -4,9 +4,9 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
-import { Flex, Text, Box } from '@/components/primitives';
+import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import { cn } from '@/lib';
-import { Code, Zap, Layers, Settings, Brain, Share2 } from 'lucide-react'; // Example icons
+import { Code, Zap, Layers, Settings, Brain, Share2 } from 'lucide-react';
 
 interface Skill {
   id: string;
@@ -55,7 +55,7 @@ const subSkillsData: SubSkill[] = [
 interface SkillNodeProps {
   skill: Skill;
   onNodeEnter: (skillId: string) => void;
-  onNodeLeave: () => void; // Added for explicit leave handling from node
+  onNodeLeave: () => void;
   isActive: boolean;
 }
 
@@ -70,9 +70,9 @@ const SkillNode: React.FC<SkillNodeProps> = React.memo(({ skill, onNodeEnter, on
         isActive ? "bg-primary text-primary-foreground scale-110 shadow-primary/50" : "bg-card hover:shadow-primary/30 hover:bg-primary/10"
       )}
       onMouseEnter={() => onNodeEnter(skill.id)}
-      onMouseLeave={onNodeLeave} // Call specific leave handler
+      onMouseLeave={onNodeLeave}
       onFocus={() => onNodeEnter(skill.id)}
-      onBlur={onNodeLeave} // Call specific leave handler also on blur
+      onBlur={onNodeLeave}
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
     >
@@ -120,7 +120,6 @@ export const Skills: React.FC = React.memo(() => {
       clearTimeout(hoverTimeoutRef.current);
     }
     hoverTimeoutRef.current = setTimeout(() => {
-      // Ensure we only clear if no new skill is pending
       if (pendingHoverIdRef.current === null) {
         setHoveredSkillId(null);
       }
@@ -137,15 +136,11 @@ export const Skills: React.FC = React.memo(() => {
   
 
   return (
-    <SectionWrapper id="skills" className="bg-transparent"> {/* Changed background to transparent */}
-      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-10 md:space-y-16">
-        <Text as="h2" variant="default" className="font-headline text-4xl md:text-5xl font-bold text-primary text-center">
-          My Expertise
-        </Text>
-        
+    <SectionWrapper id="skills" className="bg-transparent">
+        <SectionTitle>My Expertise</SectionTitle>
         <div 
           className="w-full max-w-3xl" 
-          onMouseLeave={handleContainerMouseLeave} // Handles leaving the general container area
+          onMouseLeave={handleContainerMouseLeave}
         >
           <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
             {coreSkillsData.map((skill) => (
@@ -188,7 +183,6 @@ export const Skills: React.FC = React.memo(() => {
             )}
           </AnimatePresence>
         </div> 
-      </Flex>
     </SectionWrapper>
   );
 });
