@@ -11,7 +11,8 @@ import { Cookie } from 'lucide-react';
 const COOKIE_NAME = 'kineticfolio_cookie_consent';
 
 export const CookieConsentBanner: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleBasedOnConsent, setIsVisibleBasedOnConsent] = useState(false);
+  const [canShowAfterDelay, setCanShowAfterDelay] = useState(false);
 
   useEffect(() => {
     // This effect runs only on the client side
@@ -19,24 +20,31 @@ export const CookieConsentBanner: React.FC = () => {
       .split('; ')
       .find(row => row.startsWith(`${COOKIE_NAME}=`));
     if (!consentCookie) {
-      setIsVisible(true);
+      setIsVisibleBasedOnConsent(true);
     }
+
+    // Add a delay before allowing the banner to actually show
+    // This gives the main content more time to render and become LCP
+    const timer = setTimeout(() => {
+      setCanShowAfterDelay(true);
+    }, 2000); // Delay for 2 seconds, adjust as needed
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleAccept = () => {
     const expires = new Date();
     expires.setFullYear(expires.getFullYear() + 1);
     document.cookie = `${COOKIE_NAME}=true; expires=${expires.toUTCString()}; path=/; SameSite=Lax; Secure`;
-    setIsVisible(false);
+    setIsVisibleBasedOnConsent(false); // Hide immediately on accept
+    setCanShowAfterDelay(false); // Also reset this to prevent re-showing if consent changes rapidly
   };
 
-  if (typeof window === 'undefined' && !isVisible) {
-    // Avoid rendering anything on the server if the banner is not supposed to be visible initially
-  }
+  const shouldRenderBanner = isVisibleBasedOnConsent && canShowAfterDelay;
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {shouldRenderBanner && (
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
