@@ -8,8 +8,8 @@ import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import {
   Button,
-  Card as ShadCard, CardContent as ShadCardContent, CardFooter as ShadCardFooter, CardHeader as ShadCardHeader, CardTitle as ShadCardTitle, CardDescription as ShadCardDescription,
-  Dialog, DialogContent, DialogHeader, DialogTitle as ShadDialogTitle, // Added DialogHeader & ShadDialogTitle
+  // ShadCard, ShadCardContent, ShadCardFooter, ShadCardHeader, ShadCardTitle, ShadCardDescription, // No longer directly using ShadCard for ProjectCard
+  Dialog, DialogContent, DialogHeader, DialogTitle as ShadDialogTitle,
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
   CardContainer, CardBody, CardItem
@@ -95,42 +95,60 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="w-full group"
+      className="w-full h-full" // Ensure motion div allows CardContainer to fill it
     >
-      <ShadCard className="h-full flex flex-col overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 ease-out hover:-translate-y-1 bg-card/90 backdrop-blur-lg border border-white/10 rounded-xl">
-        <ShadCardHeader className="p-0">
-          <Box className="relative w-full aspect-[16/9] overflow-hidden">
+      <CardContainer className="inter-var h-full" containerClassName="h-full py-0">
+        <CardBody className="bg-card/90 backdrop-blur-lg relative group/card hover:shadow-2xl hover:shadow-primary/40 dark:hover:shadow-primary/20 border-border/30 w-full h-full rounded-xl p-0 border flex flex-col overflow-hidden">
+          <CardItem
+            translateZ="30"
+            className="w-full aspect-[16/9] relative overflow-hidden rounded-t-xl !w-full"
+          >
             <Image
               src={project.coverImageUrl}
               alt={project.title}
               data-ai-hint={project.coverDataAiHint}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover group-hover/card:scale-105 transition-transform duration-300"
               priority={project.id === 'project-1'}
             />
-          </Box>
-        </ShadCardHeader>
-        <ShadCardContent className="flex-grow p-4 md:p-6 space-y-3">
-          <ShadCardTitle className="font-headline text-xl md:text-2xl text-primary">{project.title}</ShadCardTitle>
-          <ShadCardDescription className="font-body text-foreground/80 text-sm md:text-base">{project.description}</ShadCardDescription>
-          <Flex wrap="wrap" gap="0.5rem" className="pt-2">
-            {project.techStack.slice(0, 4).map(tech => (
-              <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-            ))}
-            {project.techStack.length > 4 && <Badge variant="outline" className="text-xs">+{project.techStack.length - 4} more</Badge>}
-          </Flex>
-        </ShadCardContent>
-        <ShadCardFooter className="p-4 md:p-6 border-t border-white/10">
-          <Button onClick={() => onOpenModal(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg" aria-label={`View details for ${project.title}`}>
-            View Details
-          </Button>
-        </ShadCardFooter>
-      </ShadCard>
+          </CardItem>
+
+          <div className="flex-grow p-4 md:p-6 space-y-3 flex flex-col">
+            <CardItem
+              translateZ="60"
+              className="font-headline text-xl md:text-2xl text-primary !w-auto"
+            >
+              {project.title}
+            </CardItem>
+            <CardItem
+              translateZ="50"
+              as="p"
+              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto"
+            >
+              {project.description}
+            </CardItem>
+            <CardItem translateZ="40" className="pt-2 !w-full">
+              <Flex wrap="wrap" gap="0.5rem">
+                {project.techStack.slice(0, 4).map(tech => (
+                  <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
+                ))}
+                {project.techStack.length > 4 && <Badge variant="outline" className="text-xs">+{project.techStack.length - 4} more</Badge>}
+              </Flex>
+            </CardItem>
+          </div>
+
+          <CardItem translateZ="20" className="p-4 md:p-6 border-t border-white/10 mt-auto !w-full">
+            <Button onClick={() => onOpenModal(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg" aria-label={`View details for ${project.title}`}>
+              View Details
+            </Button>
+          </CardItem>
+        </CardBody>
+      </CardContainer>
     </motion.div>
   );
 });
-
 ProjectCard.displayName = 'ProjectCard';
+
 
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -162,7 +180,7 @@ export const Projects: React.FC = React.memo(() => {
 
   useEffect(() => {
     if (selectedProject) {
-      setIsPlaying(true); 
+      setIsPlaying(true);
     } else {
       setIsPlaying(false);
     }
@@ -187,24 +205,22 @@ export const Projects: React.FC = React.memo(() => {
             }}
           >
             <DialogContent className="p-0 bg-transparent border-none shadow-none overflow-visible max-w-3xl w-[95vw] md:w-full">
-              {/* Accessible Dialog Title (Visually Hidden) */}
               <DialogHeader className="sr-only">
                 <ShadDialogTitle>{selectedProject.title}</ShadDialogTitle>
               </DialogHeader>
-
               <CardContainer
                 containerClassName="w-full h-full flex items-center justify-center p-0 md:p-4"
               >
                 <CardBody className="relative bg-card/80 backdrop-blur-xl border border-border/50 shadow-2xl rounded-xl p-0 overflow-hidden group/card w-full max-w-2xl max-h-[90vh] flex flex-col">
                   <DialogPrimitive.Close asChild>
                     <CardItem
-                      translateZ={100} 
-                      translateX="calc(100% - 2.75rem)" 
-                      translateY="-calc(100% - 2.75rem)" 
+                      translateZ={100}
+                      translateX="calc(100% - 2.75rem)"
+                      translateY="-calc(100% - 2.75rem)"
                       as="button"
                       className="absolute right-3 top-3 z-[60] rounded-full p-1.5 bg-black/30 hover:bg-black/50 transition-colors !w-auto"
                       aria-label="Close dialog"
-                      style={{transformStyle: 'preserve-3d'}} 
+                      style={{transformStyle: 'preserve-3d'}}
                     >
                       <CloseIcon className="h-5 w-5 text-white/80 hover:text-white" />
                     </CardItem>
@@ -313,5 +329,3 @@ export const Projects: React.FC = React.memo(() => {
 });
 
 Projects.displayName = 'ProjectsSection';
-
-    
