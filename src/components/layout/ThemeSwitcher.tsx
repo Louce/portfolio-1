@@ -34,9 +34,6 @@ export function ThemeSwitcher() {
           <DropdownMenuItem onClick={() => setTheme('dark')} className="hover:bg-muted/50 focus:bg-muted/50">
             Dark
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme('system')} className="hover:bg-muted/50 focus:bg-muted/50">
-            System
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </Box>
