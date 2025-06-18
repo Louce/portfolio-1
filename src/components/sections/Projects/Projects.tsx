@@ -43,13 +43,13 @@ const projectsData: Project[] = [
     title: 'E-commerce Platform X',
     description: 'A modern, responsive e-commerce platform with advanced features.',
     longDescription: 'Developed a full-stack e-commerce solution focusing on user experience, performance, and scalability. Integrated payment gateways, order management, and a recommendation engine. The frontend was built with Next.js and Tailwind CSS, while the backend used Node.js and PostgreSQL.',
-    coverImageUrl: 'https://placehold.co/600x400.png',
+    coverImageUrl: 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
     coverDataAiHint: 'ecommerce website',
     mediaGallery: [
-      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'product page' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'shopping cart' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'product page' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1580974928064-70ae0508d7b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'shopping cart' },
       { type: 'video', url: 'https://placehold.co/1280x720.mp4/000000/ffffff?text=Project+Demo' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'user dashboard' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'user dashboard' },
     ],
     techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Stripe'],
     liveSiteUrl: '#',
@@ -60,12 +60,12 @@ const projectsData: Project[] = [
     title: 'Interactive Data Dashboard',
     description: 'A real-time data visualization dashboard for business analytics.',
     longDescription: 'Created an interactive dashboard that allows users to explore complex datasets through dynamic charts and graphs. Features include customizable widgets, data filtering, and report generation. Built with React, D3.js, and Framer Motion for smooth animations.',
-    coverImageUrl: 'https://placehold.co/600x400.png',
+    coverImageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
     coverDataAiHint: 'data dashboard',
     mediaGallery: [
-      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'main chart' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'filter options' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'report export' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1518186213641-aad543590a65?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'main chart' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1611079838318-58d9657aff8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'filter options' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'report export' },
     ],
     techStack: ['React', 'TypeScript', 'D3.js', 'Framer Motion', 'Python (Flask)'],
     liveSiteUrl: '#',
@@ -75,12 +75,12 @@ const projectsData: Project[] = [
     title: 'AI-Powered Content Generator',
     description: 'A web application that uses AI to generate creative content.',
     longDescription: 'This project leverages cutting-edge AI models to assist users in generating various forms of content, such as articles, social media posts, and scripts. The interface is designed to be intuitive and user-friendly, promoting a seamless creative workflow. Tech stack includes SvelteKit, Tailwind CSS, and Python with FastAPI for the AI backend.',
-    coverImageUrl: 'https://placehold.co/600x400.png',
+    coverImageUrl: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
     coverDataAiHint: 'ai application',
     mediaGallery: [
-      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'generator ui' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1573495627363-71cc912f1b2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'generator ui' },
       { type: 'video', url: 'https://placehold.co/1280x720.mp4/111111/eeeeee?text=AI+Project+Walkthrough' },
-      { type: 'image', url: 'https://placehold.co/1280x720.png', dataAiHint: 'generated text' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1587613990078-5a1737253f8f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'generated text' },
     ],
     techStack: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'Python', 'FastAPI', 'OpenAI API'],
     githubUrl: '#',
@@ -115,16 +115,16 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
 
           <div className="flex-grow p-4 md:p-6 space-y-3 flex flex-col">
             <CardItem
-              as="h3" // Changed to h3 for semantic SEO
+              as="h3" 
               translateZ="60"
-              className="font-headline text-xl md:text-2xl text-primary !w-auto max-w-full" // Added max-w-full
+              className="font-headline text-xl md:text-2xl text-primary !w-auto max-w-full" 
             >
               {project.title}
             </CardItem>
             <CardItem
               translateZ="50"
               as="p"
-              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto max-w-full" // Added max-w-full
+              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto max-w-full" 
             >
               {project.description}
             </CardItem>
