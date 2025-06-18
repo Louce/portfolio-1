@@ -7,7 +7,6 @@ import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
 import { TextGenerateEffect } from '@/components/ui/aceternity/text-generate-effect';
-// Boxes component is now global, removed from here
 
 interface HeroProps {
   onNavigate: (sectionId: string) => void;
@@ -100,13 +99,12 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   };
 
   return (
-    // Removed relative, overflow-hidden, and bg-background. SectionWrapper handles padding.
-    // The z-index for content is handled in page.tsx for the motion.div wrapping sections
-    <div className="flex flex-col h-full w-full items-center justify-center text-foreground transition-bg">
-      {/* Boxes component removed from here, it's now global in page.tsx */}
+    <div className="relative flex flex-col h-full w-full items-center justify-center text-foreground bg-background overflow-hidden pointer-events-auto">
+      {/* New CSS Grid Background */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
       
       <motion.div 
-        className="relative flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4" // Removed z-20, handled by parent
+        className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 pointer-events-auto"
         initial={{ opacity:0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -185,7 +183,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 1.5, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors" // Removed z-20
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors z-10"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
       >
