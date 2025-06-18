@@ -17,7 +17,7 @@
     --primary: 205 88% 50%; /* Vibrant, clear blue */
     --primary-foreground: 0 0% 100%; /* White text on primary */
     
-    --secondary: 220 30% 94%; /* Light grayish blue for secondary elements */
+    --secondary: 220 25% 85%; /* Darker grayish blue for secondary elements (e.g., slider track) */
     --secondary-foreground: 220 25% 25%; /* Darker text on secondary */
     
     --muted: 220 30% 90%; /* Slightly darker muted background */
@@ -83,8 +83,9 @@
     @apply border-border;
   }
   body {
-    /* Removed @apply for bg-background, text-foreground, and transitions here */
+    /* Removed @apply for bg-background, text-foreground here */
     /* These are now directly on the <body> tag in layout.tsx */
+    /* Transitions are also applied directly on the body tag in layout.tsx */
     scroll-behavior: smooth;
   }
   ::selection {
