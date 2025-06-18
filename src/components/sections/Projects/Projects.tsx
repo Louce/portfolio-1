@@ -100,15 +100,15 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
         <CardBody className="bg-card/90 backdrop-blur-lg relative group/card hover:shadow-2xl hover:shadow-primary/40 dark:hover:shadow-primary/20 border-border/30 w-full h-full rounded-xl p-0 border flex flex-col overflow-hidden">
           <CardItem
             translateZ="30"
-            className="w-full aspect-[16/9] relative overflow-hidden rounded-t-xl !w-full" // Ensure !w-full for CardItem
+            className="w-full aspect-[16/9] relative overflow-hidden rounded-t-xl !w-full"
           >
             <Image
               src={project.coverImageUrl}
-              alt={project.title}
-              data-ai-hint={project.coverDataAiHint}
+              alt={`Cover image for ${project.title}`}
+              data-ai-hint={project.coverDataAiHint || project.title.toLowerCase().split(' ').slice(0,2).join(' ')}
               fill
               className="object-cover group-hover/card:scale-105 transition-transform duration-300"
-              priority={project.id === 'project-1'} // Prioritize first project image
+              priority={project.id === 'project-1'}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </CardItem>
@@ -117,14 +117,14 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
             <CardItem
               as="h3" 
               translateZ="60"
-              className="font-headline text-xl md:text-2xl text-primary !w-auto max-w-full" // Ensure !w-auto for CardItem
+              className="font-headline text-xl md:text-2xl text-primary !w-auto max-w-full"
             >
               {project.title}
             </CardItem>
             <CardItem
               translateZ="50"
               as="p"
-              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto max-w-full" // Ensure !w-auto
+              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto max-w-full"
             >
               {project.description}
             </CardItem>
@@ -158,9 +158,9 @@ export const Projects: React.FC = React.memo(() => {
 
   const autoplayPlugin = useRef(
     Autoplay({
-      delay: 3500, // Autoplay delay
-      stopOnInteraction: true, // Stop on user interaction
-      stopOnMouseEnter: true, // Stop when mouse enters carousel
+      delay: 3500, 
+      stopOnInteraction: true, 
+      stopOnMouseEnter: true, 
     })
   );
 
@@ -168,8 +168,7 @@ export const Projects: React.FC = React.memo(() => {
     if (!carouselApi) {
       return;
     }
-    // Control autoplay based on isPlaying state
-    if (isPlaying && selectedProject) { // Only play if a project is selected
+    if (isPlaying && selectedProject) { 
       autoplayPlugin.current.play();
     } else {
       autoplayPlugin.current.stop();
@@ -180,14 +179,11 @@ export const Projects: React.FC = React.memo(() => {
     setIsPlaying(prev => !prev);
   };
 
-  // Reset and start autoplay when a new project modal is opened
   useEffect(() => {
     if (selectedProject) {
-      setIsPlaying(true); // Default to playing when modal opens
-      // If carouselApi exists, tell it to restart (e.g., scroll to first slide)
-      // This might need specific handling if Embla doesn't reset automatically on content change
+      setIsPlaying(true); 
     } else {
-      setIsPlaying(false); // Stop playing if no project is selected (modal closed)
+      setIsPlaying(false); 
     }
   }, [selectedProject]);
 
@@ -240,14 +236,13 @@ export const Projects: React.FC = React.memo(() => {
                               <Image
                                 src={media.url}
                                 alt={`${selectedProject.title} - Media ${index + 1}`}
-                                data-ai-hint={media.dataAiHint || selectedProject.coverDataAiHint}
+                                data-ai-hint={media.dataAiHint || selectedProject.title.toLowerCase().split(' ').slice(0,2).join(' ')}
                                 fill
-                                className="object-contain" // Use object-contain for carousel images
-                                sizes="(max-width: 768px) 90vw, 70vw" // Appropriate sizes for modal context
+                                className="object-contain"
+                                sizes="(max-width: 768px) 90vw, (max-width: 1280px) 70vw, 60vw"
                               />
                             )}
                             {media.type === 'video' && (
-                              // Ensure videos are muted for autoplay UX, add controls
                               <video src={media.url} controls autoPlay muted playsInline loop className="w-full h-full object-contain">
                                 Your browser does not support the video tag.
                               </video>
@@ -256,7 +251,7 @@ export const Projects: React.FC = React.memo(() => {
                         </CarouselItem>
                       ))}
                     </CarouselContent>
-                    {selectedProject.mediaGallery.length > 1 && ( // Only show controls if multiple items
+                    {selectedProject.mediaGallery.length > 1 && (
                       <>
                         <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
                         <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
@@ -273,7 +268,6 @@ export const Projects: React.FC = React.memo(() => {
                     )}
                   </Carousel>
                 ) : (
-                   // Fallback if no media gallery
                    <Box className="relative w-full aspect-video bg-muted rounded-lg overflow-hidden">
                      <Text className="absolute inset-0 flex items-center justify-center text-muted-foreground">No media available</Text>
                    </Box>

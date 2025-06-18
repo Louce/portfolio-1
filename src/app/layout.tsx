@@ -13,7 +13,8 @@ const inter = Inter({
   variable: '--font-inter' // CSS variable for Tailwind
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:9002'; // Fallback for local dev
+// IMPORTANT: In a real deployment, use process.env.NEXT_PUBLIC_SITE_URL
+const SITE_URL = 'http://localhost:9002'; // Replace with your actual production domain
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     siteName: 'Dendi Rivaldi Portfolio',
     images: [
       {
-        url: '/og-image.png', // Replace with your actual OG image path in /public
+        url: `${SITE_URL}/og-image.png`, // Ensure this image exists in /public
         width: 1200,
         height: 630,
         alt: 'Dendi Rivaldi - Portfolio Preview',
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Dendi Rivaldi - Developer Portfolio',
     description: 'Explore Dendi Rivaldi\'s projects in Python, automation, game development, and design.',
-    images: ['/og-image.png'], // Replace with your actual Twitter card image path in /public
+    images: [`${SITE_URL}/og-image.png`], // Ensure this image exists in /public
   },
   manifest: '/manifest.json',
   icons: {
@@ -84,6 +85,7 @@ export default function RootLayout({
           - /public/icons/apple-touch-icon.png
           - /public/icons/icon-192x192.png (referenced in manifest.json)
           - /public/icons/icon-512x512.png (referenced in manifest.json)
+          And /public/og-image.png
         */}
       </head>
       <body 
