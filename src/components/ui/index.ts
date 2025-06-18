@@ -34,6 +34,6 @@ export * from './Toast/toast';
 export * from './Toaster/toaster';
 export * from './Tooltip/tooltip';
 export * from './aceternity';
-export * from './3d-card'; // Added export for 3d-card
+export * from './3d-card'; // Ensured export for 3d-card
 // Removed exports for GlowingEffect, GlowingEffectDemo as they are no longer used.
 // Removed exports for Boxes and BackgroundBoxesDemo as they are no longer used.

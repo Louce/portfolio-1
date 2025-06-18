@@ -49,7 +49,7 @@ export const CardContainer = ({
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "py-0 flex items-center justify-center", // Adjusted padding for modal integration
+          "flex items-center justify-center", // Removed default py-20, to be controlled by consumer
           containerClassName
         )}
         style={{
@@ -86,7 +86,7 @@ export const CardBody = ({
   return (
     <div
       className={cn(
-        // Adjusted h-96 w-96 for modal integration
+        // Adjusted h-96 w-96 for modal integration, consumer controls actual size
         "[transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
         className
       )}
