@@ -22,7 +22,7 @@ const dynamicSubHeadlines = [
 ];
 
 const subHeadlineAnimation = {
-  initial: { opacity: 1, scale: 0.85, y: 10 },
+  initial: { opacity: 1, scale: 1, y: 0 }, // Ensures it starts visible and at final scale/position
   animate: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
   exit: { opacity: 0, scale: 0.85, y: -10, transition: { duration: 0.4, ease: "easeIn" } },
 };
@@ -123,25 +123,20 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
     <div className="relative flex flex-col h-full w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
       
       {visitorLocation && (
-        <motion.div
-          initial={{ opacity: 1, scale: 0.8, y: -10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.8, ease: "easeOut" }}
-          className="absolute top-4 left-0 right-0 flex justify-center z-10" 
+        <Flex 
+          align="center" 
+          justify="center" 
+          gap="0.375rem" 
+          className="absolute top-4 left-0 right-0 z-10 text-center" // Removed motion wrapper for instant appearance
           aria-label={`Visitor location: ${visitorLocation}`}
         >
-          <Flex align="center" justify="center" gap="0.375rem" className="text-center">
-            <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
-            <Text as="span" className="text-xs sm:text-sm text-foreground/70">{visitorLocation}</Text>
-          </Flex>
-        </motion.div>
+          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
+          <Text as="span" className="text-xs sm:text-sm text-foreground/70">{visitorLocation}</Text>
+        </Flex>
       )}
       
-      <motion.div 
+      <div // Changed from motion.div to div to remove entry animation
         className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 pointer-events-auto"
-        initial={{ opacity:1, scale: 0.9 }}
-        animate={{ opacity:1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.2, ease: "circOut" }}
       >
         <h1 className="text-center pt-16 md:pt-0">
           <span
@@ -194,12 +189,12 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
             View My Work
           </Button>
         </div>
-      </motion.div>
+      </div>
 
       <motion.button
-        initial={{ opacity: 1, scale: 0.7, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.2, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
+        initial={{ opacity: 1, scale: 0.7, y: 20 }} // Starts visible but small for pulse
+        animate={{ opacity: 1, scale: 1, y: 0 }}     // Pulse target state
+        transition={{ duration: 0.8, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Removed delay
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors z-10"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
@@ -211,4 +206,3 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
 });
 
 Hero.displayName = 'HeroSection';
-
