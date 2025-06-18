@@ -1,2 +1,1 @@
-
-export { TextGenerateEffect } from './text-generate-effect';
+export * from './text-generate-effect';
