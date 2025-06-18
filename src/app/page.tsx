@@ -3,16 +3,18 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Hero, About, Skills, Projects, Contact, Feedback } from '@/components/sections';
+import { Hero, About, Skills, Projects, Contact, Feedback, GlowingDemo } from '@/components/sections';
 import { PageNavigation } from '@/components/layout';
 import { Box } from '@/components/primitives';
-import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
+// Removed import for Boxes as it's no longer used globally
+import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon, SparklesIcon } from 'lucide-react';
 
 const sectionsConfig = [
   { id: 'hero', label: 'Home', component: Hero, icon: <HomeIcon className="w-full h-full" /> },
   { id: 'about', label: 'About', component: About, icon: <UserIcon className="w-full h-full" /> },
   { id: 'skills', label: 'Skills', component: Skills, icon: <CodeIcon className="w-full h-full" /> },
   { id: 'projects', label: 'Projects', component: Projects, icon: <LayersIcon className="w-full h-full" /> },
+  { id: 'glowing-demo', label: 'Glow Demo', component: GlowingDemo, icon: <SparklesIcon className="w-full h-full" /> },
   { id: 'contact', label: 'Contact', component: Contact, icon: <MailIcon className="w-full h-full" /> },
   { id: 'feedback', label: 'Feedback', component: Feedback, icon: <MessageSquareIcon className="w-full h-full" /> },
 ];
@@ -156,7 +158,7 @@ export default function PortfolioPage() {
 
   return (
     <Box className="relative h-screen w-screen overflow-hidden bg-background">
-      {/* CSS Grid Background - Global */}
+      {/* Global CSS Grid Background */}
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
       
       <PageNavigation 
