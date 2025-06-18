@@ -1,42 +1,46 @@
-"use client";
-import { useEffect } from "react";
-import { motion, stagger, useAnimate } from "framer-motion";
-import { cn } from "@/lib/utils";
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { motion, stagger, useAnimate } from 'framer-motion';
+import { cn } from '@/lib/utils';
+
+interface TextGenerateEffectProps {
+  words: string;
+  className?: string;
+  stagger?: number;
+  delay?: number;
+}
 
 export const TextGenerateEffect = ({
   words,
   className,
-  filter = true,
-  duration = 0.5,
-  stagger: staggerAmount = 0.02,
+  stagger: staggerTime = 0.2,
   delay = 0,
-}: {
-  words: string;
-  className?: string;
-  filter?: boolean;
-  duration?: number;
-  stagger?: number;
-  delay?: number;
-}) => {
+}: TextGenerateEffectProps) => {
   const [scope, animate] = useAnimate();
-  let wordsArray = words.split(" ");
+  const wordsArray = words.split(' ');
+  const animationPlayedRef = useRef(false);
 
   useEffect(() => {
-    if (scope.current) {
+    if (animationPlayedRef.current) return;
+
+    const timer = setTimeout(() => {
       animate(
-        "span",
+        'span',
         {
           opacity: 1,
-          filter: filter ? "blur(0px)" : "none",
         },
         {
-          duration: duration,
-          delay: stagger(staggerAmount, { startDelay: delay }),
+          duration: 2,
+          delay: stagger(staggerTime, { startDelay: delay }),
         }
       );
-    }
+      animationPlayedRef.current = true;
+    }, delay * 1000); // Convert delay to milliseconds for setTimeout
+
+    return () => clearTimeout(timer);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scope.current]); 
+  }, [animate, delay, staggerTime, scope]);
 
   const renderWords = () => {
     return (
@@ -45,13 +49,9 @@ export const TextGenerateEffect = ({
           return (
             <motion.span
               key={word + idx}
-              className="opacity-0" 
-              style={{
-                filter: filter ? "blur(10px)" : "none",
-                display: "inline-block", 
-              }}
+              className="dark:text-white text-black opacity-0"
             >
-              {word}{idx !== wordsArray.length - 1 ? "\u00A0" : ""}
+              {word}{' '}
             </motion.span>
           );
         })}
@@ -60,8 +60,12 @@ export const TextGenerateEffect = ({
   };
 
   return (
-    <div className={cn(className)}> 
-        {renderWords()}
+    <div className={cn('font-bold', className)}>
+      <div className="mt-4">
+        <div className=" dark:text-white text-black leading-snug tracking-wide">
+          {renderWords()}
+        </div>
+      </div>
     </div>
   );
 };
