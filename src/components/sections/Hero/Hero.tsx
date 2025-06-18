@@ -7,7 +7,7 @@ import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
 import { TextGenerateEffect } from '@/components/ui/aceternity/text-generate-effect';
-import { Boxes } from '@/components/ui/background-boxes'; // Import the new Boxes component
+// Boxes component is now global, removed from here
 
 interface HeroProps {
   onNavigate: (sectionId: string) => void;
@@ -48,7 +48,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
           } else {
             console.warn(errorMsg);
           }
-          setVisitorLocation("Location: Unknown"); // User-friendly message
+          setVisitorLocation("Location: Unknown");
           return; 
         }
         const data = await response.json();
@@ -70,17 +70,17 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
             setVisitorLocation(locationString);
           } else {
             console.warn('IPWHOIS API did not return expected country data.');
-            setVisitorLocation("Location: Unknown"); // User-friendly message
+            setVisitorLocation("Location: Unknown");
           }
         } else if (data && data.success === false) {
            console.warn('IPWHOIS API reported failure:', data.message);
-           setVisitorLocation("Location: Unknown"); // User-friendly message
+           setVisitorLocation("Location: Unknown");
         } else {
-          setVisitorLocation("Location: Unknown"); // User-friendly message
+          setVisitorLocation("Location: Unknown");
         }
       } catch (error) {
         console.warn('Could not fetch visitor location:', error);
-        setVisitorLocation("Location: Unknown"); // User-friendly message
+        setVisitorLocation("Location: Unknown");
       }
     };
 
@@ -100,13 +100,13 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   };
 
   return (
-    <div className="relative flex flex-col h-full w-full items-center justify-center bg-background text-foreground transition-bg overflow-hidden">
-      <Boxes className="absolute inset-0 z-0" />
-      {/* Optional: Radial gradient mask like in the demo if desired */}
-      {/* <div className="absolute inset-0 w-full h-full bg-background z-10 [mask-image:radial-gradient(transparent_20%,white)] pointer-events-none" /> */}
+    // Removed relative, overflow-hidden, and bg-background. SectionWrapper handles padding.
+    // The z-index for content is handled in page.tsx for the motion.div wrapping sections
+    <div className="flex flex-col h-full w-full items-center justify-center text-foreground transition-bg">
+      {/* Boxes component removed from here, it's now global in page.tsx */}
       
       <motion.div 
-        className="relative flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 z-20"
+        className="relative flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4" // Removed z-20, handled by parent
         initial={{ opacity:0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -185,7 +185,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 1.5, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer z-20 p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors" // Removed z-20
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
       >

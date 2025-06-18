@@ -137,7 +137,7 @@ export const Skills: React.FC = React.memo(() => {
   
 
   return (
-    <SectionWrapper id="skills" className="bg-gradient-to-b from-background to-slate-900/50">
+    <SectionWrapper id="skills" className="bg-transparent"> {/* Changed background to transparent */}
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-10 md:space-y-16">
         <Text as="h2" variant="default" className="font-headline text-4xl md:text-5xl font-bold text-primary text-center">
           My Expertise

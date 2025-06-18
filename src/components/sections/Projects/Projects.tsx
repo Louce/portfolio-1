@@ -160,13 +160,13 @@ export const Projects: React.FC = React.memo(() => {
   
   useEffect(() => {
     if (selectedProject) {
-      setIsPlaying(true); // Reset to autoplay when a new project modal opens
+      setIsPlaying(true); 
     }
   }, [selectedProject]);
 
 
   return (
-    <SectionWrapper id="projects" className="bg-background">
+    <SectionWrapper id="projects" className="bg-transparent"> {/* Changed background to transparent */}
       <Flex direction="col" align="center" justify="start" className="h-full w-full space-y-10 md:space-y-16 pt-16 md:pt-24 pb-8">
         <Text as="h2" variant="default" className="font-headline text-4xl md:text-5xl font-bold text-primary text-center">
           Featured Projects
@@ -285,5 +285,3 @@ export const Projects: React.FC = React.memo(() => {
 });
 
 Projects.displayName = 'ProjectsSection';
-
-    

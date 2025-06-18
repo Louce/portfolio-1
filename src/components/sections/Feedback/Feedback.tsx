@@ -5,13 +5,13 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui'; // Updated import
+import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui';
 import { UserPlus, LogIn, LogOut, MessageSquarePlus, MessageSquareText, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface FeedbackItem {
   id: string;
-  title: string; // Optional: Title for feedback
+  title: string; 
   content: string;
   submitter: string;
   timestamp: number;
@@ -31,7 +31,7 @@ export const Feedback: React.FC = () => {
   const [view, setView] = useState<ViewState>('login');
 
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState(''); // Note: Password is not stored or validated securely.
+  const [password, setPassword] = useState(''); 
 
   const [feedbackTitle, setFeedbackTitle] = useState('');
   const [feedbackContent, setFeedbackContent] = useState('');
@@ -90,7 +90,7 @@ export const Feedback: React.FC = () => {
 
     const newFeedbackItem: FeedbackItem = {
       id: Date.now().toString(),
-      title: feedbackTitle.trim() || "General Feedback", // Default title if none provided
+      title: feedbackTitle.trim() || "General Feedback", 
       content: feedbackContent,
       submitter: currentUser,
       timestamp: Date.now(),
@@ -123,7 +123,7 @@ export const Feedback: React.FC = () => {
   
   if (!isMounted) {
     return (
-      <SectionWrapper id="feedback" className="bg-gradient-to-br from-background to-slate-900/60">
+      <SectionWrapper id="feedback" className="bg-transparent"> {/* Changed background to transparent */}
         <Flex align="center" justify="center" className="h-full">
           <Text>Loading Feedback Section...</Text>
         </Flex>
@@ -247,7 +247,7 @@ export const Feedback: React.FC = () => {
   );
 
   return (
-    <SectionWrapper id="feedback" className="bg-gradient-to-br from-background to-slate-900/60 overflow-y-auto">
+    <SectionWrapper id="feedback" className="bg-transparent"> {/* Changed background to transparent */}
       <Flex direction="col" align="center" justify="start" className="h-auto min-h-full w-full py-8">
         {!currentUser && view === 'login' && renderAuthForm('login')}
         {!currentUser && view === 'signup' && renderAuthForm('signup')}

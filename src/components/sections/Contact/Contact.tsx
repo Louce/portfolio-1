@@ -11,7 +11,6 @@ import { Flex, Text, Box } from '@/components/primitives';
 import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui';
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
 import { Mail, Send } from 'lucide-react';
-// Removed toast import as it's not used for success notifications
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -32,12 +31,7 @@ export const Contact: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
-    // console.log('Form submitted successfully:', data); // Removed for cleaner presentation
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // For a real submission, you might show a success message here (e.g., using a toast or a dedicated state).
-    // For this prototype, we'll just reset the form.
     form.reset();
   };
 
@@ -48,7 +42,7 @@ export const Contact: React.FC = () => {
   ];
 
   return (
-    <SectionWrapper id="contact" className="bg-gradient-to-br from-background to-slate-900/70">
+    <SectionWrapper id="contact" className="bg-transparent"> {/* Changed background to transparent */}
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-10 md:space-y-12">
         <Text as="h2" variant="default" className="font-headline text-4xl md:text-5xl font-bold text-primary text-center">
           Get In Touch
