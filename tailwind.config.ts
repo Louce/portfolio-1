@@ -72,6 +72,10 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontSize: {
+        'display-lg': '120px',
+        'display-xl': '150px',
+      },
       keyframes: {
         'accordion-down': {
           from: {
