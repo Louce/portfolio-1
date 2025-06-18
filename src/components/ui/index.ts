@@ -33,4 +33,6 @@ export * from './Textarea/textarea';
 export * from './Toast/toast';
 export * from './Toaster/toaster';
 export * from './Tooltip/tooltip';
-export * from './aceternity'; // Added export for Aceternity UI components
+export * from './aceternity';
+export * from './background-boxes'; // Export the new Boxes component
+export * from './background-boxes-demo'; // Export the demo component

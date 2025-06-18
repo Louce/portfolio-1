@@ -7,7 +7,7 @@ import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
 import { TextGenerateEffect } from '@/components/ui/aceternity/text-generate-effect';
-import { AuroraBackground } from '@/components/ui/aceternity/aurora-background';
+import { Boxes } from '@/components/ui/background-boxes'; // Import the new Boxes component
 
 interface HeroProps {
   onNavigate: (sectionId: string) => void;
@@ -48,7 +48,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
           } else {
             console.warn(errorMsg);
           }
-          setVisitorLocation("Location: Unknown");
+          setVisitorLocation("Location: Unknown"); // User-friendly message
           return; 
         }
         const data = await response.json();
@@ -70,17 +70,17 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
             setVisitorLocation(locationString);
           } else {
             console.warn('IPWHOIS API did not return expected country data.');
-            setVisitorLocation("Location: Unknown");
+            setVisitorLocation("Location: Unknown"); // User-friendly message
           }
         } else if (data && data.success === false) {
            console.warn('IPWHOIS API reported failure:', data.message);
-           setVisitorLocation("Location: Unknown");
+           setVisitorLocation("Location: Unknown"); // User-friendly message
         } else {
-          setVisitorLocation("Location: Unknown");
+          setVisitorLocation("Location: Unknown"); // User-friendly message
         }
       } catch (error) {
         console.warn('Could not fetch visitor location:', error);
-        setVisitorLocation("Location: Unknown");
+        setVisitorLocation("Location: Unknown"); // User-friendly message
       }
     };
 
@@ -100,9 +100,13 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   };
 
   return (
-    <AuroraBackground showRadialGradient={true} className="relative text-center overflow-hidden">
+    <div className="relative flex flex-col h-full w-full items-center justify-center bg-background text-foreground transition-bg overflow-hidden">
+      <Boxes className="absolute inset-0 z-0" />
+      {/* Optional: Radial gradient mask like in the demo if desired */}
+      {/* <div className="absolute inset-0 w-full h-full bg-background z-10 [mask-image:radial-gradient(transparent_20%,white)] pointer-events-none" /> */}
+      
       <motion.div 
-        className="relative flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4"
+        className="relative flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 z-20"
         initial={{ opacity:0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -112,7 +116,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.8 }}
-            className="absolute top-4 left-0 right-0 flex justify-center z-20"
+            className="absolute top-4 left-0 right-0 flex justify-center" 
             aria-label={`Visitor location: ${visitorLocation}`}
           >
             <Flex align="center" justify="center" gap="0.375rem" className="text-center">
@@ -187,7 +191,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
       >
         <ChevronDown className="h-10 w-10 text-primary transition-opacity hover:opacity-75" />
       </motion.button>
-    </AuroraBackground>
+    </div>
   );
 });
 
