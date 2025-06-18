@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Hero, About, Skills, Projects, Contact, Feedback } from '@/components/sections';
 import { PageNavigation } from '@/components/layout';
 import { Box } from '@/components/primitives';
-// Removed: import { Boxes } from '@/components/ui/background-boxes'; 
 import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
 
 const sectionsConfig = [
@@ -157,8 +156,8 @@ export default function PortfolioPage() {
 
   return (
     <Box className="relative h-screen w-screen overflow-hidden bg-background">
-      {/* Removed: <Boxes className="absolute inset-0 z-0" /> */}
-      {/* Optional: Mask for Boxes if desired: <div className="absolute inset-0 w-full h-full bg-transparent z-[1] [mask-image:radial-gradient(transparent_60%,white)] pointer-events-none" /> */}
+      {/* CSS Grid Background - Global */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
       
       <PageNavigation 
         sections={sectionsConfig} 
