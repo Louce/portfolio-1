@@ -25,9 +25,9 @@ export default function RootLayout({
       <body className="font-body antialiased bg-background text-foreground min-h-screen">
         <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="system" // Keeps respecting system preference initially
             enableSystem
-            disableTransitionOnChange
+            disableTransitionOnChange={false} // Ensure transitions are enabled
         >
           <ThemeSwitcher />
           {children}
