@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
-import { TextGenerateEffect } from '@/components/ui/aceternity/text-generate-effect';
+
 
 export interface HeroProps {
   onNavigate: (sectionId: string) => void;
@@ -32,10 +32,12 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
   const [currentSubHeadlineIndex, setCurrentSubHeadlineIndex] = useState(0);
   const [startCyclingAnimation, setStartCyclingAnimation] = useState(false);
 
+
   useEffect(() => {
+    // Start cycling animation after a short delay
     const animationTimer = setTimeout(() => {
       setStartCyclingAnimation(true);
-    }, 500); 
+    }, 500); // Adjust delay as needed, e.g., 500ms
 
     const fetchVisitorLocation = async () => {
       try {
@@ -117,6 +119,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
     ));
   };
 
+
   return (
     <div className="relative flex flex-col h-full w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
       
@@ -142,12 +145,14 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
         )}
 
         <h1 className="text-center pt-16 md:pt-0">
-          <TextGenerateEffect
-            words="Dendi Rivaldi"
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-display-lg xl:text-display-xl font-bold tracking-tight text-primary text-center leading-none"
-            stagger={0.05}
-            delay={0.3}
-          />
+          >
+            Dendi Rivaldi
+          </motion.span>
         </h1>
 
         <div className="text-center h-8 sm:h-10 md:h-12">

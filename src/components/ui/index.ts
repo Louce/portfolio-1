@@ -33,7 +33,8 @@ export * from './Textarea/textarea';
 export * from './Toast/toast';
 export * from './Toaster/toaster';
 export * from './Tooltip/tooltip';
-export * from './aceternity';
+
 export * from './3d-card';
 // GlowingEffect, GlowingEffectDemo exports are removed
 // Boxes and BackgroundBoxesDemo exports are removed
+// Aceternity UI components (like TextGenerateEffect) are removed
