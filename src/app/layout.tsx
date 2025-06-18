@@ -24,9 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}> {/* Apply font variable to html tag */}
+    <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
-        {/* Removed direct Google Font links, next/font handles this */}
+        {/* next/font handles optimized font loading */}
       </head>
       <body 
         className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out"
