@@ -5,4 +5,3 @@ export { Feedback } from './Feedback/Feedback';
 export { Hero } from './Hero/Hero';
 export { Projects } from './Projects/Projects';
 export { Skills } from './Skills/Skills';
-export { GlowingDemo } from './GlowingDemo/GlowingDemo';
