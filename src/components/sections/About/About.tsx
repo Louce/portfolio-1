@@ -46,11 +46,12 @@ export const About: React.FC = React.memo(() => {
           <Box className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group bg-card/80 backdrop-blur-lg border border-white/10">
             <Image
               src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=600&q=80"
-              alt="Portrait of Dendi Rivaldi"
+              alt="Portrait of Dendi Rivaldi, Python, Automation, and Game Development enthusiast"
               data-ai-hint="developer portrait"
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110"
               priority 
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
               style={{ objectFit: 'cover' }}
             />
             <Box className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
@@ -100,7 +101,7 @@ export const About: React.FC = React.memo(() => {
             className="mt-6"
           >
             <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md transform hover:scale-105 transition-transform duration-300 rounded-lg">
-              <a href="/resume.pdf" download="DendiRivaldi_Resume.pdf" aria-label="Download Dendi Rivaldi's resume">
+              <a href="/DendiRivaldi_Resume.pdf" download="DendiRivaldi_Resume.pdf" aria-label="Download Dendi Rivaldi's resume">
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume
               </a>
