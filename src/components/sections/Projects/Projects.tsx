@@ -8,10 +8,10 @@ import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import {
   Button,
-  Dialog, DialogContent, DialogHeader, DialogTitle as ShadDialogTitle,
+  Dialog, DialogContent, DialogHeader, DialogTitle as ShadDialogTitle, DialogDescription as ShadDialogDescription,
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
-  CardContainer, CardBody, CardItem // Keep these for ProjectCard
+  CardContainer, CardBody, CardItem
 } from '@/components/ui';
 import { ExternalLink, Github, PlayIcon, PauseIcon, X as CloseIcon } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
@@ -94,7 +94,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="w-full h-full" // Ensure motion div allows CardContainer to fill it
+      className="w-full h-full"
     >
       <CardContainer className="inter-var h-full" containerClassName="h-full py-0">
         <CardBody className="bg-card/90 backdrop-blur-lg relative group/card hover:shadow-2xl hover:shadow-primary/40 dark:hover:shadow-primary/20 border-border/30 w-full h-full rounded-xl p-0 border flex flex-col overflow-hidden">
@@ -109,20 +109,22 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
               fill
               className="object-cover group-hover/card:scale-105 transition-transform duration-300"
               priority={project.id === 'project-1'}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </CardItem>
 
           <div className="flex-grow p-4 md:p-6 space-y-3 flex flex-col">
             <CardItem
+              as="h3" // Changed to h3 for semantic SEO
               translateZ="60"
-              className="font-headline text-xl md:text-2xl text-primary !w-auto"
+              className="font-headline text-xl md:text-2xl text-primary !w-auto max-w-full" // Added max-w-full
             >
               {project.title}
             </CardItem>
             <CardItem
               translateZ="50"
               as="p"
-              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto"
+              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto max-w-full" // Added max-w-full
             >
               {project.description}
             </CardItem>
@@ -179,9 +181,9 @@ export const Projects: React.FC = React.memo(() => {
 
   useEffect(() => {
     if (selectedProject) {
-      setIsPlaying(true); // Autoplay when modal opens
+      setIsPlaying(true);
     } else {
-      setIsPlaying(false); // Stop autoplay when modal closes
+      setIsPlaying(false); 
     }
   }, [selectedProject]);
 
@@ -203,16 +205,17 @@ export const Projects: React.FC = React.memo(() => {
               }
             }}
           >
-            <DialogContent className="max-w-3xl w-[95vw] md:w-full p-4 md:p-6 bg-card/80 backdrop-blur-lg border border-border/30 rounded-xl shadow-2xl overflow-y-auto max-h-[90vh]">
-              <DialogHeader className="mb-4">
+            <DialogContent className="max-w-3xl w-[95vw] md:w-full p-0 bg-card/80 backdrop-blur-lg border border-border/30 rounded-xl shadow-2xl overflow-y-auto max-h-[90vh]">
+              <DialogHeader className="p-4 md:p-6 border-b border-border/20 sticky top-0 bg-card/80 backdrop-blur-lg z-10">
                 <ShadDialogTitle className="text-2xl md:text-3xl font-headline text-primary">{selectedProject.title}</ShadDialogTitle>
-                 <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                <ShadDialogDescription className="sr-only">Details for project: {selectedProject.title}</ShadDialogDescription>
+                 <DialogPrimitive.Close className="absolute right-4 top-1/2 -translate-y-1/2 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
                     <CloseIcon className="h-5 w-5" />
                     <span className="sr-only">Close</span>
                 </DialogPrimitive.Close>
               </DialogHeader>
               
-              <Box className="space-y-4">
+              <Box className="space-y-4 p-4 md:p-6">
                 {selectedProject.mediaGallery && selectedProject.mediaGallery.length > 0 ? (
                   <Carousel
                     opts={{
@@ -234,6 +237,7 @@ export const Projects: React.FC = React.memo(() => {
                                 data-ai-hint={media.dataAiHint || selectedProject.coverDataAiHint}
                                 fill
                                 className="object-contain"
+                                sizes="(max-width: 768px) 90vw, 70vw"
                               />
                             )}
                             {media.type === 'video' && (
@@ -306,6 +310,3 @@ export const Projects: React.FC = React.memo(() => {
 });
 
 Projects.displayName = 'ProjectsSection';
-
-
-    
