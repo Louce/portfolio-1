@@ -6,9 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Hero, About, Skills, Projects, Contact, Feedback } from '@/components/sections';
 import { PageNavigation } from '@/components/layout';
 import { Box } from '@/components/primitives';
-import { Boxes } from '@/components/ui/background-boxes'; // Import Boxes
-// Icons for sectionsConfig are still needed if PageNavigation is ever adapted to use them,
-// but the original PageNavigation (dots) doesn't.
+import { Boxes } from '@/components/ui/background-boxes';
 import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
 
 const sectionsConfig = [
@@ -33,7 +31,7 @@ const sectionVariants = {
     transition: {
       type: "tween",
       ease: "easeOut",
-      duration: 0.3, // Faster transition
+      duration: 0.3,
     },
   },
   exit: (direction: number) => ({
@@ -43,7 +41,7 @@ const sectionVariants = {
     transition: {
       type: "tween",
       ease: "easeIn",
-      duration: 0.3, // Faster transition
+      duration: 0.3,
     },
   }),
 };
@@ -179,7 +177,7 @@ export default function PortfolioPage() {
           initial="initial"
           animate="animate"
           exit="exit"
-          className="absolute inset-0 w-full h-full z-10" // z-10 to be above Boxes but below UI like PageNavigation
+          className="absolute inset-0 w-full h-full z-10 pointer-events-none"
           onAnimationComplete={handleAnimationComplete}
           aria-live="polite"
         >

@@ -1,3 +1,4 @@
+
 'use client';
 
 import type React from 'react';
@@ -21,13 +22,13 @@ export const SectionWrapper: React.FC<SectionWrapperProps> = ({
       as="section"
       id={id}
       className={cn(
-        'min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden p-4 md:p-8',
+        'min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden p-4 md:p-8 bg-transparent', // bg-transparent is key here
         className
       )}
-      {...props}
+      {...props} // Outer section wrapper naturally inherits pointer-events: none
     >
       <Box
-        className="w-full max-w-6xl h-full flex flex-col items-center justify-center"
+        className="w-full max-w-6xl h-full flex flex-col items-center justify-center pointer-events-auto" // This container for content gets pointer-events: auto
       >
         {children}
       </Box>
