@@ -33,7 +33,5 @@ export * from './Textarea/textarea';
 export * from './Toast/toast';
 export * from './Toaster/toaster';
 export * from './Tooltip/tooltip';
-export * from './aceternity';
-export { GlowingEffect } from './glowing-effect';
-export { default as GlowingEffectDemo } from './glowing-effect-demo';
-// Removed exports for Boxes and BackgroundBoxesDemo as they are no longer used.
+// Removed aceternity export as aurora-background.tsx was deleted.
+// Removed exports for GlowingEffect and GlowingEffectDemo.
