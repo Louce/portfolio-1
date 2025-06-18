@@ -5,7 +5,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
-import { Flex, Text, Box } from '@/components/primitives';
+import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import { Button } from '@/components/ui';
 import { Download } from 'lucide-react';
 
@@ -34,7 +34,7 @@ export const About: React.FC = React.memo(() => {
   const aboutText = "I'm a passionate frontend architect dedicated to building intuitive, performant, and visually stunning web applications. With a keen eye for detail and a love for clean, scalable code, I transform complex problems into elegant user experiences. My philosophy revolves around the 'Crystal Cathedral' approach – crafting code that is as beautiful and robust as the final product.";
 
   return (
-    <SectionWrapper id="about" className="bg-transparent"> {/* Changed background to transparent */}
+    <SectionWrapper id="about" className="bg-transparent">
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
         <motion.div
           initial={{ opacity: 0, scale: 0.85, x: -50, rotate: -3 }} 
@@ -58,20 +58,9 @@ export const About: React.FC = React.memo(() => {
         </motion.div>
 
         <Flex direction="col" justify="center" className="w-full lg:w-3/5 space-y-6 text-center lg:text-left">
-          <motion.div
-            initial={{ opacity: 0, y: -30, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.2 }}
-          >
-            <Text 
-              as="h2" 
-              variant="default" 
-              className="font-headline text-4xl md:text-5xl font-bold text-primary mb-4"
-            >
-              About Me
-            </Text>
-          </motion.div>
+          <SectionTitle className="text-center lg:text-left mb-4">
+            About Me
+          </SectionTitle>
           
           <motion.div 
             variants={paragraphAnimation} 
@@ -79,7 +68,7 @@ export const About: React.FC = React.memo(() => {
             whileInView="visible" 
             viewport={{ once: true, amount: 0.2 }}
             transition={{delay: 0.3}} 
-            className="font-body text-lg md:text-xl text-foreground/90 leading-loose" // Increased line height
+            className="font-body text-lg md:text-xl text-foreground/90 leading-loose"
           >
             {aboutText.split(' ').map((word, index) => (
               <motion.span 
