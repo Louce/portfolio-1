@@ -114,6 +114,34 @@ Each component directory (icons, layout, primitives, sections, ui, hooks, lib) u
 -   **Styling**: Modify Tailwind CSS classes in components or update the theme variables in `src/app/globals.css`.
 -   **Images**: Placeholder images are sourced from Unsplash to provide a better visual starting point. You should replace these with your actual project visuals and your portrait. Look for `data-ai-hint` attributes for guidance on image content. Update Open Graph image (`og-image.png`) and icons in `/public`.
 -   **Social Links**: Already updated with Dendi Rivaldi's info.
--   **Resume**: Place your resume as `resume.pdf` in the `/public` directory. The download link will expect `DendiRivaldi_Resume.pdf`.
+-   **Resume**: Place your resume as `DendiRivaldi_Resume.pdf` in the `/public` directory.
+
+## Deployment to Vercel
+
+Deploying this Next.js application to Vercel is straightforward.
+
+1.  **Push to GitHub**:
+    *   Ensure your latest code is committed and pushed to a GitHub repository.
+
+2.  **Import Project in Vercel**:
+    *   Go to your Vercel dashboard and click "Add New... > Project".
+    *   Choose "Import Git Repository" and connect your GitHub account if you haven't already.
+    *   Select your `kineticfolio` repository.
+    *   Vercel will automatically detect that it's a Next.js project and configure most settings.
+
+3.  **Configure Environment Variables**:
+    *   For your **production domain**, you need to set the `NEXT_PUBLIC_SITE_URL` environment variable.
+        *   In your Vercel project settings, go to "Environment Variables".
+        *   Add a new variable:
+            *   **Name**: `NEXT_PUBLIC_SITE_URL`
+            *   **Value**: Your full production domain (e.g., `https://yourdomain.com` or `https://www.yourdomain.com`)
+            *   Ensure this is available for the **Production** environment (and optionally Preview/Development if you want to test with it).
+    *   Vercel automatically provides `NEXT_PUBLIC_VERCEL_URL` for preview deployments, which the application will use as a fallback if `NEXT_PUBLIC_SITE_URL` is not set (or if you want to check preview deployments).
+
+4.  **Deploy**:
+    *   Click the "Deploy" button in Vercel.
+    *   Vercel will build and deploy your application. You'll be provided with a URL once it's live.
+
+Your site should now be deployed! Vercel will automatically redeploy your site whenever you push changes to the connected GitHub branch (usually `main` or `master`).
 
 Enjoy your new portfolio!
