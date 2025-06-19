@@ -99,11 +99,11 @@ The project follows a specific folder structure to promote clarity and maintaina
 │       │   └── carousel.tsx
 │       └── ... (other ShadCN components)
 │       └── index.ts     // Barrel export for all UI components
-├── hooks/               // Custom React hooks (e.g., useToast.ts, use-mobile.tsx)
+├── hooks/               // Custom React hooks (e.g., use-mobile.tsx) // useToast.ts is removed
 │   └── index.ts         // Barrel export for hooks
 ├── lib/                 // Utility functions (utils.ts)
 │   └── index.ts         // Barrel export for lib utilities
-└── public/              // Static assets (e.g., resume.pdf, images, manifest.json, icons/)
+└── public/              // Static assets (e.g., DendiRivaldi_Resume.pdf, images, manifest.json, icons/)
 
 ```
 Each component directory (icons, layout, primitives, sections, ui, hooks, lib) utilizes an `index.ts` file for barrel exports, allowing for cleaner imports (e.g., `import { Button } from '@/components/ui';`).

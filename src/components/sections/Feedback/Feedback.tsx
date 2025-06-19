@@ -7,7 +7,7 @@ import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
 import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui';
 import { UserPlus, LogIn, LogOut, MessageSquarePlus, MessageSquareText, Trash2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from "@/components/ui/use-toast"; // Updated import
 
 interface FeedbackItem {
   id: string;
@@ -184,6 +184,14 @@ export const Feedback: React.FC = () => {
           <LogOut className="mr-2 h-4 w-4" /> Logout
         </Button>
       </Flex>
+
+      
+      <Box className="w-full max-w-3xl mx-auto px-4">
+         <Text className="text-sm text-center text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-600/50 dark:border-yellow-400/50 rounded-md p-2">
+            ⚠️ **DEMO NOTICE:** This feedback feature is for demonstration purposes only. No real accounts are created, and feedback is stored only in your browser's local storage. Data is not persistent or secure.
+         </Text>
+      </Box>
+      
 
       <Card className="w-full max-w-2xl mx-auto bg-card/70 backdrop-blur-md border border-border/30">
         <CardHeader>
