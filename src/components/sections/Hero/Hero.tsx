@@ -124,7 +124,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
       
       {visitorLocation && (
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9, y: -10 }}
+          initial={{ opacity: 1, scale: 0.9, y: -10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
           className="absolute top-4 left-0 right-0 z-10 text-center"
@@ -142,8 +142,8 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
       )}
       
       <motion.div 
-        initial={{ opacity: 0, scale: 0.85 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 1, scale: 0.85, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "circOut", delay: 0.2 }}
         className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 pointer-events-auto"
       >
