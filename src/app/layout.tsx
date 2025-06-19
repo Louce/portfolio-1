@@ -13,8 +13,23 @@ const inter = Inter({
   variable: '--font-inter' // CSS variable for Tailwind
 });
 
-// IMPORTANT: In a real deployment, use process.env.NEXT_PUBLIC_SITE_URL
-const SITE_URL = 'http://localhost:9002'; // Replace with your actual production domain
+// Helper function to determine the site URL
+const getSiteUrl = () => {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    // Ensure it starts with http, default to https if not
+    return process.env.NEXT_PUBLIC_SITE_URL.startsWith('http')
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : `https://${process.env.NEXT_PUBLIC_SITE_URL}`;
+  }
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+    // VERCEL_URL is just the domain, so prepend https
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
+  // Fallback for local development
+  return `http://localhost:${process.env.PORT || 9002}`;
+};
+
+const SITE_URL = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,11 +50,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Dendi Rivaldi - Python, Automation & Game Dev Portfolio',
     description: 'Discover the work of Dendi Rivaldi, a developer passionate about Python, automation, game creation, and design.',
-    url: SITE_URL,
+    url: SITE_URL, // Uses dynamic SITE_URL
     siteName: 'Dendi Rivaldi Portfolio',
     images: [
       {
-        url: `${SITE_URL}/og-image.png`, // Ensure this image exists in /public
+        url: `/og-image.png`, // Relative path, metadataBase will prefix it
         width: 1200,
         height: 630,
         alt: 'Dendi Rivaldi - Portfolio Preview',
@@ -52,7 +67,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Dendi Rivaldi - Developer Portfolio',
     description: 'Explore Dendi Rivaldi\'s projects in Python, automation, game development, and design.',
-    images: [`${SITE_URL}/og-image.png`], // Ensure this image exists in /public
+    images: [`/og-image.png`], // Relative path
   },
   manifest: '/manifest.json',
   icons: {
