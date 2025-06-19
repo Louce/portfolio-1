@@ -47,7 +47,7 @@ const sectionsConfig: SectionConfig[] = [
 
 const sectionVariants = {
   initial: (direction: number) => ({
-    opacity: 0,
+    opacity: 1, // Changed from 0 to 1
     y: direction > 0 ? "100vh" : "-100vh",
     scale: 1,
   }),
@@ -62,7 +62,7 @@ const sectionVariants = {
     },
   },
   exit: (direction: number) => ({
-    opacity: 0,
+    opacity: 1, // Changed from 0 to 1
     y: direction < 0 ? "100vh" : "-100vh",
     scale: 1,
     transition: {
