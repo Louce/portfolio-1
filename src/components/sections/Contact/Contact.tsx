@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
 import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui';
-import { useToast } from '@/hooks'; // Corrected import path
+import { useToast } from "@/components/ui/use-toast"; // Updated import
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
 import { Mail, Send } from 'lucide-react';
 
