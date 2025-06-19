@@ -21,8 +21,9 @@ const dynamicSubHeadlines = [
   "CODE // BUILD // PLAY"
 ];
 
+// Reverted cycling animation: Enters visible, exits with fade and scale
 const subHeadlineAnimation = {
-  initial: { opacity: 1, scale: 1, y: 0 }, // Ensures it starts visible and at final scale/position
+  initial: { opacity: 1, scale: 1, y: 0 }, // Item starts visible and at its final position/scale for the entry of the cycle
   animate: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
   exit: { opacity: 0, scale: 0.85, y: -10, transition: { duration: 0.4, ease: "easeIn" } },
 };
@@ -127,7 +128,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
           align="center" 
           justify="center" 
           gap="0.375rem" 
-          className="absolute top-4 left-0 right-0 z-10 text-center" // Removed motion wrapper for instant appearance
+          className="absolute top-4 left-0 right-0 z-10 text-center"
           aria-label={`Visitor location: ${visitorLocation}`}
         >
           <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
@@ -135,7 +136,10 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
         </Flex>
       )}
       
-      <div // Changed from motion.div to div to remove entry animation
+      <motion.div // Main content block animation - "pop out" from middle
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, ease: "circOut", delay: 0.2 }}
         className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 pointer-events-auto"
       >
         <h1 className="text-center pt-16 md:pt-0">
@@ -156,7 +160,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
               <motion.span
                 key={currentSubHeadlineIndex}
                 variants={subHeadlineAnimation}
-                initial="initial"
+                initial="initial" // Will use the variant's initial
                 animate="animate"
                 exit="exit"
                 className="block text-xl sm:text-2xl md:text-3xl font-light text-foreground/80 tracking-wider text-center"
@@ -189,12 +193,12 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
             View My Work
           </Button>
         </div>
-      </div>
+      </motion.div>
 
       <motion.button
-        initial={{ opacity: 1, scale: 0.7, y: 20 }} // Starts visible but small for pulse
-        animate={{ opacity: 1, scale: 1, y: 0 }}     // Pulse target state
-        transition={{ duration: 0.8, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} // Removed delay
+        initial={{ opacity: 1, scale: 0.7, y: 20 }} 
+        animate={{ opacity: 1, scale: 1, y: 0 }}     
+        transition={{ duration: 0.8, repeat: Infinity, repeatType: 'reverse', ease:'easeInOut' }} 
         className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors z-10"
         onClick={() => onNavigate('about')}
         aria-label="Scroll to about section"
