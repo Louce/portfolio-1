@@ -14,19 +14,19 @@ import { Hero } from '@/components/sections';
 
 // Dynamically import other sections
 const About = dynamic(() => import('@/components/sections').then(mod => mod.About), {
-  suspense: true, loading: () => <SectionLoader />
+  loading: () => <SectionLoader />
 });
 const Skills = dynamic(() => import('@/components/sections').then(mod => mod.Skills), {
-  suspense: true, loading: () => <SectionLoader />
+  loading: () => <SectionLoader />
 });
 const Projects = dynamic(() => import('@/components/sections').then(mod => mod.Projects), {
-  suspense: true, loading: () => <SectionLoader />
+  loading: () => <SectionLoader />
 });
 const Contact = dynamic(() => import('@/components/sections').then(mod => mod.Contact), {
-  suspense: true, loading: () => <SectionLoader />
+  loading: () => <SectionLoader />
 });
 const Feedback = dynamic(() => import('@/components/sections').then(mod => mod.Feedback), {
-  suspense: true, loading: () => <SectionLoader />
+  loading: () => <SectionLoader />
 });
 
 interface SectionConfig {
@@ -47,7 +47,7 @@ const sectionsConfig: SectionConfig[] = [
 
 const sectionVariants = {
   initial: (direction: number) => ({
-    opacity: 1, // Changed from 0 to 1
+    opacity: 1,
     y: direction > 0 ? "100vh" : "-100vh",
     scale: 1,
   }),
@@ -62,7 +62,7 @@ const sectionVariants = {
     },
   },
   exit: (direction: number) => ({
-    opacity: 1, // Changed from 0 to 1
+    opacity: 1,
     y: direction < 0 ? "100vh" : "-100vh",
     scale: 1,
     transition: {
