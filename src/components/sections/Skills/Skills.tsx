@@ -4,7 +4,8 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
-import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
+import { Flex, Text, Box } from '@/components/primitives';
+import { SectionTitle } from '@/components/common'; // Updated import
 import { cn } from '@/lib';
 import { CodeIcon as Code, Bot, Gamepad2, Palette, Globe, TerminalSquareIcon as Terminal } from 'lucide-react';
 
@@ -111,7 +112,7 @@ const SkillNode: React.FC<SkillNodeProps> = React.memo(({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="text-xs md:text-sm mt-2 text-primary-foreground/80 hidden md:block pointer-events-none" // Added pointer-events-none
+            className="text-xs md:text-sm mt-2 text-primary-foreground/80 hidden md:block pointer-events-none"
           >
             {skill.description}
           </motion.p>
@@ -181,7 +182,7 @@ export const Skills: React.FC = React.memo(() => {
         <SectionTitle>My Expertise</SectionTitle>
         <div 
           className="w-full max-w-3xl" 
-          onMouseLeave={handleNodeMouseLeave} // Deactivate if mouse leaves the entire grid
+          onMouseLeave={handleNodeMouseLeave}
         >
           <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
             {coreSkillsData.map((skill) => (
@@ -191,7 +192,7 @@ export const Skills: React.FC = React.memo(() => {
                 onMouseEnter={() => handleNodeMouseEnter(skill.id)}
                 onMouseLeave={handleNodeMouseLeave}
                 onFocus={() => handleNodeFocus(skill.id)}
-                onBlur={handleNodeMouseLeave} // Use mouse leave logic for blur deactivation
+                onBlur={handleNodeMouseLeave} 
                 isActive={hoveredSkillId === skill.id}
               />
             ))}

@@ -5,14 +5,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
-import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
+import { Flex, Text, Box } from '@/components/primitives';
+import { SectionTitle } from '@/components/common'; // Updated import
 import {
   Button,
   Dialog, DialogContent, DialogHeader, DialogTitle as ShadDialogTitle, DialogDescription as ShadDialogDescription,
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
-  CardContainer, CardBody, CardItem
-} from '@/components/ui';
+  CardContainer, CardBody, CardItem // These should come from the new 3d-card path
+} from '@/components/ui'; // CardContainer etc. will be updated if they are moved
 import { ExternalLink, Github, PlayIcon, PauseIcon, X as CloseIcon } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
 import type { CarouselApi } from '@/components/ui/Carousel/carousel';

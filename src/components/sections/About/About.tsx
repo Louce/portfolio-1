@@ -5,7 +5,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
-import { Flex, Text, Box, SectionTitle } from '@/components/primitives';
+import { Flex, Text, Box } from '@/components/primitives';
+import { SectionTitle } from '@/components/common'; // Updated import
 import { Button } from '@/components/ui';
 import { Download } from 'lucide-react';
 

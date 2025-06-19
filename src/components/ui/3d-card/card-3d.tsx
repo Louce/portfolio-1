@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils"; // Standardized path
+import { cn } from "@/lib/utils"; 
 
 import React, {
   createContext,
@@ -49,7 +49,7 @@ export const CardContainer = ({
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "flex items-center justify-center", // Removed default py-20, to be controlled by consumer
+          "flex items-center justify-center", 
           containerClassName
         )}
         style={{
@@ -86,7 +86,6 @@ export const CardBody = ({
   return (
     <div
       className={cn(
-        // Adjusted h-96 w-96 for modal integration, consumer controls actual size
         "[transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
         className
       )}
@@ -147,7 +146,6 @@ export const CardItem = ({
   );
 };
 
-// Create a hook to use the context
 export const useMouseEnter = () => {
   const context = useContext(MouseEnterContext);
   if (context === undefined) {
