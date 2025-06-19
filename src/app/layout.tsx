@@ -87,6 +87,9 @@ export default function RootLayout({
           - /public/icons/icon-512x512.png (referenced in manifest.json)
           And /public/og-image.png
         */}
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://ipwhois.app" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body 
         className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out"

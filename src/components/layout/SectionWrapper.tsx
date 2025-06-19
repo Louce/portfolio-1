@@ -1,6 +1,4 @@
 
-'use client';
-
 import type React from 'react';
 import { cn } from '@/lib';
 import { Box } from '@/components/primitives';
