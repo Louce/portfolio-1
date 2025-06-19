@@ -9,7 +9,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "update:interactive": "npm update",
+    "audit:fix": "npm audit fix"
   },
   "dependencies": {
     "@genkit-ai/googleai": "^1.8.0",
