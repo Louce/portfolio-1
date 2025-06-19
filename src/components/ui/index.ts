@@ -32,6 +32,6 @@ export * from './Textarea/textarea';
 export * from './Toast/toast';
 export * from './Toaster/toaster';
 export * from './Tooltip/tooltip';
+export * from './use-toast'; // Standard ShadCN hook
 
-export * from './3d-card';
-// Removed commented-out exports
+export * from './3d-card'; // Now references the new subdirectory
