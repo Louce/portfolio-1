@@ -1,93 +1,99 @@
-# KineticFolio: Building a Stunning One-Page Portfolio (In-Depth Tutorial)
+# KineticFolio: A Senior Developer's Masterclass (Video Script)
 
-**(Video formatting: This script is designed for a 30-minute runtime, assuming a steady but clear speaking pace of ~150 words per minute. Visual cues and on-screen actions are explicitly described for a non-developer presenter.)**
-
----
-
-### [CHAPTER] (0:00) Introduction: From Static Page to Interactive Masterpiece
-
-**[Video Start: Energetic, inspiring background music fades in. The screen shows a dynamic, full-screen recording of the final KineticFolio website. The camera smoothly scrolls, showcasing the hero text animation, the sections gracefully animating into view, the 3D project cards tilting on hover, and the AI feedback analysis in action. The overall impression is polished, professional, and alive.]**
-
-"Hey everyone, and welcome to the channel! My name is Dendi, and if you're a developer, I want you to think about the last portfolio website you looked at. Was it clean? Professional? Probably. But was it... memorable? Did it feel like an experience, or did it feel like a static digital resume?
-
-That's the exact question that led to the project we're going to build, from the ground up, in this video.
-
-What if a portfolio could be more? What if it could be an interactive art piece, something that tells a story and showcases your skills not just with words, but through the very experience of using it?
-
-In this in-depth, 30-minute tutorial, we are going to build this exact application: **KineticFolio**. It's a visually captivating, one-page portfolio designed around a philosophy I call 'Kinetic Elegance'. By the end of this video, you will not only have this incredible project, but you will deeply understand the 'why' behind the 'how' from a senior developer's perspective. You'll learn to harness the full-stack power of **Next.js** and its App Router. You'll learn to build completely custom, responsive designs at lightning speed with **Tailwind CSS**. You'll master my absolute favorite way to handle components with **ShadCN UI**. You'll orchestrate breathtaking, production-grade animations with **Framer Motion**. And, as a final 'wow' factor, you'll even integrate a powerful **Genkit** AI feature to make your project stand out from the crowd.
-
-This is a big one, packed with professional, real-world techniques. If that sounds good to you, do me a quick favor and hit that like button and make sure you're subscribed to the channel, because we're about to cover a lot of ground. The full, final source code for the project is available on GitHub, and you'll find that link in the description below so you can follow along or check your work.
-
-Alright, let's get right into it and set up our foundation."
+**Video Format Notes:**
+*   **Target Runtime:** 30 minutes.
+*   **Presenter:** This script is a word-for-word monologue. The tone should be that of an experienced, friendly senior developer guiding a junior colleague.
+*   **Visuals:** Specific on-screen actions and visuals are explicitly described in `[ACTION]` and `[ON-SCREEN]` blocks.
 
 ---
 
-### [CHAPTER] (2:45) Part 1: The Foundation - Project Setup & Tech Stack Deep Dive
+### **(0:00) Chapter 1: Introduction - Beyond the Static Portfolio**
 
-**[On Screen: A clean, empty terminal window.]**
+**[ON-SCREEN: Start with a polished, full-screen screen capture of the final, deployed KineticFolio website. The camera smoothly scrolls through the page, showcasing the hero text animation, sections animating into view, the 3D project cards tilting on hover, and the AI feedback analysis in action. The overall impression should be fluid, professional, and visually captivating. Energetic, inspiring background music fades in and then lowers to a background level as the presenter begins.]**
 
-"Alright, every great project starts with a solid foundation. Let's get our project bootstrapped. I'm here in my terminal, and we're going to use the official `create-next-app` command, which is the standard way to start any new Next.js project. So, type this with me:
+**[PRESENTER]:**
+"Hey everyone, and welcome to the channel! My name is Dendi, and if you're a developer, I want you to think about your portfolio. Is it just a digital resume? A static list of projects? Or is it a true reflection of your craft?
+
+That's the exact question that led to the project we're going to build, from the ground up, in this video. What if a portfolio could be more? What if it could be an interactive experience, something that showcases your skills not just with words, but through the very act of using it?
+
+In this in-depth, 30-minute masterclass, we are going to build this exact application: **KineticFolio**. It's a visually stunning, one-page portfolio designed around a philosophy I call 'Kinetic Elegance'. By the end of this video, you will not only have this incredible project, but you will deeply understand the 'why' behind the 'how' from a senior developer's perspective. You'll learn to harness the full-stack power of **Next.js** and its App Router. You'll build completely custom, responsive designs at lightning speed with **Tailwind CSS**. You'll master my absolute favorite way to handle components with **ShadCN UI**. You'll orchestrate breathtaking, production-grade animations with **Framer Motion**. And, as a final 'wow' factor, you'll even integrate a powerful **Genkit** AI feature to make your project stand out.
+
+This is a big one, packed with professional, real-world techniques. The full, final source code is available on GitHub, and you'll find that link in the description below so you can follow along or check your work.
+
+Alright, let's get right into it."
+
+---
+
+### **(2:30) Chapter 2: The Foundation - Architecture & Setup**
+
+**[ON-SCREEN: A clean, empty terminal window.]**
+
+**[PRESENTER]:**
+"Every great project starts with a solid foundation. We'll begin by bootstrapping our project using the standard `create-next-app` command."
+
+**[ACTION]:**
+In the terminal, type and execute the following command.
 
 ```bash
 npx create-next-app@latest kineticfolio
 ```
 
-We're calling our project `kineticfolio`.
+**[PRESENTER]:**
+"This CLI will ask a series of questions that are critical for our setup. We're making professional choices right from the start."
 
-Now, this command-line interface will ask us a series of questions that are absolutely critical for getting our setup right from the very beginning. Let's walk through them.
+**[ON-SCREEN: Show the `create-next-app` prompts appearing one by one.]**
 
--   'Would you like to use TypeScript?' **Absolutely, yes.** For any project of this complexity, TypeScript is non-negotiable. It provides static typing, which catches bugs before they ever make it to the browser and makes our code infinitely more maintainable.
--   'Would you like to use ESLint?' **Yes.** This is our code linter. It will enforce a consistent code style and help us avoid common pitfalls.
--   'Would you like to use Tailwind CSS?' **A definite yes.** This is our styling engine, and it's central to the entire design philosophy of this project.
--   'Would you like to use the `src/` directory?' **Yes.** This is a common convention for keeping our application code neatly organized and separated from configuration files in the root.
--   'Would you like to use the App Router?' **This is the most important one. YES.** The App Router is the modern, powerful, and recommended way to build Next.js apps. It enables React Server Components, nested layouts, and a host of performance optimizations that this entire tutorial is built around.
--   Finally, you can say 'No' to customizing the default import alias. The `@/*` alias it sets up for us is perfect.
+**[PRESENTER]:**
+-   "First, 'Would you like to use TypeScript?' **Absolutely, yes.** For a project of this complexity, TypeScript is non-negotiable for catching bugs and ensuring maintainability.
+-   "ESLint?' **Yes.** This enforces a consistent, clean code style.
+-   "Tailwind CSS?' **A definite yes.** This is our styling engine.
+-   "`src/` directory?' **Yes.** This is a professional convention for organizing our application code.
+-   "App Router?' **This is the most important one. YES.** The App Router enables React Server Components and is the foundation of our modern, performant architecture.
+-   "And finally, say 'No' to customizing the default import alias. The `@/*` it provides is perfect."
 
-While that's installing all of our initial dependencies, let's quickly talk about why this specific stack is so powerful and how these pieces fit together.
+**[ON-SCREEN: Show the installation process completing. Then, open the new `kineticfolio` directory in VS Code. The terminal should be visible at the bottom.]**
 
-**Next.js with the App Router** is our application's entire skeleton and nervous system. It's a full-stack React framework. This means we're not just building a frontend; we're building a complete web application. By using the App Router, we get access to React Server Components. This is a game-changer. It means we can write components that render on the server, fetch data on the server, and send only the resulting HTML to the client. This dramatically reduces the amount of JavaScript the user has to download, leading to a much faster, more performant website.
+**[PRESENTER]:**
+"With our project created, let's open it in our code editor. Now we'll set up **ShadCN UI**. This isn't a typical component library you install from npm. It's a game-changer. You use its CLI to copy the full source code of beautifully designed, accessible components directly into your project. This gives us the speed of pre-built components with 100% control to customize them. It's the best of both worlds."
 
-**Tailwind CSS** is our styling engine. It’s a utility-first CSS framework. What that means is, instead of writing traditional CSS in separate files, we're going to use small, single-purpose classes directly in our JSX. This might seem strange at first, but it allows us to build completely custom, professional designs without ever leaving our component files, which massively speeds up development.
-
-And finally, **ShadCN UI**. This is the part that might be new to you, and honestly, it's a game-changer in the React ecosystem. Okay, the installation is done. Let's `cd kineticfolio` and open it up in VS Code."
-
-**[On Screen: The newly created project is now open in VS Code. The terminal is visible at the bottom.]**
-
-"Now, to set up ShadCN, we'll run its initialization command in the integrated terminal:
+**[ACTION]:**
+In the integrated terminal within VS Code, run the ShadCN initialization command.
 
 ```bash
 npx shadcn-ui@latest init
 ```
 
-It's going to ask you a few questions to configure itself for our project. It's smart enough to detect our setup, so the defaults it suggests are usually perfect. Let's press Enter through the prompts. It will detect we're using TypeScript, it will suggest 'Default' and 'Neutral' for the base color theme, it will find our `src/app/globals.css` file for styling, and—this is critical—it will ask if we want to use CSS Variables for theming. **You absolutely want to say yes to this.** This is the secret to creating our beautiful light and dark modes.
+**[PRESENTER]:**
+"It's going to ask a few questions. The defaults are perfect for our setup, so just press Enter through the prompts. It will detect TypeScript, suggest 'Default' and 'Neutral' for the theme, and find our `globals.css` file. Crucially, ensure you say **yes** to using CSS Variables for theming. This is the secret to our light and dark modes."
 
-Once that's done, you'll see it has created two things: a `components.json` file to store our configuration, and a `src/lib/utils.ts` file which contains a small but mighty helper function called `cn` that we'll use to merge our Tailwind classes.
+**[ON-SCREEN: Show the `components.json` and `src/lib/utils.ts` files being created.]**
 
-Now for the magic. Shadcn is not a typical component library you install from npm. Instead, you use its command-line tool to **copy the source code** of beautifully designed, accessible components directly into your project. This means **we own the code**. We have 100% control to customize it.
+**[PRESENTER]:**
+"Now for the magic. We'll add all the components we'll need for this entire portfolio in one go. You can find this full command in the project's `README.md` file."
 
-Let's add all the components we'll need for this entire portfolio project in one go. This command is a bit long, but you can find it in the project's `README.md` file on GitHub. In your terminal, run this exact command:
+**[ACTION]:**
+In the terminal, run the following command to add all necessary UI components.
 
 ```bash
 npx shadcn-ui@latest add button card sheet input textarea label toast form badge carousel accordion alert-dialog avatar dialog dropdown-menu popover progress radio-group scroll-area select separator slider switch table tabs tooltip
 ```
 
-**[Presenter executes the command, and the terminal output is shown on screen.]**
+**[PRESENTER]:**
+"Look at that! If you now open your `src/components/ui` folder, it's populated with the full source code for every single one of those components. We own this code. We can change anything we want.
 
-Look at that! If you now open your `src/components/ui` folder, it's now populated with the full, un-minified source code for every single one of those components. This is the power and flexibility we're going to leverage throughout this build. We have the speed of using pre-built components with the complete control of writing them from scratch. It's the best of both worlds.
-
-Okay, our foundation is set. It's time to start building."
+Our foundation is set. It's time to define our visual identity."
 
 ---
 
-### [CHAPTER] (8:30) Part 2: Global Styles & Root Layout
+### **(7:00) Chapter 3: Global Styles & Root Layout**
 
-**[On Screen: VS Code is focused on `src/app/globals.css`. The file is mostly empty except for the default `@tailwind` directives.]**
+**[ON-SCREEN: VS Code is focused on the file `src/app/globals.css`. It should contain the default Tailwind and Shadcn boilerplate.]**
 
-"Before we build our first component, we need to define the soul of our application: the theme. A consistent and professional color palette is what separates amateur projects from professional ones. Let's open the file at **`src/app/globals.css`**. This is where we'll define all of our site-wide styles.
+**[PRESENTER]:**
+"Before we build our first component, we need to define the soul of our application: the theme. A professional color palette is what separates amateur projects from professional ones. We'll do this in `src/app/globals.css` by defining our colors using CSS variables. This is the modern way to handle theming and is essential for light and dark modes."
 
-We're going to define all of our colors here using CSS variables, which is the modern and correct way to handle theming, especially for supporting both light and dark modes. I want you to replace the entire contents of `src/app/globals.css` with this exact code block.
-
-**[On Screen: Display the full code for `src/app/globals.css` as it's being pasted in.]**
+**[ACTION]:**
+Replace the entire contents of `src/app/globals.css` with the following code.
 
 ```css
 @tailwind base;
@@ -200,13 +206,21 @@ We're going to define all of our colors here using CSS variables, which is the m
 }
 ```
 
-Let's break this down. Inside the `@layer base` directive, we have a `:root` selector. This defines the variables for our default theme, which is the light theme. We're defining variables for `--background`, `--foreground` (which is the text color), `--primary` (our main brand color), `--accent`, and so on. Notice that I'm using HSL values, which stands for Hue, Saturation, and Lightness. Using HSL makes it incredibly easy to tweak our color palette later.
+**[PRESENTER]:**
+"Let's break this down. The `:root` selector defines our default light theme colors using HSL values—Hue, Saturation, and Lightness—which are super easy to tweak. The `.dark` selector right below it contains all the overrides for our dark theme.
 
-Right below that, we have the `.dark` selector. This block contains all the color overrides for our dark theme. When the `dark` class is applied to the `<html>` element, all of these variables will take precedence. And at the bottom, inside `@layer utilities`, we've added a custom `.bg-grid-pattern` class. This is an application of the **DRY principle—Don't Repeat Yourself**. Instead of writing a complex `linear-gradient` in our JSX, we've abstracted it into a reusable utility class, making our component code much cleaner.
+"At the bottom, inside `@layer utilities`, we've added a custom `.bg-grid-pattern` class. This is an application of the **DRY principle—Don't Repeat Yourself**. Instead of writing a complex `linear-gradient` in our JSX, we've abstracted it into a reusable utility class. This is a senior-level practice that keeps our component code clean."
 
-Next, let's open **`src/app/layout.tsx`**. This is the root shell of our entire application. Every single page and component will be wrapped by this layout. We need to replace the boilerplate in this file with our own fully configured layout.
+**[PRESENTER]:**
+"Next, let's open **`src/app/layout.tsx`**. This is the root shell of our entire application. Every page will be wrapped by this layout."
 
-**[On Screen: Display the full code for `src/app/layout.tsx` as it's being pasted in.]**
+**[ON-SCREEN: Show the file `src/app/layout.tsx` and its default content.]**
+
+**[PRESENTER]:**
+"We need to replace the boilerplate in here with our own fully configured layout. This will include our optimized web font, providers for theming and tooltips, and our main structural components."
+
+**[ACTION]:**
+Replace the contents of `src/app/layout.tsx` with the following.
 
 ```typescript
 import type { Metadata, Viewport } from 'next';
@@ -217,27 +231,118 @@ import { CookieConsentBanner, ThemeSwitcher, Navbar } from '@/components/layout'
 import { Inter } from 'next/font/google';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// Configure Inter font
+/**
+ * Configures the Inter font from Google Fonts with a CSS variable.
+ * This is the modern, performance-optimized way to handle web fonts in Next.js.
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/fonts
+ */
 const inter = Inter({ 
   subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter'
+  display: 'swap', // Use swap for better perceived performance
+  variable: '--font-inter' // CSS variable for Tailwind
 });
 
+/**
+ * Dynamically determines the site's base URL.
+ * Prioritizes environment variables for production/preview deployments (Vercel)
+ * and falls back to localhost for local development. This is crucial for correct
+ * metadata generation (e.g., Open Graph URLs).
+ * @returns {string} The full base URL of the site.
+ */
 const getSiteUrl = () => {
-  // ... (rest of the code)
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.startsWith('http')
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : `https://${process.env.NEXT_PUBLIC_SITE_URL}`;
+  }
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
+  return `http://localhost:${process.env.PORT || 3000}`;
 };
+
 const SITE_URL = getSiteUrl();
 
+/**
+ * Defines the static metadata for the application.
+ * This object is used by Next.js to generate <meta> tags for SEO and social sharing.
+ * It includes title, description, keywords, Open Graph, and Twitter card information.
+ * The `metadataBase` is crucial for resolving relative image paths into absolute URLs.
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata
+ */
 export const metadata: Metadata = {
-  // ... (rest of the code)
+  metadataBase: new URL(SITE_URL),
+  title: 'Dendi Rivaldi - Python, Automation & Game Dev Enthusiast',
+  description: 'Portfolio of Dendi Rivaldi, showcasing skills in Python, automation, game development, and design. Explore projects and connect.',
+  keywords: ['Dendi Rivaldi', 'Python Developer', 'Automation Engineer', 'Game Developer', 'Design Enthusiast', 'Portfolio', 'Software Developer'],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    title: 'Dendi Rivaldi - Python, Automation & Game Dev Portfolio',
+    description: 'Discover the work of Dendi Rivaldi, a developer passionate about Python, automation, game creation, and design.',
+    url: SITE_URL,
+    siteName: 'Dendi Rivaldi Portfolio',
+    images: [
+      {
+        url: `/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Dendi Rivaldi - Portfolio Preview',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Dendi Rivaldi - Developer Portfolio',
+    description: 'Explore Dendi Rivaldi\'s projects in Python, automation, game development, and design.',
+    images: [`/og-image.png`],
+  },
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/icons/favicon.ico', 
+    apple: '/icons/apple-touch-icon.png', 
+  },
 };
 
+/**
+ * Configures the viewport for the application.
+ * This sets the initial scale and theme colors for the browser chrome,
+ * adapting to the user's system preference for light or dark mode.
+ * @see https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ */
 export const viewport: Viewport = {
-  // ... (rest of the code)
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [ 
+    { media: '(prefers-color-scheme: light)', color: 'hsl(220 50% 98%)' }, // light background
+    { media: '(prefers-color-scheme: dark)', color: 'hsl(0 0% 7%)' },  // dark background
+  ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+/**
+ * The root layout component for the entire application.
+ * This component wraps every page, providing a consistent structure and global context providers.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {React.ReactNode} props.children - The child components to be rendered within the layout (i.e., the current page).
+ * @returns {React.ReactElement} The root HTML structure of the application.
+ */
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} scroll-smooth`}>
       <head>
@@ -245,7 +350,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://ipwhois.app" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out">
+      <body 
+        className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out"
+      >
         <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -266,126 +373,180 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-Let's walk through this file. At the top, we're importing the 'Inter' font from `next/font/google`. This is an amazing feature of Next.js that optimizes web fonts for us automatically. Then we have the `metadata` object, which is critical for SEO.
+**[PRESENTER]:**
+"Inside the `<body>`, we're setting up our global providers. `<ThemeProvider>` handles our light and dark mode switching. We'll need to install that package."
 
-Inside the `<body>` tag, this is where we set up our global providers. We wrap everything with the `<ThemeProvider>` from a package called `next-themes`. We'll need to install that: `npm install next-themes`. This provider will manage switching between light and dark mode for us. Inside that, we wrap everything in a `<TooltipProvider>` from Shadcn, which enables all the tooltips across our app. I've also added our `<Toaster>` for notifications, and placeholders for our `<Navbar>`, `<ThemeSwitcher>`, and `<CookieConsentBanner>` which we will build or already exist as components.
+**[ACTION]:**
+In the terminal, run `npm install next-themes`.
 
-With our global styles, fonts, and root layout configured, we can finally start building the actual page."
+**[PRESENTER]:**
+"Then we have `<TooltipProvider>` from Shadcn, which enables all tooltips across the app. I've also placed our `<Navbar>`, `<ThemeSwitcher>`, and other layout components here. These will appear on every page.
+
+With our global styles and layout configured, we can start building the page itself."
 
 ---
 
-### [CHAPTER] (13:00) Part 3: The Core Build - Crafting the Projects Section
+### **(12:30) Chapter 4: The Core Build - The Projects Section**
 
-**[On Screen: VS Code sidebar, highlighting the `src/data` and `src/components/sections/Projects` directories.]**
+**[ON-SCREEN: Show the VS Code sidebar. Highlight the `src/data` and `src/components/sections/Projects` directories that will be created.]**
 
-"Okay, this is where the magic happens. We're going to build out what is arguably the most visually impressive and technically complex section of our portfolio: the Projects section.
+**[PRESENTER]:**
+"Okay, this is where the magic happens. We're going to build the most visually impressive part of our portfolio: the Projects section. But before we write a single line of component code, we're going to apply a foundational software design principle: **Separation of Concerns**. Our React components should only be responsible for *how things look*. They should not be responsible for the *data* they display.
 
-But before we write a single line of component code, we're going to apply a foundational software design principle: **Separation of Concerns**. This principle states that different parts of our application should be responsible for different things. Our React components should be responsible for *presentation*—how things look. They should not be responsible for storing the *data* they display.
+To achieve this, we'll create a dedicated data layer."
 
-To achieve this, we'll create a dedicated data layer. Let's create a new file at **`src/data/projectsData.ts`**. This is where our project data will live, completely separate from our UI. Paste this code into the new file.
-
-**[On Screen: Display the full code for `src/data/projectsData.ts`.]**
+**[ACTION]:**
+Create a new file at `src/data/projectsData.ts`. Paste the following code into the new file.
 
 ```typescript
+/**
+ * @fileOverview
+ * This file contains the static data for the "Featured Projects" section.
+ * Separating data from the component logic makes the project easier to maintain and update.
+ */
+
+/**
+ * Represents a media item (image or video) in a project's gallery.
+ * @property {'image' | 'video'} type - The type of media.
+ * @property {string} url - The URL of the media asset.
+ * @property {string} [dataAiHint] - Optional hint for AI tools or image generation services.
+ */
 export interface MediaItem {
-  // ... (interface definition)
+  type: 'image' | 'video';
+  url: string;
+  dataAiHint?: string;
 }
 
+/**
+ * Represents a single project to be displayed in the portfolio.
+ * @property {string} id - A unique identifier for the project.
+ * @property {string} title - The title of the project.
+ * @property {string} description - A short, one-sentence description for the project card.
+ * @property {string} [longDescription] - A more detailed description for the project's detail view.
+ * @property {string} coverImageUrl - The URL for the main image shown on the project card.
+ * @property {string} [coverDataAiHint] - Optional hint for the cover image.
+ * @property {MediaItem[]} mediaGallery - An array of images and videos for the detail view carousel.
+ * @property {string[]} techStack - An array of technologies used in the project.
+ * @property {string} [liveSiteUrl] - Optional URL to the live, deployed project.
+ * @property {string} [githubUrl] - Optional URL to the project's source code repository.
+ */
 export interface Project {
-  // ... (interface definition)
+  id: string;
+  title: string;
+  description: string;
+  longDescription?: string;
+  coverImageUrl: string;
+  coverDataAiHint?: string;
+  mediaGallery: MediaItem[];
+  techStack: string[];
+  liveSiteUrl?: string;
+  githubUrl?: string;
 }
 
+/**
+ * The definitive array of project data used to populate the Projects section.
+ * To add, remove, or edit a project, modify this array.
+ */
 export const projectsData: Project[] = [
   {
     id: 'project-1',
     title: 'E-commerce Platform X',
     description: 'A modern, responsive e-commerce platform with advanced features.',
-    // ... rest of the project data
+    longDescription: 'Developed a full-stack e-commerce solution focusing on user experience, performance, and scalability. Integrated payment gateways, order management, and a recommendation engine. The frontend was built with Next.js and Tailwind CSS, while the backend used Node.js and PostgreSQL.',
+    coverImageUrl: 'https://images.unsplash.com/photo-1522204523234-8729aa6e3d54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
+    coverDataAiHint: 'ecommerce website',
+    mediaGallery: [
+      { type: 'image', url: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'product grid' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1599544158439-952a123389ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'checkout page' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'user dashboard' },
+    ],
+    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Stripe'],
+    liveSiteUrl: '#',
+    githubUrl: '#',
   },
-  // ... other projects
+  //... other projects are here, keep them as is
 ];
 ```
 
-By defining our data and its TypeScript types here, we make our project incredibly easy to update. Want to add a new project? You just edit this array. You don't have to touch any of our complex React components. This is a senior-level practice that pays huge dividends in maintainability.
+**[PRESENTER]:**
+"By defining our data and its TypeScript types here, our project becomes incredibly easy to update. Want to add a new project? You just edit this array. You don't have to touch any of our complex React components. This is a senior-level practice that pays huge dividends."
 
-Now, let's build the UI. For this section, we'll apply another key principle: the **Single Responsibility Principle**. This means each component should do one thing, and do it well. Our `Projects.tsx` file is getting too big if it has to manage the grid of projects *and* the complex logic for the detail view. So we'll break it down.
+**[PRESENTER]:**
+"Now, let's build the UI. We'll apply another key principle: the **Single Responsibility Principle**. Each component should do one thing, and do it well. Our `Projects.tsx` file shouldn't manage the project grid *and* the complex detail view. So, we'll break it down."
 
-First, let's create the card itself. Create a new file at **`src/components/sections/Projects/components/ProjectCard.tsx`**. This component's only job is to display one project summary. Paste this code into the file.
+**[ACTION]:**
+Create a new file at `src/components/sections/Projects/components/ProjectCard.tsx`. Paste this code into the file.
 
-**[On Screen: Display the full code for `src/components/sections/Projects/components/ProjectCard.tsx`.]**
+```typescript
+'use client';
 
-```tsx
 import React from 'react';
 import { motion } from 'framer-motion';
-// ... other imports
+import Image from 'next/image';
+import { Flex } from '@/components/primitives';
+import {
+  Button,
+  Badge,
+  CardContainer, CardBody, CardItem,
+} from '@/components/ui';
 import type { Project } from '@/data/projectsData';
 
-interface ProjectCardProps {
-  project: Project;
-  onOpenSheet: (project: Project) => void;
-}
+// ... (JSDoc comments here)
 
 export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onOpenSheet }) => {
-  return (
-    <motion.div /* ... */ >
-      <CardContainer /* ... */>
-        <CardBody /* ... */>
-          {/* ... Card content using project prop ... */}
-          <CardItem>
-            <Button onClick={() => onOpenSheet(project)}>View Details</Button>
-          </CardItem>
-        </CardBody>
-      </CardContainer>
-    </motion.div>
-  );
+  //... component implementation
 });
 ProjectCard.displayName = 'ProjectCard';
 ```
+*(Presenter Note: Paste the full component code from the final project files.)*
 
-This `ProjectCard` is a perfect example of a presentational component. It receives data—the `project` object—as a prop, and its job is to render it. We're using Framer Motion for the entrance animation and our custom 3D card components for that amazing tilt effect.
+**[PRESENTER]:**
+"This `ProjectCard` is a perfect presentational component. It receives data—the `project` object—as a prop, and its only job is to render it. We're using Framer Motion for the entrance animation and our custom 3D card components for that amazing tilt effect."
 
-Next, we'll create the component for the detailed view that slides out. Create a new file at **`src/components/sections/Projects/components/ProjectDetailSheet.tsx`**. This component will be responsible for everything inside the side panel, including the image carousel. Paste this code into it.
+**[PRESENTER]:**
+"Next, we'll create the component for the detailed view that slides out. This component will encapsulate all the complex logic for the image carousel."
 
-**[On Screen: Display the full code for `src/components/sections/Projects/components/ProjectDetailSheet.tsx`.]**
+**[ACTION]:**
+Create a new file at `src/components/sections/Projects/components/ProjectDetailSheet.tsx`. Paste this code into it.
 
-```tsx
+```typescript
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
-// ... other imports
-import type { Project } from '@/data/projectsData';
+import Image from 'next/image';
+import {
+  Button,
+  Sheet, SheetContent, SheetHeader, SheetTitle as ShadSheetTitle, SheetDescription as ShadSheetDescription, SheetClose, SheetFooter,
+  Badge,
+  Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
+  Tooltip, TooltipContent, TooltipTrigger
+} from '@/components/ui';
+import type { CarouselApi } from '@/components/ui/Carousel/carousel';
+import { Box, Flex, Text } from '@/components/primitives';
+import { ExternalLink, Github, PlayIcon, PauseIcon } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
+import type { Project } from '@/data/projectsData';
 
-// ... (interface definition)
+// ... (JSDoc comments and component implementation)
 
 export const ProjectDetailSheet: React.FC<ProjectDetailSheetProps> = ({ project, isOpen, onOpenChange }) => {
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | undefined>();
-  const [isPlaying, setIsPlaying] = useState(true);
-
-  const autoplayPlugin = useRef(
-    Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })
-  );
-
-  // ... (useEffect hooks for autoplay logic)
-
-  return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      {project && (
-        <SheetContent /* ... */>
-          {/* ... All the sheet content, including the Carousel ... */}
-        </SheetContent>
-      )}
-    </Sheet>
-  );
+  // ... component implementation
 };
 ProjectDetailSheet.displayName = "ProjectDetailSheet";
 ```
+*(Presenter Note: Paste the full component code from the final project files.)*
 
-Notice how we've encapsulated all the complex state management for the carousel—like its autoplay state—entirely within this one component. This is the Single Responsibility Principle in action.
 
-Finally, we can assemble everything in our main section file. Open **`src/components/sections/Projects/Projects.tsx`**. Its code is now beautifully simple. Replace its contents with this:
+**[PRESENTER]:**
+"Notice how we've encapsulated all the complex state management for the carousel entirely within this one component. This is the Single Responsibility Principle in action."
 
-**[On Screen: Display the final, simplified code for `src/components/sections/Projects/Projects.tsx`.]**
+**[PRESENTER]:**
+"Finally, we can assemble everything in our main section file. Open **`src/components/sections/Projects/Projects.tsx`**. Its code is now beautifully simple because all the hard work is delegated to its children."
 
-```tsx
+**[ACTION]:**
+Replace the contents of `src/components/sections/Projects/Projects.tsx` with this final, clean version.
+
+```typescript
 'use client';
 import React, { useState } from 'react';
 import { SectionWrapper } from '@/components/layout';
@@ -394,10 +555,20 @@ import { SectionTitle } from '@/components/common';
 import { projectsData, type Project } from '@/data/projectsData';
 import { ProjectCard, ProjectDetailSheet } from './components';
 
+// ... (JSDoc comments)
+
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  // ... (handler functions)
+  const handleOpenSheet = (project: Project) => {
+    setSelectedProject(project);
+  };
+  
+  const handleSheetOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setSelectedProject(null);
+    }
+  };
 
   return (
     <SectionWrapper id="projects" className="bg-background">
@@ -418,21 +589,22 @@ export const Projects: React.FC = React.memo(() => {
 Projects.displayName = 'ProjectsSection';
 ```
 
-Look how clean that is! This component is now a "container" component. Its only job is to manage state (`selectedProject`) and compose its smaller children. This architecture is clean, maintainable, and incredibly easy to reason about.
+**[PRESENTER]:**
+"Look how clean that is! This component is now a 'container' component. Its only job is to manage state and compose its smaller children. This architecture is clean, maintainable, and incredibly easy to reason about."
 
 ---
 
-### [CHAPTER] (24:00) Part 4: The "Wow" Factor - Integrating Genkit AI
+### **(22:00) Chapter 5: The "Wow" Factor - AI-Powered Analysis**
 
-**[On Screen: VS Code is focused on `src/ai/flows/review-feedback-flow.ts`.]**
+**[ON-SCREEN: Show the file `src/ai/flows/review-feedback-flow.ts`.]**
 
-"Okay, our portfolio is already looking incredible. But what if we could add a truly standout feature? Let's add some AI.
+**[PRESENTER]:**
+"Our portfolio is already looking incredible. But let's add a truly standout feature: AI. We have a Feedback section that lets users leave comments. We're going to add a button that allows the portfolio owner to get an instant AI-powered analysis of that feedback. We'll use **Genkit**, Google's open-source framework for building with generative AI."
 
-We have a Feedback section in our app. Right now, it just collects feedback from users and stores it in their browser's local storage. We can take it to the next level by adding a button that allows the portfolio owner to get an instant AI-powered analysis of any piece of feedback.
+**[PRESENTER]:**
+"Let's look at the AI flow, defined in **`src/ai/flows/review-feedback-flow.ts`**. This is a server-side file, which is critical for security."
 
-Using Google's **Genkit**, an open-source framework for building with generative AI, we can add a server-side AI flow. Let's open the file at **`src/ai/flows/review-feedback-flow.ts`**. Let me show you the code.
-
-**[On Screen: Display the full code for `review-feedback-flow.ts`.]**
+**[ON-SCREEN: Briefly scroll through `src/ai/flows/review-feedback-flow.ts`.]**
 
 ```typescript
 'use server';
@@ -444,104 +616,61 @@ import {googleAI} from '@genkit-ai/googleai';
 // ... (Zod schema definitions)
 
 export async function reviewFeedback(input: ReviewFeedbackInput): Promise<ReviewFeedbackOutput> {
-  return reviewFeedbackFlow(input);
+  //...
 }
 
 const reviewPrompt = ai.definePrompt({
-  // ... (prompt definition)
+  // ...
 });
 
 const reviewFeedbackFlow = ai.defineFlow(
-  // ... (flow definition)
+  // ...
 );
 ```
 
-At the very top of the file, we have the string `'use server';`. This is a Next.js directive. It tells Next.js that this code should only ever run on the server, keeping our API keys and logic secure.
+**[PRESENTER]:**
+"At the very top, the `'use server';` directive tells Next.js this code should only ever run on the server, keeping our API keys secure. We use a library called **Zod** to define the exact shape of the JSON object we expect the AI to return. This is called structured prompting, and it's a senior-level best practice that makes our AI interactions type-safe and reliable."
 
-First, we define our input and output shapes using a library called **Zod**. We're creating a `ReviewFeedbackOutputSchema` that tells the AI we expect to receive a perfectly structured JSON object back. Using Zod like this is a senior-level best practice that makes our interactions with the AI type-safe and reliable.
+**[PRESENTER]:**
+"Now, how do we use this from our frontend? We don't call it directly. We apply another architectural principle and create an abstraction layer—a dedicated service. The job of our UI components is to display things. The job of our state management hooks is to manage state. The job of this new service will be to handle data persistence—in our case, reading and writing from the browser's `localStorage`."
 
-Next, we define the prompt itself using `ai.definePrompt`. We pass our Zod schemas and give the model its instructions. This is called structured prompting, and it's the key to getting reliable output from an LLM.
+**[ON-SCREEN: Show the file `src/services/feedbackService.ts`.]**
 
-Now, how do we use this from our frontend? This is where our architectural principles come into play again. We're not going to call this AI flow directly from our UI components. We're going to create an abstraction layer—a dedicated service.
+**[PRESENTER]:**
+"This file, `src/services/feedbackService.ts`, encapsulates all our `localStorage` logic. Why do this? Because our components shouldn't care *how* data is stored. By creating this service, we can swap `localStorage` for a real database like Firebase in the future by *only changing this one file*. The rest of our app remains untouched. This is a powerful abstraction."
 
-Create a new file at **`src/services/feedbackService.ts`**. This file's only job is to handle all data persistence—in our case, reading and writing from the browser's `localStorage`. Paste this code in.
+**[PRESENTER]:**
+"This makes our custom hook at **`src/hooks/use-feedback-store.ts`** much cleaner. It no longer touches `localStorage` directly. Instead, it calls our new service."
 
-**[On Screen: Display the code for `src/services/feedbackService.ts`.]**
+**[ON-SCREEN: Show the file `src/hooks/use-feedback-store.ts`, highlighting a call to `feedbackService`.]**
 
-```typescript
-'use client';
-// ... (JSDoc comments)
-import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
-// ...
-export const getCurrentUser = (): string | null => {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem(LOCAL_STORAGE_KEYS.LOGGED_IN_USER);
-};
-// ... (rest of the service functions)
-```
-
-Why do this? Because our React components shouldn't care *how* data is stored. By creating this service, we can swap out `localStorage` for a real database like Firebase in the future by *only changing this one file*. The rest of our app remains untouched. This is a powerful abstraction.
-
-Notice the `LOCAL_STORAGE_KEYS` import. We created a file at **`src/lib/constants.ts`** to store all our `localStorage` keys. This prevents "magic strings" and ensures we don't make a typo somewhere.
-
-Now, our custom React hook at **`src/hooks/use-feedback-store.ts`** becomes much cleaner. It no longer touches `localStorage` directly. Instead, it calls our new service.
-
-**[On Screen: Display the code for `src/hooks/use-feedback-store.ts`.]**
-
-```typescript
-'use client';
-// ... imports, including `feedbackService`
-export const useFeedbackStore = () => {
-  // ... state definitions
-  const [currentUser, setCurrentUser] = useState<string | null>(null);
-
-  useEffect(() => {
-    setIsMounted(true);
-    const user = feedbackService.getCurrentUser(); // Uses the service
-    if (user) {
-      setCurrentUser(user);
-      setUserFeedback(feedbackService.getFeedbackForUser(user)); // Uses the service
-    }
-  }, []);
-
-  const login = useCallback((username: string, type: 'login' | 'signup') => {
-    feedbackService.loginUser(username); // Uses the service
-    setCurrentUser(username);
-    setUserFeedback(feedbackService.getFeedbackForUser(username));
-  }, []);
-  // ... other functions also use the service
-};
-```
-
-This is a perfect example of Separation of Concerns. The **Component** (`Feedback.tsx`) handles the view. The **Hook** (`useFeedbackStore.ts`) manages UI state. The **Service** (`feedbackService.ts`) handles data persistence. The **AI Flow** (`review-feedback-flow.ts`) handles the AI logic. Each part has one clear job.
-
-Finally, let's go back to our main section component, **`src/components/sections/Feedback/Feedback.tsx`**. In this file, in our `handleAiReview` function, we can now simply `import { reviewFeedback }` from our AI flow and `await` it as if it were a normal function. Next.js's Server Actions feature handles all the complex networking and security for us automatically. It's the power of modern, integrated web development."
+**[PRESENTER]:**
+"This is a perfect example of Separation of Concerns. The **Component** handles the view. The **Hook** manages UI state. The **Service** handles data persistence. The **AI Flow** handles the AI logic. Each part has one clear job."
 
 ---
 
-### [CHAPTER] (28:00) Final Touches & Deployment
+### **(27:00) Chapter 6: Deployment & Final Thoughts**
 
-**[On Screen: Browser showing the finished, polished application. Then, switch to the Vercel dashboard.]**
+**[ON-SCREEN: Browser showing the finished, polished application. Then, switch to the Vercel dashboard.]**
 
-"And with that, the core development of our KineticFolio is complete! We've built an incredible application. It's responsive, thanks to Tailwind's utility classes. It's dynamic, thanks to Framer Motion. And most importantly, it's built on a professional, maintainable, and scalable architecture.
+**[PRESENTER]:**
+"And with that, the core development of our KineticFolio is complete! We've built an incredible application that's responsive, dynamic, and most importantly, built on a professional, maintainable architecture. Now, let's get it online. The absolute best place to host a Next.js app is **Vercel**."
 
-Now, what good is a world-class application if you can't share it with the world? Let's deploy it. Since our project is a Next.js app, the absolute best place to host it is **Vercel**, the company that created Next.js.
-
-The process is incredibly simple. First, make sure all of your code is committed and pushed to a GitHub repository. Then, sign in to your Vercel account, click 'Add New... > Project', and import that GitHub repository. Vercel will automatically detect that it's a Next.js project and configure all the build settings for you. It knows exactly how to build, optimize, and deploy this application for the best possible performance. All you have to do is hit 'Deploy', and in about a minute, your application will be live on the web with a shareable URL, protected by a free SSL certificate. It is truly that simple."
+**[PRESENTER]:**
+"The process is incredibly simple. First, make sure all your code is pushed to a GitHub repository. Then, in your Vercel dashboard, you'll 'Add New... > Project', and import that repository. Vercel automatically detects that it's a Next.js project and configures all the build settings for you. You just need to add your `NEXT_PUBLIC_SITE_URL` environment variable for production metadata, hit 'Deploy', and in about a minute, your application will be live on the web. It is truly that simple."
 
 ---
 
-### [CHAPTER] (29:30) Outro & What's Next
+### **(28:30) Outro**
 
-**[On Screen: Back to the finished application, maybe slowly cycling through the dark and light themes. A final slate with links appears.]**
+**[ON-SCREEN: Back to the finished application, perhaps slowly cycling through the dark and light themes. A final slate with links appears.]**
 
-"And there you have it! In just under 30 minutes, we went from an empty folder to a fully functional, beautifully animated, AI-enhanced web application built on an architecture that's ready for the real world.
+**[PRESENTER]:**
+"And there you have it! We went from an empty folder to a fully functional, beautifully animated, AI-enhanced web application built on a professional, real-world architecture.
 
-We learned how to set up a professional Next.js project. We learned how to use Tailwind CSS for styling and how to create a beautiful, custom theme. We mastered the Shadcn/UI workflow. We orchestrated complex animations with Framer Motion. And we applied key software design principles like **Separation of Concerns**, the **Single Responsibility Principle**, and **DRY** to create a codebase that is not just clean, but truly maintainable.
+We learned how to apply key software design principles like **Separation of Concerns**, the **Single Responsibility Principle**, and **DRY** to create a codebase that is not just clean, but truly maintainable.
 
-I really, really hope you found this tutorial valuable and that it's inspired you to build your own amazing projects. If you did, do me a huge favor and smash that like button—it genuinely helps the channel reach more people who could benefit from this content. Be sure to subscribe and turn on notifications so you don't miss future deep dives just like this one.
-
-The complete, finished source code for everything you saw today is linked right at the top of the description below. Go check it out, clone it, and make it your own. I would love to see what you build with these techniques, so please let me know in the comments, or tell me what you'd like to see me build next.
+I really hope you found this masterclass valuable. If you did, do me a huge favor and hit that like button—it genuinely helps the channel. Be sure to subscribe so you don't miss future deep dives just like this one. The complete, finished source code is linked right at the top of the description below. Go check it out, clone it, and make it your own. I would love to see what you build with these techniques.
 
 Thanks so much for watching, and I'll see you in the next one. Happy coding!"
 
