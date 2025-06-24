@@ -1,8 +1,6 @@
-
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
@@ -12,143 +10,13 @@ import {
   Sheet, SheetContent, SheetHeader, SheetTitle as ShadSheetTitle, SheetDescription as ShadSheetDescription, SheetClose, SheetFooter,
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
-  CardContainer, CardBody, CardItem,
   Tooltip, TooltipContent, TooltipTrigger
 } from '@/components/ui';
 import { ExternalLink, Github, PlayIcon, PauseIcon } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
 import type { CarouselApi } from '@/components/ui/Carousel/carousel';
-
-interface MediaItem {
-  type: 'image' | 'video';
-  url: string;
-  dataAiHint?: string;
-}
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  longDescription?: string;
-  coverImageUrl: string;
-  coverDataAiHint?: string;
-  mediaGallery: MediaItem[];
-  techStack: string[];
-  liveSiteUrl?: string;
-  githubUrl?: string;
-}
-
-const projectsData: Project[] = [
-  {
-    id: 'project-1',
-    title: 'E-commerce Platform X',
-    description: 'A modern, responsive e-commerce platform with advanced features.',
-    longDescription: 'Developed a full-stack e-commerce solution focusing on user experience, performance, and scalability. Integrated payment gateways, order management, and a recommendation engine. The frontend was built with Next.js and Tailwind CSS, while the backend used Node.js and PostgreSQL.',
-    coverImageUrl: 'https://images.unsplash.com/photo-1522204523234-8729aa6e3d54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
-    coverDataAiHint: 'ecommerce website',
-    mediaGallery: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'product grid' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1599544158439-952a123389ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'checkout page' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'user dashboard' },
-    ],
-    techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Stripe'],
-    liveSiteUrl: '#',
-    githubUrl: '#',
-  },
-  {
-    id: 'project-2',
-    title: 'Interactive Data Dashboard',
-    description: 'A real-time data visualization dashboard for business analytics.',
-    longDescription: 'Created an interactive dashboard that allows users to explore complex datasets through dynamic charts and graphs. Features include customizable widgets, data filtering, and report generation. Built with React, D3.js, and Framer Motion for smooth animations.',
-    coverImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
-    coverDataAiHint: 'data dashboard',
-    mediaGallery: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1611079838318-58d9657aff8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'main chart' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1534430480872-3498386e7856?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'map visualization' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'report export' },
-    ],
-    techStack: ['React', 'TypeScript', 'D3.js', 'Framer Motion', 'Python (Flask)'],
-    liveSiteUrl: '#',
-  },
-  {
-    id: 'project-3',
-    title: 'AI-Powered Content Generator',
-    description: 'A web application that uses AI to generate creative content.',
-    longDescription: 'This project leverages cutting-edge AI models to assist users in generating various forms of content, such as articles, social media posts, and scripts. The interface is designed to be intuitive and user-friendly, promoting a seamless creative workflow. Tech stack includes SvelteKit, Tailwind CSS, and Python with FastAPI for the AI backend.',
-    coverImageUrl: 'https://images.unsplash.com/photo-1555949963-ff980877a244?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
-    coverDataAiHint: 'ai application',
-    mediaGallery: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1587614203976-365c7d6297d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'generator ui' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1535378620166-273708d44e4c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'abstract brain' },
-    ],
-    techStack: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'Python', 'FastAPI', 'Genkit'],
-    githubUrl: '#',
-  },
-];
-
-const ProjectCard: React.FC<{ project: Project; onOpenSheet: (project: Project) => void }> = React.memo(({ project, onOpenSheet }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.2 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="w-full h-full"
-    >
-      <CardContainer className="inter-var h-full" containerClassName="h-full py-0">
-        <CardBody className="bg-card/90 backdrop-blur-lg relative group/card hover:shadow-2xl hover:shadow-primary/40 dark:hover:shadow-primary/20 border-border/30 w-full h-full rounded-xl p-0 border flex flex-col overflow-hidden">
-          <CardItem
-            translateZ="30"
-            className="w-full aspect-[16/9] relative overflow-hidden rounded-t-xl !w-full"
-          >
-            <Image
-              src={project.coverImageUrl}
-              alt={`Cover image for ${project.title}`}
-              data-ai-hint={project.coverDataAiHint || project.title.toLowerCase().split(' ').slice(0,2).join(' ')}
-              fill
-              className="object-cover group-hover/card:scale-105 transition-transform duration-300"
-              priority={project.id === 'project-1'}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </CardItem>
-
-          <div className="flex-grow p-4 md:p-6 space-y-3 flex flex-col">
-            <CardItem
-              as="h3" 
-              translateZ="60"
-              className="font-headline text-xl md:text-2xl text-primary !w-auto max-w-full"
-            >
-              {project.title}
-            </CardItem>
-            <CardItem
-              translateZ="50"
-              as="p"
-              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto max-w-full"
-            >
-              {project.description}
-            </CardItem>
-            <CardItem translateZ="40" className="pt-2 !w-full">
-              <Flex wrap="wrap" gap="0.5rem">
-                {project.techStack.slice(0, 4).map(tech => (
-                  <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-                ))}
-                {project.techStack.length > 4 && <Badge variant="outline" className="text-xs">+{project.techStack.length - 4} more</Badge>}
-              </Flex>
-            </CardItem>
-          </div>
-
-          <CardItem translateZ="20" className="p-4 md:p-6 border-t border-border/20 mt-auto !w-full">
-            <Button onClick={() => onOpenSheet(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg" aria-label={`View details for ${project.title}`}>
-              View Details
-            </Button>
-          </CardItem>
-        </CardBody>
-      </CardContainer>
-    </motion.div>
-  );
-});
-ProjectCard.displayName = 'ProjectCard';
-
+import { projectsData, type Project } from '@/data/projectsData';
+import { ProjectCard } from './components';
 
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);

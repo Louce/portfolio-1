@@ -1,9 +1,9 @@
-
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import type { ReviewFeedbackOutput } from '@/ai/flows';
+import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
 
 export interface FeedbackItem {
   id: string;
@@ -12,12 +12,6 @@ export interface FeedbackItem {
   submitter: string;
   timestamp: number;
 }
-
-const LOCAL_STORAGE_KEYS = {
-  LOGGED_IN_USER: 'kineticfolio_loggedInUser_feedback',
-  USERS_FEEDBACK: 'kineticfolio_usersFeedback',
-  AI_ANALYSIS: 'kineticfolio_ai_analysis',
-};
 
 export const useFeedbackStore = () => {
   const { toast } = useToast();
