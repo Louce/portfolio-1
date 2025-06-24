@@ -185,13 +185,26 @@ We're going to define all of our colors here using CSS variables, which is the m
     color: hsl(var(--primary-foreground));
   }
 }
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: linear-gradient(to right, hsl(var(--border)/0.4) 1px, transparent 1px),
+                      linear-gradient(to bottom, hsl(var(--border)/0.4) 1px, transparent 1px);
+    background-size: 18px 28px;
+  }
+  
+  .masked-radial-gradient {
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+            mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+  }
+}
 ```
 
 Let's break this down. Inside the `@layer base` directive, we have a `:root` selector. This defines the variables for our default theme, which is the light theme. We're defining variables for `--background`, `--foreground` (which is the text color), `--primary` (our main brand color), `--accent`, and so on. Notice that I'm using HSL values, which stands for Hue, Saturation, and Lightness. Using HSL makes it incredibly easy to tweak our color palette later.
 
-Right below that, we have the `.dark` selector. This block contains all the color overrides for our dark theme. When the `dark` class is applied to the `<html>` element, all of these variables will take precedence. Next.js and a package we'll use called `next-themes` will handle toggling this class for us automatically. This is a powerful and scalable way to manage themes.
+Right below that, we have the `.dark` selector. This block contains all the color overrides for our dark theme. When the `dark` class is applied to the `<html>` element, all of these variables will take precedence. And at the bottom, inside `@layer utilities`, we've added a custom `.bg-grid-pattern` class. This is an application of the **DRY principle—Don't Repeat Yourself**. Instead of writing a complex `linear-gradient` in our JSX, we've abstracted it into a reusable utility class, making our component code much cleaner.
 
-Next, let's open **`src/app/layout.tsx`**. This is the root shell of our entire application. Every single page and component will be wrapped by this layout. It's the perfect place for things that need to be on every page. We need to replace the boilerplate in this file with our own fully configured layout.
+Next, let's open **`src/app/layout.tsx`**. This is the root shell of our entire application. Every single page and component will be wrapped by this layout. We need to replace the boilerplate in this file with our own fully configured layout.
 
 **[On Screen: Display the full code for `src/app/layout.tsx` as it's being pasted in.]**
 
@@ -207,84 +220,24 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 // Configure Inter font
 const inter = Inter({ 
   subsets: ['latin'],
-  display: 'swap', // Use swap for better perceived performance
-  variable: '--font-inter' // CSS variable for Tailwind
+  display: 'swap',
+  variable: '--font-inter'
 });
 
-// Helper function to determine the site URL
 const getSiteUrl = () => {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return process.env.NEXT_PUBLIC_SITE_URL.startsWith('http')
-      ? process.env.NEXT_PUBLIC_SITE_URL
-      : `https://${process.env.NEXT_PUBLIC_SITE_URL}`;
-  }
-  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-  }
-  return `http://localhost:${process.env.PORT || 9002}`;
+  // ... (rest of the code)
 };
-
 const SITE_URL = getSiteUrl();
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: 'Dendi Rivaldi - Python, Automation & Game Dev Enthusiast',
-  description: 'Portfolio of Dendi Rivaldi, showcasing skills in Python, automation, game development, and design. Explore projects and connect.',
-  keywords: ['Dendi Rivaldi', 'Python Developer', 'Automation Engineer', 'Game Developer', 'Design Enthusiast', 'Portfolio', 'Software Developer'],
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  openGraph: {
-    title: 'Dendi Rivaldi - Python, Automation & Game Dev Portfolio',
-    description: 'Discover the work of Dendi Rivaldi, a developer passionate about Python, automation, game creation, and design.',
-    url: SITE_URL,
-    siteName: 'Dendi Rivaldi Portfolio',
-    images: [
-      {
-        url: `/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: 'Dendi Rivaldi - Portfolio Preview',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Dendi Rivaldi - Developer Portfolio',
-    description: 'Explore Dendi Rivaldi\'s projects in Python, automation, game development, and design.',
-    images: [`/og-image.png`],
-  },
-  manifest: '/manifest.json',
-  icons: {
-    icon: '/icons/favicon.ico', 
-    apple: '/icons/apple-touch-icon.png', 
-  },
+  // ... (rest of the code)
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: [ 
-    { media: '(prefers-color-scheme: light)', color: 'hsl(220 50% 98%)' }, // light background
-    { media: '(prefers-color-scheme: dark)', color: 'hsl(0 0% 7%)' },  // dark background
-  ],
+  // ... (rest of the code)
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} scroll-smooth`}>
       <head>
@@ -292,9 +245,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://ipwhois.app" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body 
-        className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out"
-      >
+      <body className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out">
         <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -315,9 +266,7 @@ export default function RootLayout({
 }
 ```
 
-Let's walk through this file. At the top, we're importing the 'Inter' font from `next/font/google`. This is an amazing feature of Next.js that optimizes web fonts for us automatically. I'm configuring it with a CSS variable, `--font-inter`, so we can use it easily in our Tailwind config.
-
-Then we have the `metadata` object. This is critical for SEO. It controls our site's `<title>` tag, the meta description, keywords, and the Open Graph tags for beautiful social media previews.
+Let's walk through this file. At the top, we're importing the 'Inter' font from `next/font/google`. This is an amazing feature of Next.js that optimizes web fonts for us automatically. Then we have the `metadata` object, which is critical for SEO.
 
 Inside the `<body>` tag, this is where we set up our global providers. We wrap everything with the `<ThemeProvider>` from a package called `next-themes`. We'll need to install that: `npm install next-themes`. This provider will manage switching between light and dark mode for us. Inside that, we wrap everything in a `<TooltipProvider>` from Shadcn, which enables all the tooltips across our app. I've also added our `<Toaster>` for notifications, and placeholders for our `<Navbar>`, `<ThemeSwitcher>`, and `<CookieConsentBanner>` which we will build or already exist as components.
 
@@ -327,92 +276,63 @@ With our global styles, fonts, and root layout configured, we can finally start 
 
 ### [CHAPTER] (13:00) Part 3: The Core Build - Crafting the Projects Section
 
-**[On Screen: VS Code is focused on a new, empty file: `src/components/sections/Projects/Projects.tsx`.]**
+**[On Screen: VS Code sidebar, highlighting the `src/data` and `src/components/sections/Projects` directories.]**
 
-"Okay, this is where the magic happens. We're going to build out what is arguably the most visually impressive and technically complex section of our portfolio: the Projects section. This section will demonstrate how to combine data, state management, custom components, and advanced animations.
+"Okay, this is where the magic happens. We're going to build out what is arguably the most visually impressive and technically complex section of our portfolio: the Projects section.
 
-But a great application is built on solid, reusable foundations. Before we dive in, let's look at a key architectural piece I've prepared. Open the file **`src/components/layout/SectionWrapper.tsx`**. This is a simple but vital component. It's a `<section>` element that provides consistent padding and vertical centering. It's a reusable layout primitive that ensures a rhythmic, well-paced scrolling experience. Using wrappers like this keeps our code DRY—Don't Repeat Yourself.
+But before we write a single line of component code, we're going to apply a foundational software design principle: **Separation of Concerns**. This principle states that different parts of our application should be responsible for different things. Our React components should be responsible for *presentation*—how things look. They should not be responsible for storing the *data* they display.
 
-Because we have this wrapper, our main page file at **`src/app/page.tsx`** becomes incredibly simple and readable. It's just a sequence of our main section components: `<Hero />`, `<About />`, `<Skills />`, and the `<Projects />` component that we're about to build. This clean, declarative structure is a hallmark of professional React architecture.
+To achieve this, we'll create a dedicated data layer. Let's create a new file at **`src/data/projectsData.ts`**. This is where our project data will live, completely separate from our UI. Paste this code into the new file.
 
-Alright, let's start building the **Projects Section**. Open the file at **`src/components/sections/Projects/Projects.tsx`**.
+**[On Screen: Display the full code for `src/data/projectsData.ts`.]**
 
-First, let's define our data. In a real-world application, this would come from a database or a headless CMS. But for this tutorial, a local constant is perfect. Paste this `projectsData` array at the top of the file.
+```typescript
+export interface MediaItem {
+  // ... (interface definition)
+}
 
-**[On Screen: Display the full `projectsData` constant.]**
+export interface Project {
+  // ... (interface definition)
+}
 
-```javascript
-const projectsData: Project[] = [
-  // ... (Full data from the file)
+export const projectsData: Project[] = [
+  {
+    id: 'project-1',
+    title: 'E-commerce Platform X',
+    description: 'A modern, responsive e-commerce platform with advanced features.',
+    // ... rest of the project data
+  },
+  // ... other projects
 ];
 ```
 
-This is an array of objects, where each object represents one of our projects, containing its `id`, `title`, `description`, a `longDescription`, an array of `techStack` strings, and crucially, a `mediaGallery` array for our image carousel.
+By defining our data and its TypeScript types here, we make our project incredibly easy to update. Want to add a new project? You just edit this array. You don't have to touch any of our complex React components. This is a senior-level practice that pays huge dividends in maintainability.
 
-Now, for the card itself. The logic for a single project card is complex enough that it deserves its own component. So, right inside this file, we'll create a `ProjectCard` component that accepts a `project` object as a prop.
+Now, let's build the UI. For this section, we'll apply another key principle: the **Single Responsibility Principle**. This means each component should do one thing, and do it well. Our `Projects.tsx` file is getting too big if it has to manage the grid of projects *and* the complex logic for the detail view. So we'll break it down.
 
-This is where we combine our coolest technologies. The root of the card will be a `CardContainer` component. This isn't a standard Shadcn component. If you look in the file tree at **`src/components/ui/3d-card/card-3d.tsx`**, you'll see it's a custom component that uses React's `onMouseMove` event to track the cursor's position relative to the card. It then uses that data to apply CSS transforms, creating that awesome 3D tilt effect. This is a fantastic example of enhancing a base component with custom logic.
+First, let's create the card itself. Create a new file at **`src/components/sections/Projects/components/ProjectCard.tsx`**. This component's only job is to display one project summary. Paste this code into the file.
 
-Inside the `CardContainer`, we'll use `CardBody` and `CardItem`. Now, let's write the code for our `ProjectCard` component.
+**[On Screen: Display the full code for `src/components/sections/Projects/components/ProjectCard.tsx`.]**
 
-**[On Screen: Display the full code for the `ProjectCard` component.]**
+```tsx
+import React from 'react';
+import { motion } from 'framer-motion';
+// ... other imports
+import type { Project } from '@/data/projectsData';
 
-```jsx
-const ProjectCard: React.FC<{ project: Project; onOpenSheet: (project: Project) => void }> = React.memo(({ project, onOpenSheet }) => {
+interface ProjectCardProps {
+  project: Project;
+  onOpenSheet: (project: Project) => void;
+}
+
+export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onOpenSheet }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.2 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="w-full h-full"
-    >
-      <CardContainer className="inter-var h-full" containerClassName="h-full py-0">
-        <CardBody className="bg-card/90 backdrop-blur-lg relative group/card hover:shadow-2xl hover:shadow-primary/40 dark:hover:shadow-primary/20 border-border/30 w-full h-full rounded-xl p-0 border flex flex-col overflow-hidden">
-          <CardItem
-            translateZ="30"
-            className="w-full aspect-[16/9] relative overflow-hidden rounded-t-xl !w-full"
-          >
-            <Image
-              src={project.coverImageUrl}
-              alt={`Cover image for ${project.title}`}
-              data-ai-hint={project.coverDataAiHint || project.title.toLowerCase().split(' ').slice(0,2).join(' ')}
-              fill
-              className="object-cover group-hover/card:scale-105 transition-transform duration-300"
-              priority={project.id === 'project-1'}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </CardItem>
-
-          <div className="flex-grow p-4 md:p-6 space-y-3 flex flex-col">
-            <CardItem
-              as="h3" 
-              translateZ="60"
-              className="font-headline text-xl md:text-2xl text-primary !w-auto max-w-full"
-            >
-              {project.title}
-            </CardItem>
-            <CardItem
-              translateZ="50"
-              as="p"
-              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto max-w-full"
-            >
-              {project.description}
-            </CardItem>
-            <CardItem translateZ="40" className="pt-2 !w-full">
-              <Flex wrap="wrap" gap="0.5rem">
-                {project.techStack.slice(0, 4).map(tech => (
-                  <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-                ))}
-                {project.techStack.length > 4 && <Badge variant="outline" className="text-xs">+{project.techStack.length - 4} more</Badge>}
-              </Flex>
-            </CardItem>
-          </div>
-
-          <CardItem translateZ="20" className="p-4 md:p-6 border-t border-border/20 mt-auto !w-full">
-            <Button onClick={() => onOpenSheet(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg" aria-label={`View details for ${project.title}`}>
-              View Details
-            </Button>
+    <motion.div /* ... */ >
+      <CardContainer /* ... */>
+        <CardBody /* ... */>
+          {/* ... Card content using project prop ... */}
+          <CardItem>
+            <Button onClick={() => onOpenSheet(project)}>View Details</Button>
           </CardItem>
         </CardBody>
       </CardContainer>
@@ -422,15 +342,83 @@ const ProjectCard: React.FC<{ project: Project; onOpenSheet: (project: Project) 
 ProjectCard.displayName = 'ProjectCard';
 ```
 
-The `CardItem` component is really cool. It takes a `translateZ` prop. This tells Framer Motion how much to 'lift' that element towards the viewer when you hover over the card, creating that incredible 3D perspective. For the image, I'm using the `<Image>` component from `next/image` for automatic optimization. Notice the `sizes` prop—this is a key performance optimization that tells the browser how much space the image will take up at different screen sizes, so it can download the most efficient version possible.
+This `ProjectCard` is a perfect example of a presentational component. It receives data—the `project` object—as a prop, and its job is to render it. We're using Framer Motion for the entrance animation and our custom 3D card components for that amazing tilt effect.
 
-Now for the 'View Details' button. When this is clicked, we want to open a side panel with more information. For that, we use ShadCN's `<Sheet>` component. The state for which project is currently selected will live in our main `Projects` component, managed with a simple `useState<Project | null>(null)`. When the 'View Details' button is clicked, we'll call `onOpenSheet`, setting that state to the current project. When a project is selected, the `<Sheet>`'s `open` prop becomes true, and it slides into view.
+Next, we'll create the component for the detailed view that slides out. Create a new file at **`src/components/sections/Projects/components/ProjectDetailSheet.tsx`**. This component will be responsible for everything inside the side panel, including the image carousel. Paste this code into it.
 
-Inside the `SheetContent`, this is where we'll display the detailed project information. The centerpiece will be a `<Carousel>` component, another powerful component from Shadcn. We'll pass the `mediaGallery` array from our selected project directly to this carousel.
+**[On Screen: Display the full code for `src/components/sections/Projects/components/ProjectDetailSheet.tsx`.]**
 
-I'm also adding the `embla-carousel-autoplay` plugin to make it automatically cycle through the images. This small touch makes the project feel much more dynamic and professional.
+```tsx
+import React, { useState, useEffect, useRef } from 'react';
+// ... other imports
+import type { Project } from '@/data/projectsData';
+import Autoplay from 'embla-carousel-autoplay';
 
-And just like that, by composing these powerful tools—Framer Motion for the 3D effect, Next.js for the performant images, and Shadcn for the UI building blocks like the Card, Sheet, and Carousel—we've created a truly stunning, interactive, and feature-rich project showcase. This is the workflow that modern, component-driven web development enables."
+// ... (interface definition)
+
+export const ProjectDetailSheet: React.FC<ProjectDetailSheetProps> = ({ project, isOpen, onOpenChange }) => {
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | undefined>();
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })
+  );
+
+  // ... (useEffect hooks for autoplay logic)
+
+  return (
+    <Sheet open={isOpen} onOpenChange={onOpenChange}>
+      {project && (
+        <SheetContent /* ... */>
+          {/* ... All the sheet content, including the Carousel ... */}
+        </SheetContent>
+      )}
+    </Sheet>
+  );
+};
+ProjectDetailSheet.displayName = "ProjectDetailSheet";
+```
+
+Notice how we've encapsulated all the complex state management for the carousel—like its autoplay state—entirely within this one component. This is the Single Responsibility Principle in action.
+
+Finally, we can assemble everything in our main section file. Open **`src/components/sections/Projects/Projects.tsx`**. Its code is now beautifully simple. Replace its contents with this:
+
+**[On Screen: Display the final, simplified code for `src/components/sections/Projects/Projects.tsx`.]**
+
+```tsx
+'use client';
+import React, { useState } from 'react';
+import { SectionWrapper } from '@/components/layout';
+import { Box } from '@/components/primitives';
+import { SectionTitle } from '@/components/common';
+import { projectsData, type Project } from '@/data/projectsData';
+import { ProjectCard, ProjectDetailSheet } from './components';
+
+export const Projects: React.FC = React.memo(() => {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  // ... (handler functions)
+
+  return (
+    <SectionWrapper id="projects" className="bg-background">
+      <SectionTitle>Featured Projects</SectionTitle>
+      <Box className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
+        {projectsData.map(project => (
+          <ProjectCard key={project.id} project={project} onOpenSheet={handleOpenSheet} />
+        ))}
+      </Box>
+      <ProjectDetailSheet 
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onOpenChange={handleSheetOpenChange}
+      />
+    </SectionWrapper>
+  );
+});
+Projects.displayName = 'ProjectsSection';
+```
+
+Look how clean that is! This component is now a "container" component. Its only job is to manage state (`selectedProject`) and compose its smaller children. This architecture is clean, maintainable, and incredibly easy to reason about.
 
 ---
 
@@ -448,85 +436,94 @@ Using Google's **Genkit**, an open-source framework for building with generative
 
 ```typescript
 'use server';
-/**
- * @fileOverview An AI flow to review user feedback.
- *
- * - reviewFeedback - A function that analyzes feedback text.
- * - ReviewFeedbackInput - The input type for the reviewFeedback function.
- * - ReviewFeedbackOutput - The return type for the reviewFeedback function.
- */
-
+// ... (JSDoc comments)
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
 import {googleAI} from '@genkit-ai/googleai';
 
-const ReviewFeedbackInputSchema = z.object({
-  feedbackText: z.string().describe('The user feedback text to be analyzed.'),
-});
-export type ReviewFeedbackInput = z.infer<typeof ReviewFeedbackInputSchema>;
-
-const ReviewFeedbackOutputSchema = z.object({
-  sentiment: z
-    .enum(['Positive', 'Neutral', 'Negative'])
-    .describe('The overall sentiment of the feedback.'),
-  summary: z.string().describe('A concise one-sentence summary of the feedback.'),
-  suggestedAction: z
-    .string()
-    .describe('A brief, actionable next step to address the feedback.'),
-});
-export type ReviewFeedbackOutput = z.infer<typeof ReviewFeedbackOutputSchema>;
+// ... (Zod schema definitions)
 
 export async function reviewFeedback(input: ReviewFeedbackInput): Promise<ReviewFeedbackOutput> {
   return reviewFeedbackFlow(input);
 }
 
 const reviewPrompt = ai.definePrompt({
-  name: 'reviewFeedbackPrompt',
-  model: googleAI.model('gemini-1.5-flash'),
-  input: {schema: ReviewFeedbackInputSchema},
-  output: {schema: ReviewFeedbackOutputSchema},
-  prompt: `You are a helpful assistant for a portfolio website owner.
-Your task is to analyze a piece of user feedback and provide a structured analysis.
-Your response MUST conform to the specified JSON schema.
-
-Analyze the following feedback:
-"{{{feedbackText}}}"
-
-Based on your analysis, determine the sentiment, provide a one-sentence summary, and suggest a clear, actionable next step for the portfolio owner.
-`,
+  // ... (prompt definition)
 });
 
 const reviewFeedbackFlow = ai.defineFlow(
-  {
-    name: 'reviewFeedbackFlow',
-    inputSchema: ReviewFeedbackInputSchema,
-    outputSchema: ReviewFeedbackOutputSchema,
-  },
-  async (input) => {
-    const {output} = await reviewPrompt(input);
-    if (!output) {
-      throw new Error('Failed to get a structured response from the AI model.');
-    }
-    return output;
-  }
+  // ... (flow definition)
 );
 ```
 
 At the very top of the file, we have the string `'use server';`. This is a Next.js directive. It tells Next.js that this code should only ever run on the server, keeping our API keys and logic secure.
 
-First, we define our input and output shapes using a library called **Zod**. We're creating a `ReviewFeedbackOutputSchema` that tells the AI we expect to receive a perfectly structured JSON object back, with fields for sentiment, summary, and a suggested action. Using Zod like this is a senior-level best practice that makes our interactions with the AI type-safe and reliable.
+First, we define our input and output shapes using a library called **Zod**. We're creating a `ReviewFeedbackOutputSchema` that tells the AI we expect to receive a perfectly structured JSON object back. Using Zod like this is a senior-level best practice that makes our interactions with the AI type-safe and reliable.
 
-Next, we define the prompt itself using `ai.definePrompt`. We pass our Zod schemas and give the model its instructions: 'You are a helpful assistant... Your response MUST conform to the specified JSON schema.' This is called structured prompting, and it's the key to getting reliable, machine-readable output from an LLM.
+Next, we define the prompt itself using `ai.definePrompt`. We pass our Zod schemas and give the model its instructions. This is called structured prompting, and it's the key to getting reliable output from an LLM.
 
-Finally, we wrap this in an `ai.defineFlow`. Now, here's the magic. Let's go back to our frontend component, **`src/components/sections/Feedback/Feedback.tsx`**. In this file, we can just `import { reviewFeedback }` from our AI flow file. Then, in our `handleAiReview` function, we can simply call `await reviewFeedback(...)` as if it were a normal function. Next.js's Server Actions feature handles all the complex networking and security for us automatically. It's the power of modern, integrated web development."
+Now, how do we use this from our frontend? This is where our architectural principles come into play again. We're not going to call this AI flow directly from our UI components. We're going to create an abstraction layer—a dedicated service.
+
+Create a new file at **`src/services/feedbackService.ts`**. This file's only job is to handle all data persistence—in our case, reading and writing from the browser's `localStorage`. Paste this code in.
+
+**[On Screen: Display the code for `src/services/feedbackService.ts`.]**
+
+```typescript
+'use client';
+// ... (JSDoc comments)
+import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
+// ...
+export const getCurrentUser = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem(LOCAL_STORAGE_KEYS.LOGGED_IN_USER);
+};
+// ... (rest of the service functions)
+```
+
+Why do this? Because our React components shouldn't care *how* data is stored. By creating this service, we can swap out `localStorage` for a real database like Firebase in the future by *only changing this one file*. The rest of our app remains untouched. This is a powerful abstraction.
+
+Notice the `LOCAL_STORAGE_KEYS` import. We created a file at **`src/lib/constants.ts`** to store all our `localStorage` keys. This prevents "magic strings" and ensures we don't make a typo somewhere.
+
+Now, our custom React hook at **`src/hooks/use-feedback-store.ts`** becomes much cleaner. It no longer touches `localStorage` directly. Instead, it calls our new service.
+
+**[On Screen: Display the code for `src/hooks/use-feedback-store.ts`.]**
+
+```typescript
+'use client';
+// ... imports, including `feedbackService`
+export const useFeedbackStore = () => {
+  // ... state definitions
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const user = feedbackService.getCurrentUser(); // Uses the service
+    if (user) {
+      setCurrentUser(user);
+      setUserFeedback(feedbackService.getFeedbackForUser(user)); // Uses the service
+    }
+  }, []);
+
+  const login = useCallback((username: string, type: 'login' | 'signup') => {
+    feedbackService.loginUser(username); // Uses the service
+    setCurrentUser(username);
+    setUserFeedback(feedbackService.getFeedbackForUser(username));
+  }, []);
+  // ... other functions also use the service
+};
+```
+
+This is a perfect example of Separation of Concerns. The **Component** (`Feedback.tsx`) handles the view. The **Hook** (`useFeedbackStore.ts`) manages UI state. The **Service** (`feedbackService.ts`) handles data persistence. The **AI Flow** (`review-feedback-flow.ts`) handles the AI logic. Each part has one clear job.
+
+Finally, let's go back to our main section component, **`src/components/sections/Feedback/Feedback.tsx`**. In this file, in our `handleAiReview` function, we can now simply `import { reviewFeedback }` from our AI flow and `await` it as if it were a normal function. Next.js's Server Actions feature handles all the complex networking and security for us automatically. It's the power of modern, integrated web development."
 
 ---
 
-### [CHAPTER] (27:30) Final Touches & Deployment
+### [CHAPTER] (28:00) Final Touches & Deployment
 
 **[On Screen: Browser showing the finished, polished application. Then, switch to the Vercel dashboard.]**
 
-"And with that, the core development of our KineticFolio is complete! We've built an incredible application. It's responsive, thanks to Tailwind's utility classes. It's dynamic, thanks to Framer Motion. And it's feature-rich.
+"And with that, the core development of our KineticFolio is complete! We've built an incredible application. It's responsive, thanks to Tailwind's utility classes. It's dynamic, thanks to Framer Motion. And most importantly, it's built on a professional, maintainable, and scalable architecture.
 
 Now, what good is a world-class application if you can't share it with the world? Let's deploy it. Since our project is a Next.js app, the absolute best place to host it is **Vercel**, the company that created Next.js.
 
@@ -534,13 +531,13 @@ The process is incredibly simple. First, make sure all of your code is committed
 
 ---
 
-### [CHAPTER] (29:00) Outro & What's Next
+### [CHAPTER] (29:30) Outro & What's Next
 
 **[On Screen: Back to the finished application, maybe slowly cycling through the dark and light themes. A final slate with links appears.]**
 
-"And there you have it! In just under 30 minutes, we went from an empty folder to a fully functional, beautifully animated, AI-enhanced web application using a modern, powerful, and scalable tech stack.
+"And there you have it! In just under 30 minutes, we went from an empty folder to a fully functional, beautifully animated, AI-enhanced web application built on an architecture that's ready for the real world.
 
-We learned how to set up a professional Next.js project with the App Router. We learned how to use Tailwind CSS for rapid, utility-first styling, and how to create a beautiful, custom theme with CSS variables. We mastered the Shadcn/UI workflow to gain full control over our components. We orchestrated complex animations with Framer Motion and custom hooks. And we seamlessly integrated a server-side AI feature with Genkit and Next.js Server Actions.
+We learned how to set up a professional Next.js project. We learned how to use Tailwind CSS for styling and how to create a beautiful, custom theme. We mastered the Shadcn/UI workflow. We orchestrated complex animations with Framer Motion. And we applied key software design principles like **Separation of Concerns**, the **Single Responsibility Principle**, and **DRY** to create a codebase that is not just clean, but truly maintainable.
 
 I really, really hope you found this tutorial valuable and that it's inspired you to build your own amazing projects. If you did, do me a huge favor and smash that like button—it genuinely helps the channel reach more people who could benefit from this content. Be sure to subscribe and turn on notifications so you don't miss future deep dives just like this one.
 

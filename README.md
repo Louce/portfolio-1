@@ -1,4 +1,3 @@
-
 # KineticFolio: Developer Onboarding & Documentation
 
 Welcome to the KineticFolio project! This document serves as your primary guide for understanding, running, and contributing to the application. It's written with a new developer in mind, so we'll cover everything from the high-level vision to the nitty-gritty of the code structure.
@@ -18,9 +17,9 @@ The core design philosophy is **"Kinetic Elegance,"** creating an "unfolding nar
 -   **AI-Powered Feedback Analysis**: A mock-authentication system allows users to leave feedback, which can then be analyzed for sentiment and summary using Google's AI via Genkit.
 -   **Responsive Design & Theming**: The site is fully responsive and features a beautiful light/dark mode theme switcher.
 
-## 3. Technical Architecture & Philosophy
+## 3. Technical Architecture & Architectural Principles
 
-This project uses a modern, opinionated tech stack. Understanding *why* these tools were chosen is key to working with the codebase.
+This project uses a modern, opinionated tech stack and is built upon core software engineering principles that ensure its quality, maintainability, and scalability.
 
 -   **Framework**: **Next.js (App Router)**
     -   **Why?**: We use the App Router for its performance benefits (React Server Components), intuitive file-based routing, and powerful features like Server Actions, which allow us to write backend logic (like our AI flow) without needing a separate server.
@@ -31,14 +30,23 @@ This project uses a modern, opinionated tech stack. Understanding *why* these to
 -   **Styling**: **Tailwind CSS**
     -   **Why?**: Tailwind's utility-first approach allows for rapid, custom UI development without writing a single line of custom CSS. All styles are co-located with the components, making them easy to manage and update. Theming is handled via CSS variables in `src/app/globals.css`.
 
--   **State Management & Logic**: **React Hooks & Custom Hooks**
-    -   **Why?**: To keep our UI components clean and focused on rendering, all complex, reusable, and stateful logic is extracted into its own custom hook. For example, `useVisitorLocation` encapsulates location-fetching logic, and `useFeedbackStore` handles all interactions with `localStorage`. This is a critical best practice for maintainability.
-
 -   **Animation**: **Framer Motion**
     -   **Why?**: It provides a simple, declarative API for creating complex, production-grade animations directly within our React components.
 
 -   **Generative AI**: **Genkit**
     -   **Why?**: Genkit is Google's open-source framework for building AI-powered features. We use it on the server-side (as a Next.js Server Action) to securely call the Gemini model for feedback analysis.
+
+### Architectural Principles in Practice
+
+-   **Separation of Concerns**: This is the cornerstone of our architecture. We strictly separate different aspects of the application:
+    -   **Presentation Logic (`/src/components`)**: React components are responsible only for rendering the UI.
+    -   **Stateful UI Logic (`/src/hooks`)**: Complex state management and lifecycle logic (e.g., `useFeedbackStore`) are extracted into custom hooks. This keeps our components clean and focused on presentation.
+    -   **Data Persistence Logic (`/src/services`)**: The logic for how data is stored and retrieved (currently `localStorage`) is abstracted into a dedicated service layer. This allows us to switch our backend in the future without changing any UI code.
+    -   **Static Content (`/src/data`)**: All static text and data for projects, skills, etc., are stored in a dedicated directory. This allows for easy content updates without touching component code.
+
+-   **Single Responsibility Principle (SRP)**: Each component and module has one, and only one, reason to change. For example, the `ProjectCard.tsx` component is responsible only for displaying a project summary, while the `ProjectDetailSheet.tsx` component handles the detailed view. This makes the code easier to understand, test, and maintain.
+
+-   **Don't Repeat Yourself (DRY)**: We avoid code duplication by creating reusable abstractions. The `SectionWrapper` component provides consistent padding and layout for all main sections. Complex CSS, like the background grid pattern, is abstracted into a utility class in `globals.css` instead of being repeated in multiple components.
 
 ## 4. Getting Started: Local Development
 
@@ -87,52 +95,62 @@ The project's code is organized inside the `/src` directory. Here’s a breakdow
 
 ```
 /src
-├── app/              // Next.js App Router core. The heart of the application.
-│   ├── layout.tsx    // The root layout for the entire site. Wraps all pages.
-│   ├── page.tsx      // The main entry point for the homepage.
-│   └── globals.css   // Global styles and theme (color) definitions.
+├── app/                  // Next.js App Router core. The heart of the application.
+│   ├── layout.tsx        // The root layout for the entire site. Wraps all pages.
+│   ├── page.tsx          // The main entry point for the homepage.
+│   └── globals.css       // Global styles, theme, and custom utility classes.
 │
 ├── components/
-│   ├── common/       // Small, highly reusable components (e.g., SectionTitle).
-│   ├── icons/        // Custom SVG icons as React components.
-│   ├── layout/       // Major structural components (Navbar, SectionWrapper).
-│   ├── primitives/   // Basic HTML element wrappers (Box, Flex, Text).
-│   ├── sections/     // The main page sections (Hero, About, Projects, etc.).
-│   └── ui/           // Shadcn UI components. You own this code.
+│   ├── common/           // Small, highly reusable components (e.g., SectionTitle).
+│   ├── icons/            // Custom SVG icons as React components.
+│   ├── layout/           // Major structural components (Navbar, SectionWrapper).
+│   ├── primitives/       // Basic HTML element wrappers (Box, Flex, Text).
+│   ├── sections/         // The main page sections (Hero, About, Projects, etc.).
+│   │   └── [SectionName]/  // Each section has its own folder...
+│   │       └── components/ // ...which may contain its own sub-components.
+│   └── ui/               // Shadcn UI components. You own this code.
 │
-├── hooks/            // Custom React hooks for reusable logic.
-│   ├── use-feedback-store.ts // Manages all state for the feedback feature.
+├── data/                 // Static content. The "database" of the site.
+│   ├── projectsData.ts   // Data for all featured projects.
+│   └── skillsData.ts     // Data for all skills and technologies.
+│
+├── hooks/                // Custom React hooks for reusable stateful logic.
+│   ├── use-feedback-store.ts // Manages UI state for the feedback feature.
 │   └── use-visitor-location.ts // Fetches the visitor's location.
 │
-├── lib/              // Utility functions.
-│   └── utils.ts      // Contains the `cn` utility for merging Tailwind classes.
+├── lib/                  // Utility functions and constants.
+│   ├── constants.ts      // Centralized constants (e.g., localStorage keys).
+│   └── utils.ts          // `cn` utility for merging Tailwind classes.
 │
-├── ai/               // All Genkit-related AI code.
-│   ├── flows/        // Contains the definitions for our AI flows.
-│   └── genkit.ts     // Genkit configuration and initialization.
+├── services/             // Handles external data interactions (e.g., localStorage).
+│   └── feedbackService.ts// All logic for reading/writing feedback data.
 │
-└── public/           // Static assets accessible from the browser.
-    ├── DendiRivaldi_Resume.pdf
-    └── ... (images, icons, etc.)
+├── ai/                   // All Genkit-related AI code.
+│   ├── flows/            // Contains the definitions for our AI flows.
+│   └── genkit.ts         // Genkit configuration and initialization.
+│
+└── public/               // Static assets accessible from the browser.
+    └── DendiRivaldi_Resume.pdf
 ```
 
 ## 6. How to Customize and Contribute
 
 ### Updating Content
 
--   **Project Information**: To change the project details, open `src/components/sections/Projects/Projects.tsx` and edit the `projectsData` array.
--   **Skill Information**: To update the skills, open `src/components/sections/Skills/Skills.tsx` and modify the `coreSkillsData` and `subSkillsData` arrays.
--   **Text Content**: Most other text can be found directly within the respective section component in `src/components/sections/`.
+-   **Project Information**: To change project details, open **`src/data/projectsData.ts`** and edit the `projectsData` array.
+-   **Skill Information**: To update skills, open **`src/data/skillsData.ts`** and modify the `coreSkillsData` and `subSkillsData` arrays.
+-   **About Me Text**: To change the bio, open **`src/data/aboutData.ts`**.
+-   **Other Text**: Most other text can be found directly within the respective section component in `src/components/sections/`.
 
 ### Changing Styles
 
--   **Colors & Theme**: To change the color palette for light and dark modes, edit the HSL CSS variables at the top of `src/app/globals.css`.
+-   **Colors & Theme**: To change the color palette for light and dark modes, edit the HSL CSS variables at the top of **`src/app/globals.css`**.
 -   **Component Styles**: To change the style of a specific element, find the component file and modify its Tailwind CSS utility classes.
 
 ### Replacing Images & Assets
 
 -   **Resume**: Replace the `DendiRivaldi_Resume.pdf` file in the `/public` directory with your own.
--   **Images**: Project images and other visuals can be found in the `projectsData` array or directly in components like `About.tsx`. Replace the placeholder URLs with your own.
+-   **Images**: Project images and other visuals are defined in **`src/data/projectsData.ts`**. Replace the Unsplash URLs with your own.
 
 ## 7. Deployment Guide (Vercel)
 
