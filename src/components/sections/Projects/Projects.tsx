@@ -2,22 +2,22 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { SectionTitle } from '@/components/common'; // Updated import
+import { SectionTitle } from '@/components/common';
 import {
   Button,
-  Dialog, DialogContent, DialogHeader, DialogTitle as ShadDialogTitle, DialogDescription as ShadDialogDescription,
+  Sheet, SheetContent, SheetHeader, SheetTitle as ShadSheetTitle, SheetDescription as ShadSheetDescription, SheetClose,
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
-  CardContainer, CardBody, CardItem // These should come from the new 3d-card path
-} from '@/components/ui'; // CardContainer etc. will be updated if they are moved
-import { ExternalLink, Github, PlayIcon, PauseIcon, X as CloseIcon } from 'lucide-react';
+  CardContainer, CardBody, CardItem,
+  Tooltip, TooltipContent, TooltipTrigger
+} from '@/components/ui';
+import { ExternalLink, Github, PlayIcon, PauseIcon } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
 import type { CarouselApi } from '@/components/ui/Carousel/carousel';
-import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 interface MediaItem {
   type: 'image' | 'video';
@@ -88,7 +88,7 @@ const projectsData: Project[] = [
   },
 ];
 
-const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) => void }> = React.memo(({ project, onOpenModal }) => {
+const ProjectCard: React.FC<{ project: Project; onOpenSheet: (project: Project) => void }> = React.memo(({ project, onOpenSheet }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -140,7 +140,7 @@ const ProjectCard: React.FC<{ project: Project; onOpenModal: (project: Project) 
           </div>
 
           <CardItem translateZ="20" className="p-4 md:p-6 border-t border-border/20 mt-auto !w-full">
-            <Button onClick={() => onOpenModal(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg" aria-label={`View details for ${project.title}`}>
+            <Button onClick={() => onOpenSheet(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg" aria-label={`View details for ${project.title}`}>
               View Details
             </Button>
           </CardItem>
@@ -190,124 +190,139 @@ export const Projects: React.FC = React.memo(() => {
 
 
   return (
-    <SectionWrapper id="projects" className="bg-transparent">
+    <SectionWrapper id="projects" className="bg-background">
       <SectionTitle>Featured Projects</SectionTitle>
       <Box className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
         {projectsData.map(project => (
-          <ProjectCard key={project.id} project={project} onOpenModal={setSelectedProject} />
+          <ProjectCard key={project.id} project={project} onOpenSheet={setSelectedProject} />
         ))}
       </Box>
 
-      <AnimatePresence>
+      <Sheet open={!!selectedProject} onOpenChange={(isOpen) => {
+          if (!isOpen) {
+            setSelectedProject(null);
+          }
+        }}
+      >
         {selectedProject && (
-          <Dialog open={!!selectedProject} onOpenChange={(isOpen) => {
-              if (!isOpen) {
-                setSelectedProject(null);
-              }
-            }}
-          >
-            <DialogContent className="max-w-3xl w-[95vw] md:w-full p-0 bg-card/80 backdrop-blur-lg border border-border/30 rounded-xl shadow-2xl overflow-y-auto max-h-[90vh]">
-              <DialogHeader className="p-4 md:p-6 border-b border-border/20 sticky top-0 bg-card/80 backdrop-blur-lg z-10">
-                <ShadDialogTitle className="text-2xl md:text-3xl font-headline text-primary">{selectedProject.title}</ShadDialogTitle>
-                <ShadDialogDescription className="sr-only">
-                  Detailed view of the {selectedProject.title} project, including media gallery, full description, technology stack, and relevant links.
-                </ShadDialogDescription>
-                 <DialogPrimitive.Close className="absolute right-4 top-1/2 -translate-y-1/2 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-                    <CloseIcon className="h-5 w-5" />
-                    <span className="sr-only">Close</span>
-                </DialogPrimitive.Close>
-              </DialogHeader>
-              
-              <Box className="space-y-4 p-4 md:p-6">
-                {selectedProject.mediaGallery && selectedProject.mediaGallery.length > 0 ? (
-                  <Carousel
-                    opts={{
-                      align: "start",
-                      loop: true,
-                    }}
-                    plugins={[autoplayPlugin.current]}
-                    setApi={setCarouselApi}
-                    className="w-full rounded-lg overflow-hidden"
-                  >
-                    <CarouselContent>
-                      {selectedProject.mediaGallery.map((media, index) => (
-                        <CarouselItem key={index}>
-                          <Box className="relative w-full aspect-video bg-black/50">
-                            {media.type === 'image' && (
-                              <Image
-                                src={media.url}
-                                alt={`${selectedProject.title} - Media ${index + 1}`}
-                                data-ai-hint={media.dataAiHint || selectedProject.title.toLowerCase().split(' ').slice(0,2).join(' ')}
-                                fill
-                                className="object-contain"
-                                sizes="(max-width: 768px) 90vw, (max-width: 1280px) 70vw, 60vw"
-                              />
-                            )}
-                            {media.type === 'video' && (
-                              <video src={media.url} controls autoPlay muted playsInline loop className="w-full h-full object-contain">
-                                Your browser does not support the video tag.
-                              </video>
-                            )}
-                          </Box>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    {selectedProject.mediaGallery.length > 1 && (
-                      <>
-                        <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
-                        <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={togglePlay}
-                          className="absolute bottom-2 right-2 z-10 text-white bg-black/30 hover:bg-black/50 border-none p-2 rounded-full"
-                          aria-label={isPlaying ? "Pause carousel autoplay" : "Play carousel autoplay"}
-                        >
-                          {isPlaying ? <PauseIcon className="h-5 w-5" /> : <PlayIcon className="h-5 w-5" />}
-                        </Button>
-                      </>
-                    )}
-                  </Carousel>
-                ) : (
-                   <Box className="relative w-full aspect-video bg-muted rounded-lg overflow-hidden">
-                     <Text className="absolute inset-0 flex items-center justify-center text-muted-foreground">No media available</Text>
-                   </Box>
-                )}
-
-                <Text as="p" className="font-body text-sm md:text-base text-foreground/90">
-                  {selectedProject.longDescription || selectedProject.description}
-                </Text>
-
-                <Box>
-                  <Text as="h4" className="font-semibold text-foreground/70 mb-2 text-sm">Tech Stack:</Text>
-                  <Flex wrap="wrap" gap="0.5rem">
-                    {selectedProject.techStack.map(tech => (
-                      <Badge key={tech} variant="outline" className="text-xs md:text-sm border-primary/50 text-primary/90">{tech}</Badge>
+          <SheetContent className="w-full sm:max-w-2xl p-0 bg-card/80 backdrop-blur-lg border-border/30 shadow-2xl overflow-y-auto">
+            <SheetHeader className="p-4 md:p-6 border-b border-border/20 sticky top-0 bg-card/80 backdrop-blur-lg z-10">
+              <ShadSheetTitle className="text-2xl md:text-3xl font-headline text-primary">{selectedProject.title}</ShadSheetTitle>
+              <ShadSheetDescription className="sr-only">
+                Detailed view of the {selectedProject.title} project.
+              </ShadSheetDescription>
+            </SheetHeader>
+            
+            <Box className="space-y-4 p-4 md:p-6">
+              {selectedProject.mediaGallery && selectedProject.mediaGallery.length > 0 ? (
+                <Carousel
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                  plugins={[autoplayPlugin.current]}
+                  setApi={setCarouselApi}
+                  className="w-full rounded-lg overflow-hidden"
+                >
+                  <CarouselContent>
+                    {selectedProject.mediaGallery.map((media, index) => (
+                      <CarouselItem key={index}>
+                        <Box className="relative w-full aspect-video bg-black/50">
+                          {media.type === 'image' && (
+                            <Image
+                              src={media.url}
+                              alt={`${selectedProject.title} - Media ${index + 1}`}
+                              data-ai-hint={media.dataAiHint || selectedProject.title.toLowerCase().split(' ').slice(0,2).join(' ')}
+                              fill
+                              className="object-contain"
+                              sizes="(max-width: 768px) 90vw, (max-width: 1280px) 70vw, 60vw"
+                            />
+                          )}
+                          {media.type === 'video' && (
+                            <video src={media.url} controls autoPlay muted playsInline loop className="w-full h-full object-contain">
+                              Your browser does not support the video tag.
+                            </video>
+                          )}
+                        </Box>
+                      </CarouselItem>
                     ))}
-                  </Flex>
-                </Box>
+                  </CarouselContent>
+                  {selectedProject.mediaGallery.length > 1 && (
+                    <>
+                      <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
+                      <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                           <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={togglePlay}
+                            className="absolute bottom-2 right-2 z-10 text-white bg-black/30 hover:bg-black/50 border-none p-2 rounded-full"
+                            aria-label={isPlaying ? "Pause carousel autoplay" : "Play carousel autoplay"}
+                           >
+                            {isPlaying ? <PauseIcon className="h-5 w-5" /> : <PlayIcon className="h-5 w-5" />}
+                           </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{isPlaying ? 'Pause Autoplay' : 'Play Autoplay'}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </>
+                  )}
+                </Carousel>
+              ) : (
+                 <Box className="relative w-full aspect-video bg-muted rounded-lg overflow-hidden">
+                   <Text className="absolute inset-0 flex items-center justify-center text-muted-foreground">No media available</Text>
+                 </Box>
+              )}
 
-                <Flex gap="1rem" className="pt-2">
-                  {selectedProject.liveSiteUrl && (
-                    <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground rounded-lg text-xs md:text-sm">
-                      <a href={selectedProject.liveSiteUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="mr-1.5 h-3.5 w-3.5 md:mr-2 md:h-4 md:w-4" /> Live Site
-                      </a>
-                    </Button>
-                  )}
-                  {selectedProject.githubUrl && (
-                    <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10 hover:text-foreground rounded-lg text-xs md:text-sm">
-                      <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                        <Github className="mr-1.5 h-3.5 w-3.5 md:mr-2 md:h-4 md:w-4" /> GitHub
-                      </a>
-                    </Button>
-                  )}
+              <Text as="p" className="font-body text-sm md:text-base text-foreground/90">
+                {selectedProject.longDescription || selectedProject.description}
+              </Text>
+
+              <Box>
+                <Text as="h4" className="font-semibold text-foreground/70 mb-2 text-sm">Tech Stack:</Text>
+                <Flex wrap="wrap" gap="0.5rem">
+                  {selectedProject.techStack.map(tech => (
+                    <Badge key={tech} variant="outline" className="text-xs md:text-sm border-primary/50 text-primary/90">{tech}</Badge>
+                  ))}
                 </Flex>
               </Box>
-            </DialogContent>
-          </Dialog>
+
+              <Flex gap="1rem" className="pt-2">
+                {selectedProject.liveSiteUrl && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground rounded-lg text-xs md:text-sm">
+                        <a href={selectedProject.liveSiteUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-1.5 h-3.5 w-3.5 md:mr-2 md:h-4 md:w-4" /> Live Site
+                        </a>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>View the live project</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+                {selectedProject.githubUrl && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10 hover:text-foreground rounded-lg text-xs md:text-sm">
+                        <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <Github className="mr-1.5 h-3.5 w-3.5 md:mr-2 md:h-4 md:w-4" /> GitHub
+                        </a>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Explore the source code</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </Flex>
+            </Box>
+          </SheetContent>
         )}
-      </AnimatePresence>
+      </Sheet>
     </SectionWrapper>
   );
 });

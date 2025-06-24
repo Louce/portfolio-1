@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
 import { cn } from '@/lib';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/Tooltip/tooltip';
 
 const navItems = [
   { id: 'hero', label: 'Home', icon: HomeIcon },
@@ -28,26 +29,24 @@ export const Navbar = () => {
         <ul className="flex items-center justify-center gap-2">
           {navItems.map((item) => (
             <li key={item.id}>
-              <Link
-                href={`#${item.id}`}
-                className={cn(
-                  'group relative flex h-10 w-10 items-center justify-center rounded-full',
-                  'transition-colors duration-200 hover:bg-primary/20',
-                  'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'
-                )}
-                aria-label={`Go to ${item.label} section`}
-              >
-                <item.icon className="h-5 w-5 text-foreground/80 transition-colors group-hover:text-primary" />
-                <span
-                  className={cn(
-                    'absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md',
-                    'bg-primary px-2 py-1 text-xs text-primary-foreground',
-                    'opacity-0 scale-90 transition-all duration-200 group-hover:opacity-100 group-hover:scale-100 group-focus:opacity-100 group-focus:scale-100'
-                  )}
-                >
-                  {item.label}
-                </span>
-              </Link>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href={`#${item.id}`}
+                    className={cn(
+                      'group relative flex h-10 w-10 items-center justify-center rounded-full',
+                      'transition-colors duration-200 hover:bg-primary/20',
+                      'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'
+                    )}
+                    aria-label={`Go to ${item.label} section`}
+                  >
+                    <item.icon className="h-5 w-5 text-foreground/80 transition-colors group-hover:text-primary" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>{item.label}</p>
+                </TooltipContent>
+              </Tooltip>
             </li>
           ))}
         </ul>

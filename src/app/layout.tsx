@@ -2,7 +2,7 @@
 import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from 'next-themes';
 import './globals.css';
-import { Toaster } from "@/components/ui";
+import { Toaster, TooltipProvider } from "@/components/ui";
 import { CookieConsentBanner, ThemeSwitcher, Navbar } from '@/components/layout';
 import { Inter } from 'next/font/google';
 
@@ -114,11 +114,13 @@ export default function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange={false}
         >
-          <ThemeSwitcher />
-          <Navbar />
-          {children}
-          <Toaster />
-          <CookieConsentBanner />
+          <TooltipProvider delayDuration={100}>
+            <ThemeSwitcher />
+            <Navbar />
+            {children}
+            <Toaster />
+            <CookieConsentBanner />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

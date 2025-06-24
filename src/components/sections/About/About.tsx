@@ -7,8 +7,8 @@ import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
 import { SectionTitle } from '@/components/common'; // Updated import
-import { Button } from '@/components/ui';
-import { Download } from 'lucide-react';
+import { Button, Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui';
+import { Download, Lightbulb, Code, Heart } from 'lucide-react';
 
 export const About: React.FC = React.memo(() => {
   const paragraphAnimation = {
@@ -34,8 +34,29 @@ export const About: React.FC = React.memo(() => {
 
   const aboutText = "I'm Dendi Rivaldi, a passionate developer with a strong interest in Python, automation, and game development. I enjoy tackling challenges and architecting efficient solutions. I also have a keen eye for design, striving to create intuitive and engaging user experiences. My approach combines analytical thinking with creative problem-solving to build impactful software.";
 
+  const philosophyItems = [
+    { 
+      value: "item-1", 
+      trigger: "Pragmatic Innovation",
+      icon: Lightbulb,
+      content: "I believe in solutions that are both innovative and practical. It's about finding the sweet spot where cutting-edge technology serves a real, tangible purpose, creating systems that are not just clever, but also robust and maintainable."
+    },
+    { 
+      value: "item-2", 
+      trigger: "Code as a Craft",
+      icon: Code,
+      content: "To me, writing code is a craft. I strive for elegance and clarity, believing that well-structured, readable code is fundamental to building scalable and long-lasting applications. It's about taking pride in the quality of the work."
+    },
+    { 
+      value: "item-3", 
+      trigger: "Human-Centered Design",
+      icon: Heart,
+      content: "Technology is for people. My focus is always on the end-user. I am dedicated to creating experiences that are not only functional but also intuitive, accessible, and enjoyable to interact with, bridging the gap between complex logic and human needs."
+    },
+  ];
+
   return (
-    <SectionWrapper id="about" className="bg-transparent">
+    <SectionWrapper id="about" className="bg-card">
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
         <motion.div
           initial={{ opacity: 0, scale: 0.85, x: -50, rotate: -3 }} 
@@ -84,22 +105,35 @@ export const About: React.FC = React.memo(() => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.5 }}
-            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.3 + (aboutText.split(' ').length * 0.02) }}
-          >
-            <Text variant="lead" className="font-body text-foreground/80">
-              Let's create something innovative together.
-            </Text>
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="w-full"
+            >
+              <Accordion type="single" collapsible className="w-full">
+                {philosophyItems.map((item) => (
+                  <AccordionItem value={item.value} key={item.value}>
+                    <AccordionTrigger className="text-base font-semibold hover:text-primary transition-colors">
+                      <Flex align="center" gap={3}>
+                        <item.icon className="h-5 w-5 text-accent" />
+                        {item.trigger}
+                      </Flex>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground text-sm pl-8">
+                      {item.content}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.4 + (aboutText.split(' ').length * 0.02), duration: 0.5 }}
-            className="mt-6"
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.6, duration: 0.5 }}
+            className="mt-6 flex items-center justify-center lg:justify-start"
           >
             <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md transform hover:scale-105 transition-transform duration-300 rounded-lg">
               <a href="/DendiRivaldi_Resume.pdf" download="DendiRivaldi_Resume.pdf" aria-label="Download Dendi Rivaldi's resume">

@@ -8,8 +8,8 @@ import * as z from 'zod';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { SectionTitle } from '@/components/common'; // Updated import
-import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui';
+import { SectionTitle } from '@/components/common';
+import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch } from '@/components/ui';
 import { useToast } from "@/components/ui/use-toast";
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
 import { Mail, Send } from 'lucide-react';
@@ -17,7 +17,11 @@ import { Mail, Send } from 'lucide-react';
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
+  inquiryType: z.enum(["general", "project", "collaboration", "job"], {
+    required_error: "Please select a reason for your inquiry."
+  }),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+  subscribe: z.boolean().default(false).optional(),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
@@ -29,12 +33,15 @@ export const Contact: React.FC = () => {
     defaultValues: {
       name: '',
       email: '',
+      inquiryType: 'general',
       message: '',
+      subscribe: false,
     },
   });
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     // Simulate API call
+    console.log(data);
     await new Promise(resolve => setTimeout(resolve, 1000));
     toast({ title: "Message Sent!", description: "Thanks for reaching out, Dendi. I'll get back to you soon." });
     form.reset();
@@ -47,8 +54,9 @@ export const Contact: React.FC = () => {
   ];
 
   return (
-    <SectionWrapper id="contact" className="bg-transparent">
-      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-8 md:space-y-10">
+    <SectionWrapper id="contact" className="bg-card">
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-8 md:space-y-10 relative z-10">
         <SectionTitle>Get In Touch</SectionTitle>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -108,6 +116,29 @@ export const Contact: React.FC = () => {
                 />
                 <FormField
                   control={form.control}
+                  name="inquiryType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Reason for Inquiry</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm">
+                            <SelectValue placeholder="Select a reason" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="general">General Question</SelectItem>
+                          <SelectItem value="project">Project Proposal</SelectItem>
+                          <SelectItem value="collaboration">Collaboration</SelectItem>
+                          <SelectItem value="job">Job Opportunity</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="message"
                   render={({ field }) => (
                     <FormItem>
@@ -120,6 +151,24 @@ export const Contact: React.FC = () => {
                         />
                       </FormControl>
                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                 <FormField
+                  control={form.control}
+                  name="subscribe"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm bg-background/30">
+                      <div className="space-y-0.5">
+                        <FormLabel>Join the Newsletter</FormLabel>
+                        <FormMessage />
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
                     </FormItem>
                   )}
                 />
