@@ -5,6 +5,7 @@ import './globals.css';
 import { Toaster, TooltipProvider } from "@/components/ui";
 import { CookieConsentBanner, ThemeSwitcher, Navbar } from '@/components/layout';
 import { Inter } from 'next/font/google';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Configure Inter font
 const inter = Inter({ 
@@ -122,6 +123,7 @@ export default function RootLayout({
             <CookieConsentBanner />
           </TooltipProvider>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
