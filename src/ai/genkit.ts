@@ -7,10 +7,7 @@ import { googleAI } from '@genkit-ai/googleai';
 // This replaces the deprecated `configureGenkit` function.
 export const ai = genkit({
   plugins: [
-    googleAI({
-      // The Gemini 1.5 Flash model is a good default for text generation.
-      textGenerationModel: 'gemini-1.5-flash',
-    }),
+    googleAI(),
   ],
   // Log developer-friendly errors to the console
   // during development.
