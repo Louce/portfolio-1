@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
+import {googleAI} from '@genkit-ai/googleai';
 
 const ReviewFeedbackInputSchema = z.object({
   feedbackText: z.string().describe('The user feedback text to be analyzed.'),
@@ -33,6 +34,7 @@ export async function reviewFeedback(input: ReviewFeedbackInput): Promise<Review
 
 const reviewPrompt = ai.definePrompt({
   name: 'reviewFeedbackPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
   input: {schema: ReviewFeedbackInputSchema},
   output: {schema: ReviewFeedbackOutputSchema},
   prompt: `You are a helpful assistant for a portfolio website owner.
