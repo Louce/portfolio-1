@@ -6,12 +6,13 @@ import { motion } from 'framer-motion';
 import type { ReviewFeedbackOutput } from '@/ai/flows/review-feedback-flow';
 import type { FeedbackItem } from '@/hooks';
 import {
-  Button, Card, CardContent, CardHeader, CardTitle, CardDescription, Badge,
+  Button, Card, CardContent, CardHeader, CardTitle, CardDescription,
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from '@/components/ui';
 import { Flex, Text, Box } from '@/components/primitives';
 import { MessageSquareText, Trash2, Sparkles, Loader2, AlertTriangle } from 'lucide-react';
+import { AnalysisResult } from './AnalysisResult';
 
 /**
  * Props for the FeedbackList component.
@@ -28,42 +29,6 @@ interface FeedbackListProps {
   /** Callback function to delete a feedback item. */
   onDelete: (feedbackId: string) => void;
 }
-
-/**
- * A sub-component to display the results of an AI analysis.
- * @param {{ analysis: ReviewFeedbackOutput }} props - The analysis result object.
- * @returns {React.ReactElement} The analysis result display.
- */
-const AnalysisResult: React.FC<{ analysis: ReviewFeedbackOutput }> = ({ analysis }) => {
-  const sentimentVariant = {
-    Positive: 'success',
-    Neutral: 'secondary',
-    Negative: 'destructive',
-  }[analysis.sentiment] || 'default';
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: 'auto' }}
-      className="mt-4 border-t border-border/20 pt-4"
-    >
-      <Flex justify="between" align="center" className="mb-3">
-        <Text as="h5" className="text-base font-semibold text-primary flex items-center"><Sparkles className="mr-2 h-4 w-4" />AI Review</Text>
-        <Badge variant={sentimentVariant as any}>{analysis.sentiment}</Badge>
-      </Flex>
-      <Box className="space-y-2 text-sm">
-        <Box>
-          <Text as="p" className="font-medium text-foreground/80">Summary:</Text>
-          <Text as="p" className="text-foreground/70">{analysis.summary}</Text>
-        </Box>
-        <Box>
-          <Text as="p" className="font-medium text-foreground/80">Suggested Action:</Text>
-          <Text as="p" className="text-foreground/70">{analysis.suggestedAction}</Text>
-        </Box>
-      </Box>
-    </motion.div>
-  );
-};
 
 /**
  * Displays a list of feedback items submitted by the user.
