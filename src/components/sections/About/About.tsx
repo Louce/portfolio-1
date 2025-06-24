@@ -10,7 +10,16 @@ import { Button, Accordion, AccordionContent, AccordionItem, AccordionTrigger } 
 import { Download } from 'lucide-react';
 import { aboutText, philosophyItems } from '@/data/aboutData';
 
+/**
+ * The About section of the portfolio.
+ * It displays a personal photo, a biographical summary, an accordion detailing
+ * design philosophies, and a button to download a resume.
+ * The section is heavily animated with Framer Motion for a dynamic entrance.
+ *
+ * @returns {React.ReactElement} The About section component.
+ */
 export const About: React.FC = React.memo(() => {
+  // Animation variants for staggering the appearance of words in the main text.
   const paragraphAnimation = {
     hidden: { opacity: 1 }, 
     visible: {

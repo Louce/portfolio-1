@@ -2,20 +2,30 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui'; // Updated import
+import { Button } from '@/components/ui';
 import { Text } from '@/components/primitives/Text';
 import { Box } from '@/components/primitives/Box';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cookie } from 'lucide-react';
+import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
 
+// The key used to store the user's consent choice in cookies.
 const COOKIE_NAME = 'kineticfolio_cookie_consent';
 
+/**
+ * A client-side component that displays a cookie consent banner.
+ * The banner is shown to new visitors and is hidden once they accept.
+ * The consent is stored in a cookie to remember the user's choice.
+ * It uses a 2-second delay before appearing to avoid impacting the initial page load performance (LCP).
+ *
+ * @returns {React.ReactElement | null} The cookie consent banner, or null if consent has been given or the component is not yet ready to display.
+ */
 export const CookieConsentBanner: React.FC = () => {
   const [isVisibleBasedOnConsent, setIsVisibleBasedOnConsent] = useState(false);
   const [canShowAfterDelay, setCanShowAfterDelay] = useState(false);
 
   useEffect(() => {
-    // This effect runs only on the client side
+    // This effect runs only on the client side to interact with browser cookies.
     const consentCookie = document.cookie
       .split('; ')
       .find(row => row.startsWith(`${COOKIE_NAME}=`));
@@ -23,21 +33,23 @@ export const CookieConsentBanner: React.FC = () => {
       setIsVisibleBasedOnConsent(true);
     }
 
-    // Add a delay before allowing the banner to actually show
-    // This gives the main content more time to render and become LCP
+    // Add a delay before allowing the banner to show to prioritize main content rendering.
     const timer = setTimeout(() => {
       setCanShowAfterDelay(true);
-    }, 2000); // Delay for 2 seconds, adjust as needed
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
 
+  /**
+   * Handles the user's acceptance of the cookie policy.
+   * Sets a cookie that expires in one year and hides the banner.
+   */
   const handleAccept = () => {
     const expires = new Date();
     expires.setFullYear(expires.getFullYear() + 1);
     document.cookie = `${COOKIE_NAME}=true; expires=${expires.toUTCString()}; path=/; SameSite=Lax; Secure`;
-    setIsVisibleBasedOnConsent(false); // Hide immediately on accept
-    setCanShowAfterDelay(false); // Also reset this to prevent re-showing if consent changes rapidly
+    setIsVisibleBasedOnConsent(false);
   };
 
   const shouldRenderBanner = isVisibleBasedOnConsent && canShowAfterDelay;

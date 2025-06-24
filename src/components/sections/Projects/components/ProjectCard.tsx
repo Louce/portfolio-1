@@ -11,11 +11,24 @@ import {
 } from '@/components/ui';
 import type { Project } from '@/data/projectsData';
 
+/**
+ * Props for the ProjectCard component.
+ */
 interface ProjectCardProps {
+  /** The project data object to display. */
   project: Project;
+  /** Callback function to open the details sheet for this project. */
   onOpenSheet: (project: Project) => void;
 }
 
+/**
+ * A card component that displays a summary of a single project.
+ * It features a 3D tilt effect on hover, a cover image, title, description,
+ * tech stack badges, and a button to view more details.
+ *
+ * @param {ProjectCardProps} props - The properties for the component.
+ * @returns {React.ReactElement} A single project card.
+ */
 export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onOpenSheet }) => {
   return (
     <motion.div

@@ -6,16 +6,37 @@ import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, Avat
 import { Flex, Text, Box } from '@/components/primitives';
 import { LogOut, MessageSquarePlus } from 'lucide-react';
 
+/**
+ * Props for the FeedbackForm component.
+ */
 interface FeedbackFormProps {
+  /** The username of the currently logged-in user. */
   currentUser: string;
+  /** Callback function to handle user logout. */
   onLogout: () => void;
+  /**
+   * Callback function to handle adding new feedback.
+   * @returns {boolean} True if the feedback was added successfully, otherwise false.
+   */
   onAddFeedback: (title: string, content: string) => boolean;
 }
 
+/**
+ * A component for authenticated users to submit new feedback.
+ * It includes a welcome message, a form for the feedback title and content,
+ * and a logout button.
+ *
+ * @param {FeedbackFormProps} props - The properties for the component.
+ * @returns {React.ReactElement} The feedback submission form component.
+ */
 export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogout, onAddFeedback }) => {
   const [feedbackTitle, setFeedbackTitle] = useState('');
   const [feedbackContent, setFeedbackContent] = useState('');
 
+  /**
+   * Handles the form submission for adding new feedback.
+   * @param {FormEvent} e - The form event.
+   */
   const handleAddFeedback = (e: FormEvent) => {
     e.preventDefault();
     const success = onAddFeedback(feedbackTitle, feedbackContent);

@@ -1,6 +1,20 @@
+/**
+ * @fileOverview
+ * This file contains the static data for the "My Expertise" (Skills) section.
+ * It defines the structure for core skills and sub-skills, and categorizes them
+ * for the tabbed display in the UI.
+ */
+
 import React from 'react';
 import { CodeIcon as Code, Bot, Gamepad2, Palette, Database, Cog } from 'lucide-react';
 
+/**
+ * Represents a core skill category.
+ * @property {string} id - A unique identifier for the skill.
+ * @property {string} name - The display name of the skill.
+ * @property {React.ElementType} icon - The Lucide icon component to display for the skill.
+ * @property {string} description - A brief description of the skill.
+ */
 export interface Skill {
   id: string;
   name: string;
@@ -8,6 +22,13 @@ export interface Skill {
   description: string;
 }
 
+/**
+ * Represents a specific technology or sub-skill related to a core skill.
+ * @property {string} id - A unique identifier for the sub-skill.
+ * @property {string} name - The name of the technology/sub-skill.
+ * @property {string} description - A more detailed description shown in a tooltip.
+ * @property {string} coreSkillId - The ID of the parent core skill it belongs to.
+ */
 export interface SubSkill {
   id: string;
   name: string;
@@ -15,6 +36,9 @@ export interface SubSkill {
   coreSkillId: string;
 }
 
+/**
+ * The definitive array of core skills data.
+ */
 export const coreSkillsData: Skill[] = [
   { id: 'python', name: 'Python', icon: Code, description: "Versatile programming for scripting, automation, and backend logic." },
   { id: 'automation', name: 'Automation', icon: Bot, description: "Designing and implementing automated solutions to streamline processes." },
@@ -24,6 +48,9 @@ export const coreSkillsData: Skill[] = [
   { id: 'devops', name: 'DevOps & Tools', icon: Cog, description: 'Utilizing tools for efficient development, deployment, and version control.' },
 ];
 
+/**
+ * The definitive array of sub-skills and technologies data.
+ */
 export const subSkillsData: SubSkill[] = [
   // Python
   { id: 'scripting', name: 'Scripting', coreSkillId: 'python', description: 'Automating system tasks and workflows with Python scripts.' },
@@ -56,6 +83,10 @@ export const subSkillsData: SubSkill[] = [
   { id: 'ci-cd-pipelines', name: 'CI/CD Pipelines', coreSkillId: 'devops', description: 'Automating build, test, and deploy cycles with GitHub Actions.' },
 ];
 
+/**
+ * Defines the categories for the tabs in the Skills section UI.
+ * Each category maps to a set of core skill IDs.
+ */
 export const skillCategories = [
   { id: 'competencies', name: 'Core Competencies', skills: ['python', 'automation', 'gamedev', 'design'] },
   { id: 'technologies', name: 'Backend & DevOps', skills: ['backend', 'devops'] },

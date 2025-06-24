@@ -12,6 +12,13 @@ import {
 } from '@/components/sections';
 import { Box } from '@/components/primitives';
 
+/**
+ * The main entry point and homepage for the portfolio application.
+ * This component composes the different sections of the single-page layout.
+ * It also includes a subtle grid background effect.
+ *
+ * @returns {React.ReactElement} The complete portfolio page.
+ */
 export default function PortfolioPage() {
   return (
     <Box className="relative bg-background">

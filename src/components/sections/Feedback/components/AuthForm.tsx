@@ -7,12 +7,26 @@ import { Flex } from '@/components/primitives';
 import { UserPlus, LogIn } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 
+/**
+ * Props for the AuthForm component.
+ */
 interface AuthFormProps {
+  /** The current authentication mode, either 'login' or 'signup'. */
   authType: 'login' | 'signup';
+  /** Callback function to execute when the form is submitted. */
   onAuthSubmit: (username: string, type: 'login' | 'signup') => void;
+  /** Callback function to switch between login and signup modes. */
   onSwitchMode: () => void;
 }
 
+/**
+ * A component that provides a user interface for login and signup.
+ * This is a mock authentication form; no real accounts or passwords are handled.
+ * It allows users to "log in" to access the feedback submission feature.
+ *
+ * @param {AuthFormProps} props - The properties for the component.
+ * @returns {React.ReactElement} The authentication form component.
+ */
 export const AuthForm: React.FC<AuthFormProps> = ({ authType, onAuthSubmit, onSwitchMode }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

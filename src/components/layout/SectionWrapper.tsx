@@ -3,12 +3,28 @@ import type React from 'react';
 import { cn } from '@/lib';
 import { Box } from '@/components/primitives';
 
-interface SectionWrapperProps extends React.HTMLAttributes<HTMLElement> { // Changed HTMLDivElement to HTMLElement
+/**
+ * Props for the SectionWrapper component.
+ * Extends standard HTML section element attributes.
+ */
+interface SectionWrapperProps extends React.HTMLAttributes<HTMLElement> {
+  /** The content to be rendered inside the section. */
   children: React.ReactNode;
+  /** The ID of the section, used for anchor links. */
   id?: string;
+  /** Optional additional class names for styling. */
   className?: string;
 }
 
+/**
+ * A reusable layout component that wraps each major section of the page.
+ * It provides consistent styling, including min-height for full-screen feel,
+ * padding, centering, and overflow handling. Using this component ensures
+ * a rhythmic and well-paced vertical layout.
+ *
+ * @param {SectionWrapperProps} props - The properties for the component.
+ * @returns {React.ReactElement} A styled <section> element containing the children.
+ */
 export const SectionWrapper: React.FC<SectionWrapperProps> = ({
   children,
   id,
@@ -16,16 +32,16 @@ export const SectionWrapper: React.FC<SectionWrapperProps> = ({
   ...props
 }) => {
   return (
-    <section // Changed from Box to section
+    <section
       id={id}
       className={cn(
         'min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden p-4 md:p-8 bg-transparent',
         className
       )}
-      {...props} // Outer section wrapper naturally inherits pointer-events: none
+      {...props}
     >
       <Box
-        className="w-full max-w-6xl h-full flex flex-col items-center justify-center pointer-events-auto" // This container for content gets pointer-events: auto
+        className="w-full max-w-6xl h-full flex flex-col items-center justify-center pointer-events-auto"
       >
         {children}
       </Box>

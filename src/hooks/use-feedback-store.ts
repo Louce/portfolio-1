@@ -5,6 +5,14 @@ import { useToast } from "@/components/ui/use-toast";
 import type { ReviewFeedbackOutput } from '@/ai/flows';
 import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
 
+/**
+ * Represents a single feedback item.
+ * @property {string} id - A unique identifier, typically a timestamp.
+ * @property {string} title - The title of the feedback.
+ * @property {string} content - The main body of the feedback.
+ * @property {string} submitter - The username of the person who submitted the feedback.
+ * @property {number} timestamp - The UTC timestamp of when the feedback was submitted.
+ */
 export interface FeedbackItem {
   id: string;
   title: string;
@@ -15,20 +23,19 @@ export interface FeedbackItem {
 
 /**
  * A custom hook to manage all feedback-related state and interactions with localStorage.
- * This hook encapsulates logic for user authentication, CRUD operations on feedback items,
- * and management of AI analysis results. It is intended for client-side use only.
+ * This hook encapsulates logic for a mock user authentication system, CRUD operations
+ * on feedback items, and management of AI analysis results. It is intended for client-side use only.
  *
- * @returns {{
- *  isMounted: boolean;
- *  currentUser: string | null;
- *  userFeedback: FeedbackItem[];
- *  analysisResults: Record<string, ReviewFeedbackOutput>;
- *  login: (username: string, type: 'login' | 'signup') => void;
- *  logout: () => void;
- *  addFeedback: (title: string, content: string) => boolean;
- *  deleteFeedback: (feedbackId: string) => void;
- *  saveAnalysis: (feedbackId: string, analysis: ReviewFeedbackOutput) => void;
- * }} An object containing the state and action dispatchers for the feedback system.
+ * @returns An object containing the state and action dispatchers for the feedback system.
+ * @property {boolean} isMounted - True if the component has mounted, used to prevent hydration errors.
+ * @property {string | null} currentUser - The username of the currently logged-in user.
+ * @property {FeedbackItem[]} userFeedback - An array of feedback items for the current user.
+ * @property {Record<string, ReviewFeedbackOutput>} analysisResults - A map of AI analysis results keyed by feedback ID.
+ * @property {(username: string, type: 'login' | 'signup') => void} login - Function to log a user in.
+ * @property {() => void} logout - Function to log the current user out.
+ * @property {(title: string, content: string) => boolean} addFeedback - Function to add a new feedback item.
+ * @property {(feedbackId: string) => void} deleteFeedback - Function to delete a feedback item.
+ * @property {(feedbackId: string, analysis: ReviewFeedbackOutput) => void} saveAnalysis - Function to save an AI analysis result.
  */
 export const useFeedbackStore = () => {
   const { toast } = useToast();
@@ -40,6 +47,7 @@ export const useFeedbackStore = () => {
   useEffect(() => {
     setIsMounted(true);
     try {
+      // On mount, load the logged-in user and any saved analysis from localStorage.
       const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.LOGGED_IN_USER);
       if (storedUser) {
         setCurrentUser(storedUser);
@@ -54,6 +62,7 @@ export const useFeedbackStore = () => {
   }, []);
 
   useEffect(() => {
+    // When the current user changes, load their specific feedback from the general feedback store.
     if (currentUser && isMounted) {
       try {
         const allUsersFeedback = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK) || '{}');
@@ -70,12 +79,7 @@ export const useFeedbackStore = () => {
   const login = useCallback((username: string, type: 'login' | 'signup') => {
     setCurrentUser(username);
     localStorage.setItem(LOCAL_STORAGE_KEYS.LOGGED_IN_USER, username);
-
-    if (type === 'login') {
-      toast({ title: 'Logged In', description: `Welcome back, ${username}!` });
-    } else {
-      toast({ title: 'Signed Up', description: `Welcome, ${username}!` });
-    }
+    toast({ title: type === 'login' ? 'Logged In' : 'Signed Up', description: `Welcome, ${username}!` });
   }, [toast]);
 
   const logout = useCallback(() => {
@@ -121,13 +125,15 @@ export const useFeedbackStore = () => {
     if (!currentUser || !feedbackId) return;
 
     try {
+      // Remove feedback from the user's list
       const allUsersFeedback = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK) || '{}');
-      let currentUserSpecificFeedback = allUsersFeedback[currentUser] || [];
+      const currentUserSpecificFeedback = allUsersFeedback[currentUser] || [];
       const updatedFeedback = currentUserSpecificFeedback.filter((item: FeedbackItem) => item.id !== feedbackId);
       allUsersFeedback[currentUser] = updatedFeedback;
       localStorage.setItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK, JSON.stringify(allUsersFeedback));
       setUserFeedback(updatedFeedback);
 
+      // Also remove any associated AI analysis
       const newAnalysisResults = { ...analysisResults };
       delete newAnalysisResults[feedbackId];
       setAnalysisResults(newAnalysisResults);

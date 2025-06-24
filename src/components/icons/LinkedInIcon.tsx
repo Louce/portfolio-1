@@ -1,7 +1,18 @@
 import type React from 'react';
 
+/**
+ * Props for the LinkedInIcon component.
+ * Extends standard SVG element attributes.
+ */
 interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
+/**
+ * Renders a LinkedIn SVG icon.
+ * This is a standard icon used for linking to LinkedIn profiles.
+ *
+ * @param {IconProps} props - Standard SVG props.
+ * @returns {React.ReactElement} The LinkedIn icon as an SVG element.
+ */
 export const LinkedInIcon: React.FC<IconProps> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

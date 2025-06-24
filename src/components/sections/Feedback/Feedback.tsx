@@ -10,6 +10,17 @@ import { useFeedbackStore, type FeedbackItem } from '@/hooks';
 import { reviewFeedback } from '@/ai/flows';
 import { AuthForm, FeedbackForm, FeedbackList } from './components';
 
+/**
+ * The main component for the Feedback section.
+ * This component acts as a controller, managing the overall state and view logic.
+ * It orchestrates the authentication, feedback submission, and feedback display functionalities
+ * by composing the `AuthForm`, `FeedbackForm`, and `FeedbackList` sub-components.
+ *
+ * It uses the `useFeedbackStore` custom hook to manage all state related to feedback,
+ * ensuring a clean separation of concerns.
+ *
+ * @returns {React.ReactElement} The Feedback section component.
+ */
 export const Feedback: React.FC = () => {
   const { toast } = useToast();
   const [view, setView] = useState<'login' | 'signup'>('login');
@@ -27,6 +38,11 @@ export const Feedback: React.FC = () => {
     saveAnalysis,
   } = useFeedbackStore();
 
+  /**
+   * Handles the AI review request for a feedback item.
+   * It calls the `reviewFeedback` server action and saves the result using the feedback store.
+   * @param {FeedbackItem} item - The feedback item to be analyzed.
+   */
   const handleAiReview = async (item: FeedbackItem) => {
     if (analyzingId) return;
 
@@ -43,6 +59,8 @@ export const Feedback: React.FC = () => {
     }
   };
 
+  // Render a loading state until the component is mounted on the client.
+  // This prevents hydration errors related to localStorage access.
   if (!isMounted) {
     return (
       <SectionWrapper id="feedback" className="bg-transparent">
@@ -57,6 +75,7 @@ export const Feedback: React.FC = () => {
     <SectionWrapper id="feedback" className="bg-transparent">
       <Flex direction="col" align="center" justify="start" className="h-auto min-h-full w-full py-8">
         {!currentUser ? (
+          // If no user is logged in, show the authentication form.
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
             <AuthForm
               authType={view}
@@ -65,6 +84,7 @@ export const Feedback: React.FC = () => {
             />
           </motion.div>
         ) : (
+          // If a user is logged in, show the feedback management interface.
           <Flex direction="col" className="w-full h-full space-y-8 pt-12 pb-8 md:pt-16">
             <FeedbackForm
               currentUser={currentUser}

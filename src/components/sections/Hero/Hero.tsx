@@ -9,8 +9,10 @@ import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
 import { useVisitorLocation } from '@/hooks';
 
+// Static text content for the hero section.
 const subHeadlineBase = "A Python, Automation, and Game Development enthusiast, blending logic with creative design.";
 
+// An array of dynamic headlines that cycle for an animated effect.
 const dynamicSubHeadlines = [
   "PYTHON // AUTOMATION // GAME DEV",
   "DESIGN // INNOVATION // SOLUTIONS",
@@ -18,22 +20,33 @@ const dynamicSubHeadlines = [
   "CODE // BUILD // PLAY"
 ];
 
+// Framer Motion animation variants for the cycling headlines.
 const subHeadlineAnimation = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeInOut" } },
   exit: { opacity: 0, y: -20, transition: { duration: 0.5, ease: "easeInOut" } },
 };
 
+/**
+ * The Hero section component.
+ * This is the main "above-the-fold" content that serves as the introduction to the portfolio.
+ * It features a large animated headline, a cycling sub-headline, a brief bio,
+ * a call-to-action button, and displays the visitor's detected location.
+ *
+ * @returns {React.ReactElement} The Hero section component.
+ */
 export const Hero: React.FC = React.memo(() => {
   const visitorLocation = useVisitorLocation();
   const [currentSubHeadlineIndex, setCurrentSubHeadlineIndex] = useState(0);
   const [startCyclingAnimation, setStartCyclingAnimation] = useState(false);
 
   useEffect(() => {
+    // Delay the start of the headline cycling animation for a better initial impression.
     const animationTimer = setTimeout(() => {
       setStartCyclingAnimation(true);
     }, 500); 
 
+    // Set up an interval to cycle through the dynamic headlines.
     const subHeadlineIntervalId = setInterval(() => {
       setCurrentSubHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
     }, 3000); 
@@ -44,6 +57,11 @@ export const Hero: React.FC = React.memo(() => {
     };
   }, []); 
 
+  /**
+   * Renders the sub-headline text with styled separators.
+   * @param {string} text - The headline text to format.
+   * @returns {React.ReactNode} The formatted headline.
+   */
   const renderSubHeadlineContent = (text: string) => {
     return text.split(' // ').map((part, index, arr) => (
       <React.Fragment key={part + index}>

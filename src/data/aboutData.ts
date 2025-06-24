@@ -2,8 +2,16 @@
 
 import { Lightbulb, Code, Heart } from 'lucide-react';
 
+/**
+ * Static text content for the main biographical paragraph in the About section.
+ */
 export const aboutText = "I'm Dendi Rivaldi, a passionate developer with a strong interest in Python, automation, and game development. I enjoy tackling challenges and architecting efficient solutions. I also have a keen eye for design, striving to create intuitive and engaging user experiences. My approach combines analytical thinking with creative problem-solving to build impactful software.";
 
+/**
+ * An array of objects representing the core philosophies displayed in the accordion
+ * component within the About section. Each item includes a value, a trigger text,
+ * an icon, and the content to be displayed.
+ */
 export const philosophyItems = [
   { 
     value: "item-1", 

@@ -14,6 +14,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { GitHubIcon, LinkedInIcon } from '@/components/icons';
 import { Mail, Send } from 'lucide-react';
 
+/**
+ * Defines the validation schema for the contact form using Zod.
+ * This ensures that form data is valid before submission.
+ */
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -26,6 +30,13 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
+/**
+ * The Contact section of the portfolio.
+ * It features a fully-validated contact form built with React Hook Form and Zod,
+ * along with links to social profiles. It provides a primary call-to-action for visitors.
+ *
+ * @returns {React.ReactElement} The Contact section component.
+ */
 export const Contact: React.FC = () => {
   const { toast } = useToast();
   const form = useForm<ContactFormValues>({
@@ -39,11 +50,16 @@ export const Contact: React.FC = () => {
     },
   });
 
+  /**
+   * Handles form submission.
+   * Simulates an API call and displays a success toast message.
+   * @param {ContactFormValues} data - The validated form data.
+   */
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
-    // Simulate API call
+    // In a real application, you would send this data to a backend endpoint.
     console.log(data);
     await new Promise(resolve => setTimeout(resolve, 1000));
-    toast({ title: "Message Sent!", description: "Thanks for reaching out, Dendi. I'll get back to you soon." });
+    toast({ title: "Message Sent!", description: "Thanks for reaching out. I'll get back to you soon." });
     form.reset();
   };
 

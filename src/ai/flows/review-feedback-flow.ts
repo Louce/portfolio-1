@@ -1,22 +1,35 @@
 
 'use server';
 /**
- * @fileOverview An AI flow to review user feedback.
+ * @fileOverview An AI flow to review user feedback using Genkit.
+ * This file defines the structured input/output schemas with Zod and the Genkit
+ * flow that communicates with the Gemini model to analyze sentiment, summarize, and
+ * suggest actions for a given piece of feedback.
  *
- * - reviewFeedback - A function that analyzes feedback text.
- * - ReviewFeedbackInput - The input type for the reviewFeedback function.
- * - ReviewFeedbackOutput - The return type for the reviewFeedback function.
+ * @exports reviewFeedback - The main server action to be called from the frontend.
+ * @exports ReviewFeedbackInput - The Zod schema type for the flow's input.
+ * @exports ReviewFeedbackOutput - The Zod schema type for the flow's structured output.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
 import {googleAI} from '@genkit-ai/googleai';
 
+/**
+ * Defines the schema for the input of the feedback review flow.
+ * @property {string} feedbackText - The user feedback text to be analyzed.
+ */
 const ReviewFeedbackInputSchema = z.object({
   feedbackText: z.string().describe('The user feedback text to be analyzed.'),
 });
 export type ReviewFeedbackInput = z.infer<typeof ReviewFeedbackInputSchema>;
 
+/**
+ * Defines the schema for the structured output of the feedback review flow.
+ * @property {('Positive' | 'Neutral' | 'Negative')} sentiment - The overall sentiment of the feedback.
+ * @property {string} summary - A concise one-sentence summary of the feedback.
+ * @property {string} suggestedAction - A brief, actionable next step to address the feedback.
+ */
 const ReviewFeedbackOutputSchema = z.object({
   sentiment: z
     .enum(['Positive', 'Neutral', 'Negative'])
@@ -40,6 +53,12 @@ export async function reviewFeedback(input: ReviewFeedbackInput): Promise<Review
   return reviewFeedbackFlow(input);
 }
 
+/**
+ * @internal
+ * Defines the Genkit prompt for the feedback review task.
+ * It specifies the AI model, the input/output schemas for structured prompting,
+ * and the instructions for the AI.
+ */
 const reviewPrompt = ai.definePrompt({
   name: 'reviewFeedbackPrompt',
   model: googleAI.model('gemini-1.5-flash'),
@@ -56,6 +75,11 @@ Based on your analysis, determine the sentiment, provide a one-sentence summary,
 `,
 });
 
+/**
+ * @internal
+ * Defines the main Genkit flow for reviewing feedback.
+ * This flow takes the input, calls the defined prompt, and returns the structured output.
+ */
 const reviewFeedbackFlow = ai.defineFlow(
   {
     name: 'reviewFeedbackFlow',

@@ -8,6 +8,9 @@ import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon }
 import { cn } from '@/lib';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/Tooltip/tooltip';
 
+/**
+ * Defines the structure for each navigation item in the Navbar.
+ */
 const navItems = [
   { id: 'hero', label: 'Home', icon: HomeIcon },
   { id: 'about', label: 'About', icon: UserIcon },
@@ -17,6 +20,13 @@ const navItems = [
   { id: 'feedback', label: 'Feedback', icon: MessageSquareIcon },
 ];
 
+/**
+ * A floating, animated navigation bar for the single-page application.
+ * It provides smooth scrolling links to different sections of the page.
+ * Each link is an icon that reveals its label via a tooltip on hover.
+ *
+ * @returns {React.ReactElement} The application's main navigation component.
+ */
 export const Navbar = () => {
   return (
     <motion.nav

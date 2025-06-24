@@ -8,6 +8,11 @@ import { SectionTitle } from '@/components/common';
 import { Tabs, TabsContent, TabsList, TabsTrigger, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui';
 import { type Skill, type SubSkill, coreSkillsData, subSkillsData, skillCategories } from '@/data/skillsData';
 
+/**
+ * A card component to display a single core skill and its related sub-skills.
+ * @param {{ skill: Skill; subSkills: SubSkill[] }} props - The properties for the component.
+ * @returns {React.ReactElement} A card displaying skill information.
+ */
 const SkillCard: React.FC<{ skill: Skill; subSkills: SubSkill[] }> = ({ skill, subSkills }) => {
   const Icon = skill.icon;
   return (
@@ -48,6 +53,13 @@ const SkillCard: React.FC<{ skill: Skill; subSkills: SubSkill[] }> = ({ skill, s
 };
 SkillCard.displayName = 'SkillCard';
 
+/**
+ * The Skills section of the portfolio.
+ * It uses a tabbed interface to categorize and display different areas of expertise,
+ * such as core competencies and technologies. Each skill is presented in a `SkillCard`.
+ *
+ * @returns {React.ReactElement} The Skills section component.
+ */
 export const Skills: React.FC = React.memo(() => {
   return (
     <SectionWrapper id="skills" className="bg-transparent">

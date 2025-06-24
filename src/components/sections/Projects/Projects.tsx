@@ -18,11 +18,19 @@ import type { CarouselApi } from '@/components/ui/Carousel/carousel';
 import { projectsData, type Project } from '@/data/projectsData';
 import { ProjectCard } from './components';
 
+/**
+ * The Projects section of the portfolio.
+ * It displays a grid of project cards. Clicking a card opens a detailed view
+ * in a side sheet, which includes a media carousel and links.
+ *
+ * @returns {React.ReactElement} The Projects section component.
+ */
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [carouselApi, setCarouselApi] = useState<CarouselApi | undefined>();
   const [isPlaying, setIsPlaying] = useState(true);
 
+  // Set up the autoplay plugin for the carousel.
   const autoplayPlugin = useRef(
     Autoplay({
       delay: 3500, 
@@ -31,6 +39,7 @@ export const Projects: React.FC = React.memo(() => {
     })
   );
 
+  // Effect to control the autoplay state based on user interaction or component state.
   useEffect(() => {
     if (!carouselApi) {
       return;
@@ -42,10 +51,12 @@ export const Projects: React.FC = React.memo(() => {
     }
   }, [carouselApi, isPlaying, selectedProject]);
 
+  // Toggles the play/pause state of the carousel autoplay.
   const togglePlay = () => {
     setIsPlaying(prev => !prev);
   };
 
+  // Reset autoplay to playing whenever a new project is selected.
   useEffect(() => {
     if (selectedProject) {
       setIsPlaying(true); 

@@ -1,9 +1,34 @@
+/**
+ * @fileOverview
+ * This file contains the static data for the "Featured Projects" section.
+ * Separating data from the component logic makes the project easier to maintain and update.
+ */
+
+/**
+ * Represents a media item (image or video) in a project's gallery.
+ * @property {'image' | 'video'} type - The type of media.
+ * @property {string} url - The URL of the media asset.
+ * @property {string} [dataAiHint] - Optional hint for AI tools or image generation services.
+ */
 export interface MediaItem {
   type: 'image' | 'video';
   url: string;
   dataAiHint?: string;
 }
 
+/**
+ * Represents a single project to be displayed in the portfolio.
+ * @property {string} id - A unique identifier for the project.
+ * @property {string} title - The title of the project.
+ * @property {string} description - A short, one-sentence description for the project card.
+ * @property {string} [longDescription] - A more detailed description for the project's detail view.
+ * @property {string} coverImageUrl - The URL for the main image shown on the project card.
+ * @property {string} [coverDataAiHint] - Optional hint for the cover image.
+ * @property {MediaItem[]} mediaGallery - An array of images and videos for the detail view carousel.
+ * @property {string[]} techStack - An array of technologies used in the project.
+ * @property {string} [liveSiteUrl] - Optional URL to the live, deployed project.
+ * @property {string} [githubUrl] - Optional URL to the project's source code repository.
+ */
 export interface Project {
   id: string;
   title: string;
@@ -17,6 +42,10 @@ export interface Project {
   githubUrl?: string;
 }
 
+/**
+ * The definitive array of project data used to populate the Projects section.
+ * To add, remove, or edit a project, modify this array.
+ */
 export const projectsData: Project[] = [
   {
     id: 'project-1',
@@ -28,7 +57,7 @@ export const projectsData: Project[] = [
     mediaGallery: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'product grid' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1599544158439-952a123389ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'checkout page' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'user dashboard' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-155128804ankind-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'user dashboard' },
     ],
     techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Stripe'],
     liveSiteUrl: '#',

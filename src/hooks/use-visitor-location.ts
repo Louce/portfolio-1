@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 /**
  * A custom hook that fetches the visitor's approximate geographical location based on their IP address.
- * It uses the 'ipwhois.app' service. This hook is intended for client-side use only.
+ * It uses the free, privacy-friendly 'ipwhois.app' service. This hook is intended for client-side use only.
  * It includes a simulation for localhost development and handles API errors gracefully.
  *
  * @returns {string | null} The visitor's location as a formatted string (e.g., "City, Region, Country"),
@@ -17,6 +17,7 @@ export const useVisitorLocation = () => {
   useEffect(() => {
     const fetchVisitorLocation = async () => {
       try {
+        // Simulate location for local development to avoid unnecessary API calls.
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
             setVisitorLocation("California, USA (Simulated)"); 
             return; 
@@ -33,19 +34,21 @@ export const useVisitorLocation = () => {
           try {
             const errorData = await response.json();
             errorMsg = errorData.message || errorMsg;
-            console.warn(`IPWHOIS API error: ${response.status}`, errorMsg);
           } catch (jsonError) {
-            console.warn(errorMsg, "Response was not valid JSON.");
+             // Response was not JSON, use original error message.
           }
+          console.warn(`IPWHOIS API error: ${response.status}`, errorMsg);
           setVisitorLocation("Location: Unknown");
           return; 
         }
 
         const data = await response.json();
-
+        
+        // Gracefully handle both success and failure responses from the API.
         if (data && data.success !== false) { 
           let locationString = "";
           if (data.country) { 
+            // Construct the most specific location string possible.
             if (data.city && data.region && data.city !== data.region) {
               locationString = `${data.city}, ${data.region}, ${data.country}`;
             } else if (data.region && data.region !== data.country) {
@@ -59,14 +62,11 @@ export const useVisitorLocation = () => {
           if (locationString) {
             setVisitorLocation(locationString);
           } else {
-            console.warn('IPWHOIS API did not return expected country data.');
             setVisitorLocation("Location: Unknown");
           }
-        } else if (data && data.success === false) {
-           console.warn('IPWHOIS API reported failure:', data.message);
-           setVisitorLocation("Location: Unknown");
         } else {
-          setVisitorLocation("Location: Unknown");
+           console.warn('IPWHOIS API reported failure:', data.message || 'Unknown reason');
+           setVisitorLocation("Location: Unknown");
         }
       } catch (error) {
         console.warn('Could not fetch visitor location:', error);

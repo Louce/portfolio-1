@@ -13,14 +13,27 @@ import {
 import { Flex, Text, Box } from '@/components/primitives';
 import { MessageSquareText, Trash2, Sparkles, Loader2, AlertTriangle } from 'lucide-react';
 
+/**
+ * Props for the FeedbackList component.
+ */
 interface FeedbackListProps {
+  /** An array of feedback items submitted by the current user. */
   feedbackItems: FeedbackItem[];
+  /** A record of AI analysis results, keyed by feedback item ID. */
   analysisResults: Record<string, ReviewFeedbackOutput>;
+  /** The ID of the feedback item currently being analyzed, or null. */
   analyzingId: string | null;
+  /** Callback function to trigger an AI review for a feedback item. */
   onAiReview: (item: FeedbackItem) => void;
+  /** Callback function to delete a feedback item. */
   onDelete: (feedbackId: string) => void;
 }
 
+/**
+ * A sub-component to display the results of an AI analysis.
+ * @param {{ analysis: ReviewFeedbackOutput }} props - The analysis result object.
+ * @returns {React.ReactElement} The analysis result display.
+ */
 const AnalysisResult: React.FC<{ analysis: ReviewFeedbackOutput }> = ({ analysis }) => {
   const sentimentVariant = {
     Positive: 'success',
@@ -52,6 +65,14 @@ const AnalysisResult: React.FC<{ analysis: ReviewFeedbackOutput }> = ({ analysis
   );
 };
 
+/**
+ * Displays a list of feedback items submitted by the user.
+ * It allows for deleting feedback and triggering an AI review for each item.
+ * Includes a confirmation dialog for the delete action.
+ *
+ * @param {FeedbackListProps} props - The properties for the component.
+ * @returns {React.ReactElement} The list of user-submitted feedback.
+ */
 export const FeedbackList: React.FC<FeedbackListProps> = ({
   feedbackItems,
   analysisResults,
