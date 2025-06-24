@@ -50,76 +50,91 @@ export const Contact: React.FC = () => {
     <SectionWrapper id="contact" className="bg-transparent">
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-8 md:space-y-10">
         <SectionTitle>Get In Touch</SectionTitle>
-        <Text variant="lead" className="text-center max-w-xl text-foreground/80 font-body mt-[-0.5rem] md:mt-[-0.75rem]">
-          Have a project in mind, a question, or just want to connect? Feel free to reach out.
-        </Text>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Text variant="lead" className="text-center max-w-xl text-foreground/80 font-body mt-[-0.5rem] md:mt-[-0.75rem]">
+            Have a project in mind, a question, or just want to connect? Feel free to reach out.
+          </Text>
+        </motion.div>
 
-        <Box className="w-full max-w-lg p-6 md:p-8 bg-card/70 backdrop-blur-md border border-border/30 rounded-xl shadow-2xl">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground/90">Name</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="Your Name" 
-                        {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm" 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground/90">Email</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="email" 
-                        placeholder="your.email@example.com" 
-                        {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-foreground/90">Message</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Let's talk about..." 
-                        {...field} 
-                        className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out min-h-[120px] text-sm"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button 
-                type="submit" 
-                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold shadow-md"
-                disabled={form.formState.isSubmitting}
-                aria-label="Send message"
-              >
-                {form.formState.isSubmitting ? 'Sending...' : <>Send Message <Send className="ml-2 h-4 w-4" /></>}
-              </Button>
-            </form>
-          </Form>
-        </Box>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-full max-w-lg"
+        >
+          <Box className="p-6 md:p-8 bg-card/70 backdrop-blur-md border border-border/30 rounded-xl shadow-2xl">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground/90">Name</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Your Name" 
+                          {...field} 
+                          className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm" 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground/90">Email</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="email" 
+                          placeholder="your.email@example.com" 
+                          {...field} 
+                          className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-foreground/90">Message</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Let's talk about..." 
+                          {...field} 
+                          className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out min-h-[120px] text-sm"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button 
+                  type="submit" 
+                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold shadow-md"
+                  disabled={form.formState.isSubmitting}
+                  aria-label="Send message"
+                >
+                  {form.formState.isSubmitting ? 'Sending...' : <>Send Message <Send className="ml-2 h-4 w-4" /></>}
+                </Button>
+              </form>
+            </Form>
+          </Box>
+        </motion.div>
 
         <Flex justify="center" gap="1.5rem" className="mt-6 md:mt-8">
           {socialLinks.map((link, index) => (

@@ -135,9 +135,13 @@ export const Skills: React.FC = React.memo(() => {
   return (
     <SectionWrapper id="skills" className="bg-transparent">
         <SectionTitle>My Expertise</SectionTitle>
-        <div 
+        <motion.div
           className="w-full max-w-3xl" 
           onMouseLeave={() => setHoveredSkillId(null)}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
         >
           <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
             {coreSkillsData.map((skill) => (
@@ -180,7 +184,7 @@ export const Skills: React.FC = React.memo(() => {
               </motion.div>
             )}
           </AnimatePresence>
-        </div> 
+        </motion.div> 
     </SectionWrapper>
   );
 });
