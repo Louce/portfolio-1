@@ -1,7 +1,6 @@
 
-import {genkit} from 'genkit';
-import {googleAI} from '@genkit-ai/googleai';
-import {configureGenkit} from '@genkit-ai/next';
+import { configureGenkit, genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
 
 configureGenkit({
   plugins: [
@@ -15,4 +14,4 @@ configureGenkit({
   enableDevLogs: true,
 });
 
-export const ai = genkit;
+export { genkit as ai };
