@@ -3,14 +3,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
-
-
-export interface HeroProps {
-  onNavigate: (sectionId: string) => void;
-}
 
 const subHeadlineBase = "A Python, Automation, and Game Development enthusiast, blending logic with creative design.";
 
@@ -27,7 +23,7 @@ const subHeadlineAnimation = {
   exit: { opacity: 0, y: -20, transition: { duration: 0.5, ease: "easeInOut" } },
 };
 
-export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
+export const Hero: React.FC = React.memo(() => {
   const [visitorLocation, setVisitorLocation] = useState<string | null>(null);
   const [currentSubHeadlineIndex, setCurrentSubHeadlineIndex] = useState(0);
   const [startCyclingAnimation, setStartCyclingAnimation] = useState(false);
@@ -120,7 +116,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
 
 
   return (
-    <div className="relative flex flex-col h-full w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
+    <div id="hero" className="relative flex flex-col min-h-screen w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
       
       {visitorLocation && (
         <motion.div 
@@ -205,52 +201,36 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onNavigate }) => {
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
           className="pt-2"
         >
-          <Button 
+          <Button asChild
             size="lg" 
             variant="default" 
             className="font-headline bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform hover:scale-105 transition-transform duration-300 rounded-xl"
-            onClick={() => onNavigate('projects')}
             aria-label="View my work"
           >
-            View My Work
+            <Link href="#projects">View My Work</Link>
           </Button>
         </motion.div>
       </div>
 
-      <motion.button
-        initial={{ opacity: 0, scale: 0.7, y: 30 }} 
-        animate={{ 
-          opacity: 1, 
-          scale: [0.7, 1.1, 1], // Add a little bounce to scale
-          y: [30, -5, 0] // Add a little bounce to y
-        }}     
-        transition={{ 
-          opacity: { duration: 0.6, ease: "easeOut", delay: 1.2 },
-          scale: { duration: 0.6, ease: "backOut", delay: 1.2, times: [0, 0.8, 1] },
-          y: { duration: 0.6, ease: "backOut", delay: 1.2, times: [0, 0.8, 1] },
-          default: { delay: 1.8 } // Delay before repeat starts
-        }}
-        // For the repeating bobbing animation, we'll use a separate whileInView or animate prop, or a key to restart
-        // For now, let's focus on the entry. A simple way to add bobbing after entry:
-        // animate={{ ...entryAnimation, y: [0, -5, 0] }} with repeat options for the 'y' part
-        // However, combining initial different animation with a repeating one on same properties is tricky.
-        // A common approach is one motion component for entry, and a child for repeating.
-        // For simplicity here, we'll use a slightly more complex animate target for entry.
-        // And then rely on a separate mechanism if more advanced continuous bobbing is needed post-entry.
-        // Let's try using animate prop to define a sequence for bobbing after entry.
-        // This example simplifies: initial entry, then a repeating bobbing on 'y' once visible.
-        whileHover={{ scale: 1.1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors z-10"
-        onClick={() => onNavigate('about')}
-        aria-label="Scroll to about section"
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "backOut", delay: 1.2 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
-        <motion.div
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 1.8 }} // Delayed bobbing
+        <Link
+          href="#about"
+          className="cursor-pointer p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+          aria-label="Scroll to about section"
         >
-          <ChevronDown className="h-10 w-10 text-primary transition-opacity hover:opacity-75" />
-        </motion.div>
-      </motion.button>
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
+          >
+            <ChevronDown className="h-10 w-10 text-primary transition-opacity hover:opacity-75" />
+          </motion.div>
+        </Link>
+      </motion.div>
     </div>
   );
 });

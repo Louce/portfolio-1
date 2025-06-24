@@ -1,5 +1,5 @@
 
 export { SectionWrapper } from './SectionWrapper';
 export { CookieConsentBanner } from './CookieConsentBanner';
-export { PageNavigation } from './PageNavigation';
+export { Navbar } from './Navbar';
 export { ThemeSwitcher } from './ThemeSwitcher';

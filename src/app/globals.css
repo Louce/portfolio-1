@@ -82,21 +82,16 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     /* Removed @apply for bg-background, text-foreground here */
     /* These are now directly on the <body> tag in layout.tsx */
     /* Transitions are also applied directly on the body tag in layout.tsx */
-    scroll-behavior: smooth;
   }
   ::selection {
     background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
   }
-}
-
-/* Ensure full height for html and body for full-page sections */
-html, body, #__next {
-  height: 100%;
-  margin: 0;
-  padding: 0;
 }

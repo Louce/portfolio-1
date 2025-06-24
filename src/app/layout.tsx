@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from 'next-themes';
 import './globals.css';
 import { Toaster } from "@/components/ui";
-import { CookieConsentBanner, ThemeSwitcher } from '@/components/layout';
+import { CookieConsentBanner, ThemeSwitcher, Navbar } from '@/components/layout';
 import { Inter } from 'next/font/google';
 
 // Configure Inter font
@@ -92,7 +92,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} scroll-smooth`}>
       <head>
         {/* 
           Ensure you have actual icons in your /public/icons folder:
@@ -115,6 +115,7 @@ export default function RootLayout({
             disableTransitionOnChange={false}
         >
           <ThemeSwitcher />
+          <Navbar />
           {children}
           <Toaster />
           <CookieConsentBanner />
