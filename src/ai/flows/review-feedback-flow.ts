@@ -11,12 +11,12 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
 
-export const ReviewFeedbackInputSchema = z.object({
+const ReviewFeedbackInputSchema = z.object({
   feedbackText: z.string().describe('The user feedback text to be analyzed.'),
 });
 export type ReviewFeedbackInput = z.infer<typeof ReviewFeedbackInputSchema>;
 
-export const ReviewFeedbackOutputSchema = z.object({
+const ReviewFeedbackOutputSchema = z.object({
   sentiment: z
     .enum(['Positive', 'Neutral', 'Negative'])
     .describe('The overall sentiment of the feedback.'),
