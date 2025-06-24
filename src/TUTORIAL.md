@@ -78,10 +78,22 @@ In the terminal, run the following command to add all necessary UI components.
 npx shadcn-ui@latest add button card sheet input textarea label toast form badge carousel accordion alert-dialog avatar dialog dropdown-menu popover progress radio-group scroll-area select separator slider switch table tabs tooltip
 ```
 
+**[ON-SCREEN: Show the `src/components/ui` folder being populated with dozens of component files.]**
+
 **[PRESENTER]:**
 "Look at that! If you now open your `src/components/ui` folder, it's populated with the full source code for every single one of those components. We own this code. We can change anything we want.
 
-Our foundation is set. It's time to define our visual identity."
+"Finally, we'll install a few other key dependencies: `Framer Motion` for our animations, `next-themes` for light and dark mode, and `embla-carousel-autoplay` for our project gallery."
+
+**[ACTION]:**
+In the terminal, run the following command.
+
+```bash
+npm install framer-motion next-themes embla-carousel-autoplay
+```
+
+**[PRESENTER]:**
+"Our foundation is set. It's time to define our visual identity."
 
 ---
 
@@ -374,13 +386,7 @@ export default function RootLayout({
 ```
 
 **[PRESENTER]:**
-"Inside the `<body>`, we're setting up our global providers. `<ThemeProvider>` handles our light and dark mode switching. We'll need to install that package."
-
-**[ACTION]:**
-In the terminal, run `npm install next-themes`.
-
-**[PRESENTER]:**
-"Then we have `<TooltipProvider>` from Shadcn, which enables all tooltips across the app. I've also placed our `<Navbar>`, `<ThemeSwitcher>`, and other layout components here. These will appear on every page.
+"Inside the `<body>`, we're setting up our global providers. `<ThemeProvider>` handles our light and dark mode switching, which we installed earlier. Then we have `<TooltipProvider>` from Shadcn, which enables all tooltips across the app. I've also placed our `<Navbar>`, `<ThemeSwitcher>`, and other layout components here. These will appear on every page.
 
 With our global styles and layout configured, we can start building the page itself."
 
@@ -464,7 +470,35 @@ export const projectsData: Project[] = [
     liveSiteUrl: '#',
     githubUrl: '#',
   },
-  //... other projects are here, keep them as is
+  {
+    id: 'project-2',
+    title: 'Interactive Data Dashboard',
+    description: 'A real-time data visualization dashboard for business analytics.',
+    longDescription: 'Created an interactive dashboard that allows users to explore complex datasets through dynamic charts and graphs. Features include customizable widgets, data filtering, and report generation. Built with React, D3.js, and Framer Motion for smooth animations.',
+    coverImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
+    coverDataAiHint: 'data dashboard',
+    mediaGallery: [
+      { type: 'image', url: 'https://images.unsplash.com/photo-1611079838318-58d9657aff8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'main chart' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1534430480872-3498386e7856?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'map visualization' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'report export' },
+    ],
+    techStack: ['React', 'TypeScript', 'D3.js', 'Framer Motion', 'Python (Flask)'],
+    liveSiteUrl: '#',
+  },
+  {
+    id: 'project-3',
+    title: 'AI-Powered Content Generator',
+    description: 'A web application that uses AI to generate creative content.',
+    longDescription: 'This project leverages cutting-edge AI models to assist users in generating various forms of content, such as articles, social media posts, and scripts. The interface is designed to be intuitive and user-friendly, promoting a seamless creative workflow. Tech stack includes SvelteKit, Tailwind CSS, and Python with FastAPI for the AI backend.',
+    coverImageUrl: 'https://images.unsplash.com/photo-1555949963-ff980877a244?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80',
+    coverDataAiHint: 'ai application',
+    mediaGallery: [
+      { type: 'image', url: 'https://images.unsplash.com/photo-1587614203976-365c7d6297d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'generator ui' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1535378620166-273708d44e4c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'abstract brain' },
+    ],
+    techStack: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'Python', 'FastAPI', 'Genkit'],
+    githubUrl: '#',
+  },
 ];
 ```
 
@@ -472,7 +506,7 @@ export const projectsData: Project[] = [
 "By defining our data and its TypeScript types here, our project becomes incredibly easy to update. Want to add a new project? You just edit this array. You don't have to touch any of our complex React components. This is a senior-level practice that pays huge dividends."
 
 **[PRESENTER]:**
-"Now, let's build the UI. We'll apply another key principle: the **Single Responsibility Principle**. Each component should do one thing, and do it well. Our `Projects.tsx` file shouldn't manage the project grid *and* the complex detail view. So, we'll break it down."
+"Now, let's build the UI. We'll apply another key principle: the **Single Responsibility Principle**. Each component should do one thing, and do it well. Our main `Projects.tsx` file shouldn't manage the project grid *and* the complex detail view. So, we'll break it down into smaller, dedicated components."
 
 **[ACTION]:**
 Create a new file at `src/components/sections/Projects/components/ProjectCard.tsx`. Paste this code into the file.
@@ -491,20 +525,91 @@ import {
 } from '@/components/ui';
 import type { Project } from '@/data/projectsData';
 
-// ... (JSDoc comments here)
+/**
+ * Props for the ProjectCard component.
+ */
+interface ProjectCardProps {
+  /** The project data object to display. */
+  project: Project;
+  /** Callback function to open the details sheet for this project. */
+  onOpenSheet: (project: Project) => void;
+}
 
+/**
+ * A card component that displays a summary of a single project.
+ * It features a 3D tilt effect on hover, a cover image, title, description,
+ * tech stack badges, and a button to view more details.
+ *
+ * @param {ProjectCardProps} props - The properties for the component.
+ * @returns {React.ReactElement} A single project card.
+ */
 export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, onOpenSheet }) => {
-  //... component implementation
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="w-full h-full"
+    >
+      <CardContainer className="inter-var h-full" containerClassName="h-full py-0">
+        <CardBody className="bg-card/90 backdrop-blur-lg relative group/card hover:shadow-2xl hover:shadow-primary/40 dark:hover:shadow-primary/20 border-border/30 w-full h-full rounded-xl p-0 border flex flex-col overflow-hidden">
+          <CardItem
+            translateZ="30"
+            className="w-full aspect-[16/9] relative overflow-hidden rounded-t-xl !w-full"
+          >
+            <Image
+              src={project.coverImageUrl}
+              alt={`Cover image for ${project.title}`}
+              data-ai-hint={project.coverDataAiHint || project.title.toLowerCase().split(' ').slice(0,2).join(' ')}
+              fill
+              className="object-cover group-hover/card:scale-105 transition-transform duration-300"
+              priority={project.id === 'project-1'}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </CardItem>
+
+          <div className="flex-grow p-4 md:p-6 space-y-3 flex flex-col">
+            <CardItem
+              as="h3" 
+              translateZ="60"
+              className="font-headline text-xl md:text-2xl text-primary !w-auto max-w-full"
+            >
+              {project.title}
+            </CardItem>
+            <CardItem
+              translateZ="50"
+              as="p"
+              className="font-body text-foreground/80 text-sm md:text-base flex-grow !w-auto max-w-full"
+            >
+              {project.description}
+            </CardItem>
+            <CardItem translateZ="40" className="pt-2 !w-full">
+              <Flex wrap="wrap" gap="0.5rem">
+                {project.techStack.slice(0, 4).map(tech => (
+                  <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
+                ))}
+                {project.techStack.length > 4 && <Badge variant="outline" className="text-xs">+{project.techStack.length - 4} more</Badge>}
+              </Flex>
+            </CardItem>
+          </div>
+
+          <CardItem translateZ="20" className="p-4 md:p-6 border-t border-border/20 mt-auto !w-full">
+            <Button onClick={() => onOpenSheet(project)} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg" aria-label={`View details for ${project.title}`}>
+              View Details
+            </Button>
+          </CardItem>
+        </CardBody>
+      </CardContainer>
+    </motion.div>
+  );
 });
+
 ProjectCard.displayName = 'ProjectCard';
 ```
-*(Presenter Note: Paste the full component code from the final project files.)*
 
 **[PRESENTER]:**
-"This `ProjectCard` is a perfect presentational component. It receives data—the `project` object—as a prop, and its only job is to render it. We're using Framer Motion for the entrance animation and our custom 3D card components for that amazing tilt effect."
-
-**[PRESENTER]:**
-"Next, we'll create the component for the detailed view that slides out. This component will encapsulate all the complex logic for the image carousel."
+"Next, we'll create the component for the detailed view that slides out. This component will encapsulate all the complex logic for the image carousel, including the autoplay feature we installed earlier."
 
 **[ACTION]:**
 Create a new file at `src/components/sections/Projects/components/ProjectDetailSheet.tsx`. Paste this code into it.
@@ -527,27 +632,209 @@ import { ExternalLink, Github, PlayIcon, PauseIcon } from 'lucide-react';
 import Autoplay from 'embla-carousel-autoplay';
 import type { Project } from '@/data/projectsData';
 
-// ... (JSDoc comments and component implementation)
+/**
+ * Props for the ProjectDetailSheet component.
+ */
+interface ProjectDetailSheetProps {
+  /** The project data to display in the sheet. Can be null if no project is selected. */
+  project: Project | null;
+  /** The open state of the sheet. */
+  isOpen: boolean;
+  /** Callback function to handle changes to the open state. */
+  onOpenChange: (isOpen: boolean) => void;
+}
 
+/**
+ * A side sheet component that displays detailed information about a selected project.
+ * It includes a media carousel with autoplay functionality, project descriptions,
+ * tech stack, and links to the live site or repository.
+ *
+ * @param {ProjectDetailSheetProps} props - The properties for the component.
+ * @returns {React.ReactElement} A Sheet component containing the project details.
+ */
 export const ProjectDetailSheet: React.FC<ProjectDetailSheetProps> = ({ project, isOpen, onOpenChange }) => {
-  // ... component implementation
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | undefined>();
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  // Set up the autoplay plugin for the carousel.
+  const autoplayPlugin = useRef(
+    Autoplay({
+      delay: 3500,
+      stopOnInteraction: true,
+      stopOnMouseEnter: true,
+    })
+  );
+
+  // Effect to control the autoplay state based on user interaction or component state.
+  useEffect(() => {
+    if (!carouselApi) {
+      return;
+    }
+    if (isPlaying && project) {
+      autoplayPlugin.current.play();
+    } else {
+      autoplayPlugin.current.stop();
+    }
+  }, [carouselApi, isPlaying, project]);
+
+  // Toggles the play/pause state of the carousel autoplay.
+  const togglePlay = () => {
+    setIsPlaying(prev => !prev);
+  };
+
+  // Reset autoplay to playing whenever a new project is selected.
+  useEffect(() => {
+    if (project) {
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
+  }, [project]);
+
+  return (
+    <Sheet open={isOpen} onOpenChange={onOpenChange}>
+      {project && (
+        <SheetContent className="w-full sm:max-w-2xl p-0 bg-card/80 backdrop-blur-lg border-border/30 shadow-2xl flex flex-col">
+          <SheetHeader className="p-4 md:p-6 border-b border-border/20 sticky top-0 bg-card/80 backdrop-blur-lg z-10 flex-shrink-0">
+            <ShadSheetTitle className="text-2xl md:text-3xl font-headline text-primary">{project.title}</ShadSheetTitle>
+            <ShadSheetDescription className="sr-only">
+              Detailed view of the {project.title} project.
+            </ShadSheetDescription>
+          </SheetHeader>
+
+          <Box className="flex-grow overflow-y-auto">
+            <Box className="space-y-4 p-4 md:p-6 pb-24">
+              {project.mediaGallery && project.mediaGallery.length > 0 ? (
+                <Carousel
+                  opts={{
+                    align: "start",
+                    loop: true,
+                  }}
+                  plugins={[autoplayPlugin.current]}
+                  setApi={setCarouselApi}
+                  className="w-full rounded-lg overflow-hidden"
+                >
+                  <CarouselContent>
+                    {project.mediaGallery.map((media, index) => (
+                      <CarouselItem key={index}>
+                        <Box className="relative w-full aspect-video bg-black/50">
+                          {media.type === 'image' && (
+                            <Image
+                              src={media.url}
+                              alt={`${project.title} - Media ${index + 1}`}
+                              data-ai-hint={media.dataAiHint || project.title.toLowerCase().split(' ').slice(0,2).join(' ')}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 90vw, 800px"
+                            />
+                          )}
+                          {media.type === 'video' && (
+                            <video src={media.url} controls autoPlay muted playsInline loop className="w-full h-full object-cover">
+                              Your browser does not support the video tag.
+                            </video>
+                          )}
+                        </Box>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  {project.mediaGallery.length > 1 && (
+                    <>
+                      <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
+                      <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white bg-black/30 hover:bg-black/50 border-none" />
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                           <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={togglePlay}
+                            className="absolute bottom-2 right-2 z-10 text-white bg-black/30 hover:bg-black/50 border-none p-2 rounded-full"
+                            aria-label={isPlaying ? "Pause carousel autoplay" : "Play carousel autoplay"}
+                           >
+                            {isPlaying ? <PauseIcon className="h-5 w-5" /> : <PlayIcon className="h-5 w-5" />}
+                           </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{isPlaying ? 'Pause Autoplay' : 'Play Autoplay'}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </>
+                  )}
+                </Carousel>
+              ) : (
+                 <Box className="relative w-full aspect-video bg-muted rounded-lg overflow-hidden">
+                   <Text className="absolute inset-0 flex items-center justify-center text-muted-foreground">No media available</Text>
+                 </Box>
+              )}
+
+              <Text as="p" className="font-body text-sm md:text-base text-foreground/90">
+                {project.longDescription || project.description}
+              </Text>
+
+              <Box>
+                <Text as="h4" className="font-semibold text-foreground/70 mb-2 text-sm">Tech Stack:</Text>
+                <Flex wrap="wrap" gap="0.5rem">
+                  {project.techStack.map(tech => (
+                    <Badge key={tech} variant="outline" className="text-xs md:text-sm border-primary/50 text-primary/90">{tech}</Badge>
+                  ))}
+                </Flex>
+              </Box>
+
+              <Flex gap="1rem" className="pt-2">
+                {project.liveSiteUrl && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button asChild variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground rounded-lg text-xs md:text-sm">
+                        <a href={project.liveSiteUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-1.5 h-3.5 w-3.5 md:mr-2 md:h-4 md:w-4" /> Live Site
+                        </a>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>View the live project</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+                {project.githubUrl && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button asChild variant="outline" className="border-foreground/50 text-foreground/80 hover:bg-foreground/10 hover:text-foreground rounded-lg text-xs md:text-sm">
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <Github className="mr-1.5 h-3.5 w-3.5 md:mr-2 md:h-4 md:w-4" /> GitHub
+                        </a>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Explore the source code</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </Flex>
+            </Box>
+          </Box>
+          <SheetFooter className="p-4 border-t border-border/20 sticky bottom-0 bg-card/90 backdrop-blur-lg z-10 flex-shrink-0">
+            <SheetClose asChild>
+              <Button type="button" variant="outline" className="w-full">
+                Close
+              </Button>
+            </SheetClose>
+          </SheetFooter>
+        </SheetContent>
+      )}
+    </Sheet>
+  );
 };
 ProjectDetailSheet.displayName = "ProjectDetailSheet";
 ```
-*(Presenter Note: Paste the full component code from the final project files.)*
-
 
 **[PRESENTER]:**
-"Notice how we've encapsulated all the complex state management for the carousel entirely within this one component. This is the Single Responsibility Principle in action."
-
-**[PRESENTER]:**
-"Finally, we can assemble everything in our main section file. Open **`src/components/sections/Projects/Projects.tsx`**. Its code is now beautifully simple because all the hard work is delegated to its children."
+"Finally, we can assemble everything in our main section file. Create the file **`src/components/sections/Projects/Projects.tsx`**. Its code is now beautifully simple because all the hard work is delegated to its children."
 
 **[ACTION]:**
-Replace the contents of `src/components/sections/Projects/Projects.tsx` with this final, clean version.
+Create `src/components/sections/Projects/Projects.tsx` and paste the following into it.
 
 ```typescript
 'use client';
+
 import React, { useState } from 'react';
 import { SectionWrapper } from '@/components/layout';
 import { Box } from '@/components/primitives';
@@ -555,8 +842,14 @@ import { SectionTitle } from '@/components/common';
 import { projectsData, type Project } from '@/data/projectsData';
 import { ProjectCard, ProjectDetailSheet } from './components';
 
-// ... (JSDoc comments)
-
+/**
+ * The Projects section of the portfolio.
+ * It displays a grid of project cards. Clicking a card opens a detailed view
+ * in a side sheet, which includes a media carousel and links.
+ * This component manages the state for which project is selected.
+ *
+ * @returns {React.ReactElement} The Projects section component.
+ */
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -578,6 +871,7 @@ export const Projects: React.FC = React.memo(() => {
           <ProjectCard key={project.id} project={project} onOpenSheet={handleOpenSheet} />
         ))}
       </Box>
+
       <ProjectDetailSheet 
         project={selectedProject}
         isOpen={!!selectedProject}
@@ -586,6 +880,7 @@ export const Projects: React.FC = React.memo(() => {
     </SectionWrapper>
   );
 });
+
 Projects.displayName = 'ProjectsSection';
 ```
 
@@ -596,43 +891,140 @@ Projects.displayName = 'ProjectsSection';
 
 ### **(22:00) Chapter 5: The "Wow" Factor - AI-Powered Analysis**
 
-**[ON-SCREEN: Show the file `src/ai/flows/review-feedback-flow.ts`.]**
+**[ON-SCREEN: Show the file `src/ai/genkit.ts`.]**
 
 **[PRESENTER]:**
 "Our portfolio is already looking incredible. But let's add a truly standout feature: AI. We have a Feedback section that lets users leave comments. We're going to add a button that allows the portfolio owner to get an instant AI-powered analysis of that feedback. We'll use **Genkit**, Google's open-source framework for building with generative AI."
 
 **[PRESENTER]:**
-"Let's look at the AI flow, defined in **`src/ai/flows/review-feedback-flow.ts`**. This is a server-side file, which is critical for security."
+"First, let's open `src/ai/genkit.ts`. We need to initialize Genkit with the Google AI plugin. This is the modern syntax for Genkit v1, which is much cleaner than older versions."
 
-**[ON-SCREEN: Briefly scroll through `src/ai/flows/review-feedback-flow.ts`.]**
+**[ACTION]:**
+Create `src/ai/genkit.ts` and paste the following into it.
+
+```typescript
+import { genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
+
+// Correct Genkit v1.x initialization.
+// We create a configured 'ai' instance directly and export it.
+// This replaces the deprecated `configureGenkit` function.
+export const ai = genkit({
+  plugins: [
+    googleAI(),
+  ],
+});
+```
+
+**[PRESENTER]:**
+"Now, let's define our AI flow itself in **`src/ai/flows/review-feedback-flow.ts`**. This is a server-side file, which is critical for security."
+
+**[ACTION]:**
+Create the file `src/ai/flows/review-feedback-flow.ts` and paste the final, modern code into it.
 
 ```typescript
 'use server';
-// ... (JSDoc comments)
+/**
+ * @fileOverview An AI flow to review user feedback using Genkit.
+ * This file defines the structured input/output schemas with Zod and the Genkit
+ * flow that communicates with the Gemini model to analyze sentiment, summarize, and
+ * suggest actions for a given piece of feedback.
+ *
+ * @exports reviewFeedback - The main server action to be called from the frontend.
+ * @exports ReviewFeedbackInput - The Zod schema type for the flow's input.
+ * @exports ReviewFeedbackOutput - The Zod schema type for the flow's structured output.
+ */
+
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
 import {googleAI} from '@genkit-ai/googleai';
 
-// ... (Zod schema definitions)
+/**
+ * Defines the schema for the input of the feedback review flow.
+ * @property {string} feedbackText - The user feedback text to be analyzed.
+ */
+const ReviewFeedbackInputSchema = z.object({
+  feedbackText: z.string().describe('The user feedback text to be analyzed.'),
+});
+export type ReviewFeedbackInput = z.infer<typeof ReviewFeedbackInputSchema>;
 
+/**
+ * Defines the schema for the structured output of the feedback review flow.
+ * @property {('Positive' | 'Neutral' | 'Negative')} sentiment - The overall sentiment of the feedback.
+ * @property {string} summary - A concise one-sentence summary of the feedback.
+ * @property {string} suggestedAction - A brief, actionable next step to address the feedback.
+ */
+const ReviewFeedbackOutputSchema = z.object({
+  sentiment: z
+    .enum(['Positive', 'Neutral', 'Negative'])
+    .describe('The overall sentiment of the feedback.'),
+  summary: z.string().describe('A concise one-sentence summary of the feedback.'),
+  suggestedAction: z
+    .string()
+    .describe('A brief, actionable next step to address the feedback.'),
+});
+export type ReviewFeedbackOutput = z.infer<typeof ReviewFeedbackOutputSchema>;
+
+/**
+ * Analyzes a given piece of feedback text using an AI model.
+ * This function acts as a server-side entry point to the Genkit flow,
+ * providing a structured analysis including sentiment, a summary, and a suggested action.
+ * @param {ReviewFeedbackInput} input - The object containing the feedback text.
+ * @returns {Promise<ReviewFeedbackOutput>} A promise that resolves to the structured analysis of the feedback.
+ * @throws {Error} Throws an error if the AI model fails to return a structured response.
+ */
 export async function reviewFeedback(input: ReviewFeedbackInput): Promise<ReviewFeedbackOutput> {
-  //...
+  return reviewFeedbackFlow(input);
 }
 
+/**
+ * @internal
+ * Defines the Genkit prompt for the feedback review task.
+ * It specifies the AI model, the input/output schemas for structured prompting,
+ * and the instructions for the AI.
+ */
 const reviewPrompt = ai.definePrompt({
-  // ...
+  name: 'reviewFeedbackPrompt',
+  model: googleAI.model('gemini-1.5-flash'),
+  input: {schema: ReviewFeedbackInputSchema},
+  output: {schema: ReviewFeedbackOutputSchema},
+  prompt: `You are a helpful assistant for a portfolio website owner.
+Your task is to analyze a piece of user feedback and provide a structured analysis.
+Your response MUST conform to the specified JSON schema.
+
+Analyze the following feedback:
+"{{{feedbackText}}}"
+
+Based on your analysis, determine the sentiment, provide a one-sentence summary, and suggest a clear, actionable next step for the portfolio owner.
+`,
 });
 
+/**
+ * @internal
+ * Defines the main Genkit flow for reviewing feedback.
+ * This flow takes the input, calls the defined prompt, and returns the structured output.
+ */
 const reviewFeedbackFlow = ai.defineFlow(
-  // ...
+  {
+    name: 'reviewFeedbackFlow',
+    inputSchema: ReviewFeedbackInputSchema,
+    outputSchema: ReviewFeedbackOutputSchema,
+  },
+  async (input) => {
+    const {output} = await reviewPrompt(input);
+    if (!output) {
+      throw new Error('Failed to get a structured response from the AI model.');
+    }
+    return output;
+  }
 );
 ```
 
 **[PRESENTER]:**
-"At the very top, the `'use server';` directive tells Next.js this code should only ever run on the server, keeping our API keys secure. We use a library called **Zod** to define the exact shape of the JSON object we expect the AI to return. This is called structured prompting, and it's a senior-level best practice that makes our AI interactions type-safe and reliable."
+"Let's walk through this modern Genkit flow. At the very top, the `'use server';` directive tells Next.js this code should only ever run on the server, keeping our API keys secure. We then use a library called **Zod** to define the exact shape of the JSON object we expect the AI to return. This is called structured prompting, and it's a senior-level best practice that makes our AI interactions type-safe and reliable. We define a prompt using `ai.definePrompt`, and then we wrap it in a flow with `ai.defineFlow`. This gives us a clean, reusable, and powerful server action that our frontend can call."
 
 **[PRESENTER]:**
-"Now, how do we use this from our frontend? We don't call it directly. We apply another architectural principle and create an abstraction layer—a dedicated service. The job of our UI components is to display things. The job of our state management hooks is to manage state. The job of this new service will be to handle data persistence—in our case, reading and writing from the browser's `localStorage`."
+"Now, how do we use this from our frontend? We apply another architectural principle and create an abstraction layer—a dedicated service. The job of our UI components is to display things. The job of our state management hooks is to manage state. The job of this new service will be to handle data persistence—in our case, reading and writing from the browser's `localStorage`."
 
 **[ON-SCREEN: Show the file `src/services/feedbackService.ts`.]**
 
