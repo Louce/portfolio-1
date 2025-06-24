@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -27,7 +28,7 @@ export function ThemeSwitcher() {
   if (!mounted) {
     // Render a disabled placeholder on the server to prevent layout shift.
     return (
-        <Box className="fixed bottom-4 right-4 z-[150]">
+        <Box className="fixed bottom-4 right-4 z-40">
             <Button variant="outline" size="icon" disabled className="bg-card/80 backdrop-blur-md border-border/50 hover:bg-card hover:border-border">
                 <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
@@ -46,7 +47,7 @@ export function ThemeSwitcher() {
   };
 
   return (
-    <Box className="fixed bottom-4 right-4 z-[150]">
+    <Box className="fixed bottom-4 right-4 z-40">
       <Button
         variant="outline"
         size="icon"
