@@ -106,3 +106,5 @@ Next, we'll elevate this feature to a whole new level with Generative AI using G
 Remember the key takeaways from this journey: the immense power of a clean, component-based project structure; the vibrant, dynamic feel you can achieve with a simple `viewport={{ once: false }}` animation strategy; and how surprisingly accessible it is to add advanced, impressive AI features to your applications using modern tools like Genkit.
 
 If you found this detailed tutorial helpful, please show your support by giving this video a like and subscribing to the channel for more deep-dive content just like this. The complete, final source code for this project is available on GitHub, and you can find the link in the description below. I would love to see what you build with these techniques, so please let me know in the comments, or share what you'd like to see us build next. Thank you so much for watching, and happy coding!"
+
+    
