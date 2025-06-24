@@ -71,7 +71,7 @@ export const Contact: React.FC = () => {
 
   return (
     <SectionWrapper id="contact" className="bg-card">
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      <div className="absolute inset-0 z-0 bg-grid-pattern masked-radial-gradient"></div>
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-8 md:space-y-10 relative z-10">
         <SectionTitle>Get In Touch</SectionTitle>
         <motion.div

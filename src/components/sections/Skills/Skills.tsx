@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -12,13 +13,14 @@ import { SkillCard } from './components';
  * The Skills section of the portfolio.
  * It uses a tabbed interface to categorize and display different areas of expertise,
  * such as core competencies and technologies. Each skill is presented in a `SkillCard`.
+ * It includes a subtle, theme-aware grid background with a radial mask.
  *
  * @returns {React.ReactElement} The Skills section component.
  */
 export const Skills: React.FC = React.memo(() => {
   return (
     <SectionWrapper id="skills" className="bg-transparent">
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      <div className="absolute inset-0 z-0 bg-grid-pattern masked-radial-gradient"></div>
       <div className="relative z-10 w-full flex flex-col items-center">
         <SectionTitle>My Expertise</SectionTitle>
         <motion.div

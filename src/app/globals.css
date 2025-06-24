@@ -86,12 +86,23 @@
     scroll-behavior: smooth;
   }
   body {
-    /* Removed @apply for bg-background, text-foreground here */
     /* These are now directly on the <body> tag in layout.tsx */
-    /* Transitions are also applied directly on the body tag in layout.tsx */
   }
   ::selection {
     background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
+  }
+}
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: linear-gradient(to right, hsl(var(--border)/0.4) 1px, transparent 1px),
+                      linear-gradient(to bottom, hsl(var(--border)/0.4) 1px, transparent 1px);
+    background-size: 18px 28px;
+  }
+  
+  .masked-radial-gradient {
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+            mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
   }
 }
