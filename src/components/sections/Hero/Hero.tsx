@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -76,6 +75,8 @@ export const Hero: React.FC = React.memo(() => {
   return (
     <section id="hero" className="relative flex flex-col min-h-screen w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
       
+      <div className="absolute inset-0 z-0 bg-background bg-grid-pattern masked-radial-gradient" />
+
       {visitorLocation && (
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
@@ -105,7 +106,7 @@ export const Hero: React.FC = React.memo(() => {
           className="text-center pt-16 md:pt-0"
         >
           <span
-            className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-display-lg xl:text-display-xl font-bold tracking-tight text-primary text-center leading-none"
+            className="font-headline text-7xl sm:text-8xl md:text-9xl lg:text-display-lg xl:text-display-xl font-bold tracking-tight text-primary text-center leading-none drop-shadow-md dark:drop-shadow-lg"
           >
             Dendi Rivaldi
           </span>
