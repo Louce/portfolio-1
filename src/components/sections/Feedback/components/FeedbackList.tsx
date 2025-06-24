@@ -9,6 +9,7 @@ import {
   Button, Card, CardContent, CardHeader, CardTitle, CardDescription,
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+  ScrollArea,
 } from '@/components/ui';
 import { Flex, Text, Box } from '@/components/primitives';
 import { MessageSquareText, Trash2, Sparkles, Loader2, AlertTriangle } from 'lucide-react';
@@ -33,7 +34,7 @@ interface FeedbackListProps {
 /**
  * Displays a list of feedback items submitted by the user.
  * It allows for deleting feedback and triggering an AI review for each item.
- * Includes a confirmation dialog for the delete action.
+ * Includes a confirmation dialog for the delete action and a styled scroll area for long lists.
  *
  * @param {FeedbackListProps} props - The properties for the component.
  * @returns {React.ReactElement} The list of user-submitted feedback.
@@ -61,50 +62,52 @@ export const FeedbackList: React.FC<FeedbackListProps> = ({
         {feedbackItems.length === 0 ? (
           <Text className="text-muted-foreground px-4">You haven't submitted any feedback yet.</Text>
         ) : (
-          <Box className="space-y-4 max-h-[calc(100vh-400px)] md:max-h-[calc(100vh-450px)] overflow-y-auto pr-2 pl-4 pb-4">
-            {feedbackItems.map(item => (
-              <motion.div key={item.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
-                <Card className="bg-card/60 backdrop-blur-sm border border-border/20 overflow-hidden">
-                  <CardContent className="p-4">
-                    <Flex justify="between" align="start" className="mb-2">
-                      <Box>
-                        <CardTitle className="text-lg text-foreground">{item.title}</CardTitle>
-                        <CardDescription className="text-xs text-muted-foreground">
-                          Submitted: {new Date(item.timestamp).toLocaleString()}
-                        </CardDescription>
-                      </Box>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon" onClick={() => setFeedbackToDelete(item.id)} aria-label="Delete feedback item" className="text-destructive hover:text-destructive/80 hover:bg-destructive/10">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </AlertDialogTrigger>
-                    </Flex>
-                    <Text className="text-sm text-foreground/90 whitespace-pre-wrap">{item.content}</Text>
-                    {analysisResults[item.id] ? (
-                      <AnalysisResult analysis={analysisResults[item.id]} />
-                    ) : (
-                      <Flex justify="end" className="mt-4">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => onAiReview(item)}
-                          disabled={!!analyzingId}
-                          className="text-primary border-primary/50 hover:bg-primary/10 hover:text-primary"
-                        >
-                          {analyzingId === item.id ? (
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          ) : (
-                            <Sparkles className="mr-2 h-4 w-4" />
-                          )}
-                          AI Review
-                        </Button>
+          <ScrollArea className="h-[calc(100vh-400px)] md:h-[calc(100vh-450px)] w-full">
+            <Box className="space-y-4 pr-3 pl-4 pb-4">
+              {feedbackItems.map(item => (
+                <motion.div key={item.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
+                  <Card className="bg-card/60 backdrop-blur-sm border border-border/20 overflow-hidden">
+                    <CardContent className="p-4">
+                      <Flex justify="between" align="start" className="mb-2">
+                        <Box>
+                          <CardTitle className="text-lg text-foreground">{item.title}</CardTitle>
+                          <CardDescription className="text-xs text-muted-foreground">
+                            Submitted: {new Date(item.timestamp).toLocaleString()}
+                          </CardDescription>
+                        </Box>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon" onClick={() => setFeedbackToDelete(item.id)} aria-label="Delete feedback item" className="text-destructive hover:text-destructive/80 hover:bg-destructive/10">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
                       </Flex>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </Box>
+                      <Text className="text-sm text-foreground/90 whitespace-pre-wrap">{item.content}</Text>
+                      {analysisResults[item.id] ? (
+                        <AnalysisResult analysis={analysisResults[item.id]} />
+                      ) : (
+                        <Flex justify="end" className="mt-4">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => onAiReview(item)}
+                            disabled={!!analyzingId}
+                            className="text-primary border-primary/50 hover:bg-primary/10 hover:text-primary"
+                          >
+                            {analyzingId === item.id ? (
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                              <Sparkles className="mr-2 h-4 w-4" />
+                            )}
+                            AI Review
+                          </Button>
+                        </Flex>
+                      )}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </Box>
+          </ScrollArea>
         )}
       </Box>
       <AlertDialogContent>
