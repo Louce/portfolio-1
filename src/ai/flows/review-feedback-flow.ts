@@ -39,6 +39,7 @@ const reviewPrompt = ai.definePrompt({
   output: {schema: ReviewFeedbackOutputSchema},
   prompt: `You are a helpful assistant for a portfolio website owner.
 Your task is to analyze a piece of user feedback and provide a structured analysis.
+Your response MUST conform to the specified JSON schema.
 
 Analyze the following feedback:
 "{{{feedbackText}}}"

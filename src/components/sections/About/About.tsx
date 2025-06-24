@@ -73,7 +73,7 @@ export const About: React.FC = React.memo(() => {
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110"
               priority 
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
               style={{ objectFit: 'cover' }}
             />
             <Box className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />

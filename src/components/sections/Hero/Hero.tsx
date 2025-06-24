@@ -56,7 +56,7 @@ export const Hero: React.FC = React.memo(() => {
   };
 
   return (
-    <div id="hero" className="relative flex flex-col min-h-screen w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
+    <section id="hero" className="relative flex flex-col min-h-screen w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
       
       {visitorLocation && (
         <motion.div 
@@ -171,7 +171,7 @@ export const Hero: React.FC = React.memo(() => {
           </motion.div>
         </Link>
       </motion.div>
-    </div>
+    </section>
   );
 });
 
