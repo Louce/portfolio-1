@@ -1,147 +1,161 @@
 
-# KineticFolio - Dendi Rivaldi
+# KineticFolio: Developer Onboarding & Documentation
 
-KineticFolio is a visually stunning, one-page portfolio website for Dendi Rivaldi, a Python, Automation, and Game Development enthusiast with a passion for design. Built with Next.js, Tailwind CSS, TypeScript, and Framer Motion. It embodies a "Kinetic Elegance" design philosophy and "Crystal Cathedral" architectural principles.
+Welcome to the KineticFolio project! This document serves as your primary guide for understanding, running, and contributing to the application. It's written with a new developer in mind, so we'll cover everything from the high-level vision to the nitty-gritty of the code structure.
 
-## Project Vision
+## 1. Project Vision
 
-The portfolio aims to be an interactive art installation, offering a charismatic, elegant, and unforgettable user experience. The entire experience is contained on a single, seamless page, with unique, fluid animations creating an "unfolding narrative" as the user navigates through sections.
+KineticFolio is a visually stunning, one-page portfolio for **Dendi Rivaldi**. It aims to be more than a static digital resume; it's designed to be an interactive art installation that showcases skills not just with words, but through the very experience of using it.
 
-## Core Features
+The core design philosophy is **"Kinetic Elegance,"** creating an "unfolding narrative" where each section animates into view, providing an engaging and memorable user experience.
 
--   **Kinetic Hero**: A dynamic "Living Ink Sculpture" typography effect for the main headline (Dendi Rivaldi) and an animated, cycling sub-headline that subtly reacts to the user's cursor.
--   **Animated Sections**: Fluid section transitions using Framer Motion, creating an unfolding narrative effect as users scroll or navigate.
--   **Interactive About Section**: Features animated text and an image, along with a "Download Resume" button for "DendiRivaldi_Resume.pdf".
--   **Interactive Skills Graph**: A skill showcase where hovering over a core skill (Python, Automation, Game Dev, Design, etc.) reveals related sub-skills and descriptions.
--   **Project Gallery with Carousels**: A card-based gallery for project showcases, with detailed modals that include carousels to display multiple project media (images/videos).
--   **Interactive Contact Form**: A clean contact form with social media links to Dendi Rivaldi's GitHub, LinkedIn, and email.
--   **Feedback Section**: A prototype feature allowing users to (mock) log in/sign up and submit, view, and delete their feedback, persisted using browser `localStorage`.
--   **Modern Architecture**: Adherence to DRY principles and a clear, modular folder structure with barrel-style exports for maintainability.
+## 2. Core Features
 
-## Technical Stack
+-   **Dynamic Hero Section**: A captivating entry point with animated typography and subtle user interactions.
+-   **Animated Section Transitions**: Fluid animations powered by Framer Motion create a seamless scrolling experience.
+-   **Interactive Skills Showcase**: An organized and interactive display of core competencies and related technologies.
+-   **3D-Effect Project Gallery**: Project cards feature a 3D tilt effect on hover, opening into a detailed view with an image carousel.
+-   **AI-Powered Feedback Analysis**: A mock-authentication system allows users to leave feedback, which can then be analyzed for sentiment and summary using Google's AI via Genkit.
+-   **Responsive Design & Theming**: The site is fully responsive and features a beautiful light/dark mode theme switcher.
 
--   **Framework**: Next.js (App Router)
--   **Styling**: Tailwind CSS
--   **Language**: TypeScript
--   **Animation**: Framer Motion
--   **UI Components**: ShadCN UI
--   **Carousel**: Embla Carousel React (via ShadCN UI)
--   **Form Handling**: React Hook Form & Zod
+## 3. Technical Architecture & Philosophy
 
-## Setup and Run Instructions
+This project uses a modern, opinionated tech stack. Understanding *why* these tools were chosen is key to working with the codebase.
 
-1.  **Clone the repository (if applicable):**
-    ```bash
-    # git clone <repository-url>
-    # cd kineticfolio
-    ```
+-   **Framework**: **Next.js (App Router)**
+    -   **Why?**: We use the App Router for its performance benefits (React Server Components), intuitive file-based routing, and powerful features like Server Actions, which allow us to write backend logic (like our AI flow) without needing a separate server.
 
-2.  **Install dependencies:**
-    Make sure you have Node.js (v18 or later recommended) and npm/yarn installed.
-    ```bash
-    npm install
-    ```
-    or
-    ```bash
-    yarn install
-    ```
+-   **Component Toolkit**: **Shadcn/UI**
+    -   **Why?**: Shadcn is **not** a typical component library. Instead of installing a package, you use its CLI to **copy component source code** directly into the project (`src/components/ui`). This gives us the best of both worlds: the speed of pre-built, accessible components and the 100% control to customize their style and logic as needed.
 
-3.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
-    The application will typically be available at `http://localhost:9002` (as specified in `package.json` for this project) or `http://localhost:3000`.
+-   **Styling**: **Tailwind CSS**
+    -   **Why?**: Tailwind's utility-first approach allows for rapid, custom UI development without writing a single line of custom CSS. All styles are co-located with the components, making them easy to manage and update. Theming is handled via CSS variables in `src/app/globals.css`.
 
-4.  **Build for production:**
-    ```bash
-    npm run build
-    ```
+-   **State Management & Logic**: **React Hooks & Custom Hooks**
+    -   **Why?**: To keep our UI components clean and focused on rendering, all complex, reusable, and stateful logic is extracted into its own custom hook. For example, `useVisitorLocation` encapsulates location-fetching logic, and `useFeedbackStore` handles all interactions with `localStorage`. This is a critical best practice for maintainability.
 
-5.  **Start the production server:**
-    ```bash
-    npm run start
-    ```
+-   **Animation**: **Framer Motion**
+    -   **Why?**: It provides a simple, declarative API for creating complex, production-grade animations directly within our React components.
 
-## Code Structure
+-   **Generative AI**: **Genkit**
+    -   **Why?**: Genkit is Google's open-source framework for building AI-powered features. We use it on the server-side (as a Next.js Server Action) to securely call the Gemini model for feedback analysis.
 
-The project follows a specific folder structure to promote clarity and maintainability:
+## 4. Getting Started: Local Development
+
+Follow these steps to get the project running on your local machine.
+
+### Prerequisites
+
+-   **Node.js**: v18.0 or later
+-   **npm** (or yarn/pnpm)
+
+### Step 1: Clone the Repository
+
+If you haven't already, clone the project to your local machine.
+
+```bash
+# git clone <repository-url>
+cd kineticfolio
+```
+
+### Step 2: Install Dependencies
+
+Install all the required packages using npm.
+
+```bash
+npm install
+```
+This command reads the `package.json` file and installs all the necessary libraries.
+
+### Step 3: Run the Development Server
+
+Start the local development server.
+
+```bash
+npm run dev
+```
+
+This command will start the Next.js application in development mode with Turbopack for maximum speed. Once it's running, you can view the application by opening your browser and navigating to:
+
+**http://localhost:3000**
+
+The application will automatically reload if you make any changes to the code.
+
+## 5. Codebase Deep Dive: Understanding the Structure
+
+The project's code is organized inside the `/src` directory. Here’s a breakdown of what each folder is for:
 
 ```
 /src
-├── app/                 // Next.js App Router core files (layout.tsx, page.tsx, globals.css)
+├── app/              // Next.js App Router core. The heart of the application.
+│   ├── layout.tsx    // The root layout for the entire site. Wraps all pages.
+│   ├── page.tsx      // The main entry point for the homepage.
+│   └── globals.css   // Global styles and theme (color) definitions.
+│
 ├── components/
-│   ├── icons/           // Custom SVG icons as components (e.g., GitHubIcon.tsx)
-│   │   └── index.ts     // Barrel export for icons
-│   ├── layout/          // Structural components (SectionWrapper.tsx, PageNavigation.tsx, CookieConsentBanner.tsx)
-│   │   └── index.ts     // Barrel export for layout components
-│   ├── primitives/      // Base HTML element wrappers (Box.tsx, Flex.tsx, Text.tsx)
-│   │   └── index.ts     // Barrel export for primitives
-│   ├── sections/        // Main content sections
-│   │   ├── About/
-│   │   │   └── About.tsx
-│   │   ├── Contact/
-│   │   │   └── Contact.tsx
-│   │   ├── Feedback/
-│   │   │   └── Feedback.tsx
-│   │   ├── Hero/
-│   │   │   ├── Hero.tsx
-│   │   ├── Projects/
-│   │   │   └── Projects.tsx
-│   │   └── Skills/
-│   │       └── Skills.tsx
-│   │   └── index.ts     // Barrel export for all section components
-│   └── ui/              // ShadCN UI components, each in its own subdirectory
-│       ├── Button/
-│       │   └── button.tsx
-│       ├── Card/
-│       │   └── card.tsx
-│       ├── Carousel/
-│       │   └── carousel.tsx
-│       └── ... (other ShadCN components)
-│       └── index.ts     // Barrel export for all UI components
-├── hooks/               // Custom React hooks (e.g., use-mobile.tsx) // useToast.ts is removed
-│   └── index.ts         // Barrel export for hooks
-├── lib/                 // Utility functions (utils.ts)
-│   └── index.ts         // Barrel export for lib utilities
-└── public/              // Static assets (e.g., DendiRivaldi_Resume.pdf, images, manifest.json, icons/)
-
+│   ├── common/       // Small, highly reusable components (e.g., SectionTitle).
+│   ├── icons/        // Custom SVG icons as React components.
+│   ├── layout/       // Major structural components (Navbar, SectionWrapper).
+│   ├── primitives/   // Basic HTML element wrappers (Box, Flex, Text).
+│   ├── sections/     // The main page sections (Hero, About, Projects, etc.).
+│   └── ui/           // Shadcn UI components. You own this code.
+│
+├── hooks/            // Custom React hooks for reusable logic.
+│   ├── use-feedback-store.ts // Manages all state for the feedback feature.
+│   └── use-visitor-location.ts // Fetches the visitor's location.
+│
+├── lib/              // Utility functions.
+│   └── utils.ts      // Contains the `cn` utility for merging Tailwind classes.
+│
+├── ai/               // All Genkit-related AI code.
+│   ├── flows/        // Contains the definitions for our AI flows.
+│   └── genkit.ts     // Genkit configuration and initialization.
+│
+└── public/           // Static assets accessible from the browser.
+    ├── DendiRivaldi_Resume.pdf
+    └── ... (images, icons, etc.)
 ```
-Each component directory (icons, layout, primitives, sections, ui, hooks, lib) utilizes an `index.ts` file for barrel exports, allowing for cleaner imports (e.g., `import { Button } from '@/components/ui';`).
 
-## Customization
+## 6. How to Customize and Contribute
 
--   **Content**: Update text, project details (in `src/components/sections/Projects/Projects.tsx` - `projectsData` array), and skill information directly in the respective components.
--   **Styling**: Modify Tailwind CSS classes in components or update the theme variables in `src/app/globals.css`.
--   **Images**: Placeholder images are sourced from Unsplash to provide a better visual starting point. You should replace these with your actual project visuals and your portrait. Look for `data-ai-hint` attributes for guidance on image content. Update Open Graph image (`og-image.png`) and icons in `/public`.
--   **Social Links**: Already updated with Dendi Rivaldi's info.
--   **Resume**: Place your resume as `DendiRivaldi_Resume.pdf` in the `/public` directory.
+### Updating Content
 
-## Deployment to Vercel
+-   **Project Information**: To change the project details, open `src/components/sections/Projects/Projects.tsx` and edit the `projectsData` array.
+-   **Skill Information**: To update the skills, open `src/components/sections/Skills/Skills.tsx` and modify the `coreSkillsData` and `subSkillsData` arrays.
+-   **Text Content**: Most other text can be found directly within the respective section component in `src/components/sections/`.
 
-Deploying this Next.js application to Vercel is straightforward.
+### Changing Styles
 
-1.  **Push to GitHub**:
-    *   Ensure your latest code is committed and pushed to a GitHub repository.
+-   **Colors & Theme**: To change the color palette for light and dark modes, edit the HSL CSS variables at the top of `src/app/globals.css`.
+-   **Component Styles**: To change the style of a specific element, find the component file and modify its Tailwind CSS utility classes.
+
+### Replacing Images & Assets
+
+-   **Resume**: Replace the `DendiRivaldi_Resume.pdf` file in the `/public` directory with your own.
+-   **Images**: Project images and other visuals can be found in the `projectsData` array or directly in components like `About.tsx`. Replace the placeholder URLs with your own.
+
+## 7. Deployment Guide (Vercel)
+
+This Next.js application is optimized for deployment on **Vercel**.
+
+1.  **Push to GitHub**: Ensure your latest code is committed and pushed to a GitHub repository.
 
 2.  **Import Project in Vercel**:
-    *   Go to your Vercel dashboard and click "Add New... > Project".
-    *   Choose "Import Git Repository" and connect your GitHub account if you haven't already.
-    *   Select your `kineticfolio` repository.
-    *   Vercel will automatically detect that it's a Next.js project and configure most settings.
+    -   In your Vercel dashboard, click "Add New... > Project".
+    -   Connect your GitHub account and import the `kineticfolio` repository.
+    -   Vercel will automatically detect the `Next.js` framework and configure the build settings.
 
 3.  **Configure Environment Variables**:
-    *   For your **production domain**, you need to set the `NEXT_PUBLIC_SITE_URL` environment variable.
-        *   In your Vercel project settings, go to "Environment Variables".
-        *   Add a new variable:
-            *   **Name**: `NEXT_PUBLIC_SITE_URL`
-            *   **Value**: Your full production domain (e.g., `https://yourdomain.com` or `https://www.yourdomain.com`)
-            *   Ensure this is available for the **Production** environment (and optionally Preview/Development if you want to test with it).
-    *   Vercel automatically provides `NEXT_PUBLIC_VERCEL_URL` for preview deployments, which the application will use as a fallback if `NEXT_PUBLIC_SITE_URL` is not set (or if you want to check preview deployments).
+    -   For a production deployment, you need to set the `NEXT_PUBLIC_SITE_URL` environment variable. This is crucial for generating correct metadata for SEO.
+    -   In your Vercel project settings, go to "Environment Variables".
+    -   Add a new variable:
+        -   **Name**: `NEXT_PUBLIC_SITE_URL`
+        -   **Value**: Your full production domain (e.g., `https://yourdomain.com`).
 
 4.  **Deploy**:
-    *   Click the "Deploy" button in Vercel.
-    *   Vercel will build and deploy your application. You'll be provided with a URL once it's live.
+    -   Click the "Deploy" button. Vercel will build and deploy your application, providing you with a live URL.
+    -   Vercel will automatically redeploy the site whenever you push new changes to the main branch.
 
-Your site should now be deployed! Vercel will automatically redeploy your site whenever you push changes to the connected GitHub branch (usually `main` or `master`).
+---
 
-Enjoy your new portfolio!
+Happy coding!
