@@ -16,12 +16,6 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
-      { // Added for the 3D card demo
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      }
     ],
   },
   // Add webpack config to handle optional dependencies for Vercel build
