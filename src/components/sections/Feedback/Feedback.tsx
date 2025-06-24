@@ -5,9 +5,10 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui';
-import { UserPlus, LogIn, LogOut, MessageSquarePlus, MessageSquareText, Trash2 } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast"; // Updated import
+import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, CardDescription, Badge } from '@/components/ui';
+import { UserPlus, LogIn, LogOut, MessageSquarePlus, MessageSquareText, Trash2, Sparkles, Loader2 } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
+import { reviewFeedback, type ReviewFeedbackOutput } from '@/ai/flows/review-feedback-flow';
 
 interface FeedbackItem {
   id: string;
@@ -22,6 +23,7 @@ type ViewState = 'login' | 'signup' | 'manageFeedback';
 const LOCAL_STORAGE_KEYS = {
   LOGGED_IN_USER: 'kineticfolio_loggedInUser_feedback',
   USERS_FEEDBACK: 'kineticfolio_usersFeedback', 
+  AI_ANALYSIS: 'kineticfolio_ai_analysis',
 };
 
 export const Feedback: React.FC = () => {
@@ -37,12 +39,21 @@ export const Feedback: React.FC = () => {
   const [feedbackContent, setFeedbackContent] = useState('');
   const [userFeedback, setUserFeedback] = useState<FeedbackItem[]>([]);
 
+  // State for AI Analysis
+  const [analyzingId, setAnalyzingId] = useState<string | null>(null);
+  const [analysisResults, setAnalysisResults] = useState<Record<string, ReviewFeedbackOutput>>({});
+
   useEffect(() => {
     setIsMounted(true);
     const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.LOGGED_IN_USER);
     if (storedUser) {
       setCurrentUser(storedUser);
       setView('manageFeedback');
+      // Load analysis results from local storage on mount
+      const storedAnalysis = localStorage.getItem(LOCAL_STORAGE_KEYS.AI_ANALYSIS);
+      if (storedAnalysis) {
+        setAnalysisResults(JSON.parse(storedAnalysis));
+      }
     }
   }, []);
 
@@ -119,8 +130,32 @@ export const Feedback: React.FC = () => {
     localStorage.setItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK, JSON.stringify(allUsersFeedback));
     setUserFeedback(updatedFeedback);
     toast({ title: 'Feedback Deleted', description: 'The feedback item has been removed.' });
+
+    // Also remove any existing analysis for this item
+    const newAnalysisResults = { ...analysisResults };
+    delete newAnalysisResults[feedbackId];
+    setAnalysisResults(newAnalysisResults);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.AI_ANALYSIS, JSON.stringify(newAnalysisResults));
   };
   
+  const handleAiReview = async (item: FeedbackItem) => {
+    if (analyzingId) return;
+
+    setAnalyzingId(item.id);
+    try {
+      const result = await reviewFeedback({ feedbackText: item.content });
+      const newResults = { ...analysisResults, [item.id]: result };
+      setAnalysisResults(newResults);
+      localStorage.setItem(LOCAL_STORAGE_KEYS.AI_ANALYSIS, JSON.stringify(newResults));
+      toast({ title: "AI Analysis Complete", description: "Review generated successfully." });
+    } catch (error) {
+      console.error("AI analysis failed:", error);
+      toast({ title: "AI Analysis Failed", description: "Could not get a response from the AI. Please try again.", variant: 'destructive' });
+    } finally {
+      setAnalyzingId(null);
+    }
+  };
+
   if (!isMounted) {
     return (
       <SectionWrapper id="feedback" className="bg-transparent">
@@ -176,6 +211,37 @@ export const Feedback: React.FC = () => {
     </motion.div>
   );
 
+  const renderAnalysis = (analysis: ReviewFeedbackOutput) => {
+    const sentimentVariant = {
+      Positive: 'success',
+      Neutral: 'secondary',
+      Negative: 'destructive',
+    }[analysis.sentiment] || 'default';
+  
+    return (
+      <motion.div 
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        className="mt-4 border-t border-border/20 pt-4"
+      >
+        <Flex justify="between" align="center" className="mb-3">
+          <Text as="h5" className="text-base font-semibold text-primary flex items-center"><Sparkles className="mr-2 h-4 w-4" />AI Review</Text>
+          <Badge variant={sentimentVariant as any}>{analysis.sentiment}</Badge>
+        </Flex>
+        <Box className="space-y-2 text-sm">
+          <Box>
+            <Text as="p" className="font-medium text-foreground/80">Summary:</Text>
+            <Text as="p" className="text-foreground/70">{analysis.summary}</Text>
+          </Box>
+          <Box>
+            <Text as="p" className="font-medium text-foreground/80">Suggested Action:</Text>
+            <Text as="p" className="text-foreground/70">{analysis.suggestedAction}</Text>
+          </Box>
+        </Box>
+      </motion.div>
+    );
+  };
+
   const renderManageFeedback = () => (
     <Flex direction="col" className="w-full h-full space-y-8 pt-12 pb-8 md:pt-16">
       <Flex justify="between" align="center" className="w-full px-4">
@@ -184,15 +250,13 @@ export const Feedback: React.FC = () => {
           <LogOut className="mr-2 h-4 w-4" /> Logout
         </Button>
       </Flex>
-
       
       <Box className="w-full max-w-3xl mx-auto px-4">
          <Text className="text-sm text-center text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-600/50 dark:border-yellow-400/50 rounded-md p-2">
-            ⚠️ **DEMO NOTICE:** This feedback feature is for demonstration purposes only. No real accounts are created, and feedback is stored only in your browser's local storage. Data is not persistent or secure.
+            ⚠️ **DEMO NOTICE:** This feedback feature is for demonstration purposes only. No real accounts are created, and feedback is stored only in your browser's local storage.
          </Text>
       </Box>
       
-
       <Card className="w-full max-w-2xl mx-auto bg-card/70 backdrop-blur-md border border-border/30">
         <CardHeader>
           <CardTitle className="text-xl text-primary flex items-center"><MessageSquarePlus className="mr-2" /> Submit New Feedback</CardTitle>
@@ -228,22 +292,40 @@ export const Feedback: React.FC = () => {
           <Box className="space-y-4 max-h-[calc(100vh-400px)] md:max-h-[calc(100vh-450px)] overflow-y-auto pr-2 pl-4 pb-4">
             {userFeedback.map(item => (
               <motion.div key={item.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{duration: 0.3}}>
-                <Card className="bg-card/60 backdrop-blur-sm border border-border/20">
-                  <CardHeader>
-                    <Flex justify="between" align="start">
+                <Card className="bg-card/60 backdrop-blur-sm border border-border/20 overflow-hidden">
+                  <CardContent className="p-4">
+                    <Flex justify="between" align="start" className="mb-2">
                       <Box>
                         <CardTitle className="text-lg text-foreground">{item.title}</CardTitle>
                         <CardDescription className="text-xs text-muted-foreground">
                           Submitted: {new Date(item.timestamp).toLocaleString()}
                         </CardDescription>
                       </Box>
-                      <Button variant="ghost" size="icon" onClick={() => handleDeleteFeedback(item.id)} aria-label="Delete feedback item" className="text-destructive hover:text-destructive/80 hover:bg-destructive/10">
+                       <Button variant="ghost" size="icon" onClick={() => handleDeleteFeedback(item.id)} aria-label="Delete feedback item" className="text-destructive hover:text-destructive/80 hover:bg-destructive/10">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </Flex>
-                  </CardHeader>
-                  <CardContent>
                     <Text className="text-sm text-foreground/90 whitespace-pre-wrap">{item.content}</Text>
+                    {analysisResults[item.id] ? (
+                      renderAnalysis(analysisResults[item.id])
+                    ) : (
+                      <Flex justify="end" className="mt-4">
+                        <Button 
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleAiReview(item)} 
+                          disabled={!!analyzingId}
+                          className="text-primary border-primary/50 hover:bg-primary/10 hover:text-primary"
+                        >
+                          {analyzingId === item.id ? (
+                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <Sparkles className="mr-2 h-4 w-4" />
+                          )}
+                          AI Review
+                        </Button>
+                      </Flex>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
