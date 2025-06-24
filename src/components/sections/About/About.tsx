@@ -31,7 +31,7 @@ export const About: React.FC = React.memo(() => {
         >
           <Box className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group bg-card/80 backdrop-blur-lg border border-white/10">
             <Image
-              src="https://placehold.co/600x600.png"
+              src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=1974&auto=format&fit=crop"
               alt="Portrait of Dendi Rivaldi, Python, Automation, and Game Development enthusiast"
               data-ai-hint="developer portrait"
               fill
