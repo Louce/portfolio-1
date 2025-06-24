@@ -3,28 +3,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import type { ReviewFeedbackOutput } from '@/ai/flows';
-import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
+import { feedbackService } from '@/services';
+import type { FeedbackItem } from '@/services/feedbackService';
 
 /**
- * Represents a single feedback item.
- * @property {string} id - A unique identifier, typically a timestamp.
- * @property {string} title - The title of the feedback.
- * @property {string} content - The main body of the feedback.
- * @property {string} submitter - The username of the person who submitted the feedback.
- * @property {number} timestamp - The UTC timestamp of when the feedback was submitted.
- */
-export interface FeedbackItem {
-  id: string;
-  title: string;
-  content: string;
-  submitter: string;
-  timestamp: number;
-}
-
-/**
- * A custom hook to manage all feedback-related state and interactions with localStorage.
- * This hook encapsulates logic for a mock user authentication system, CRUD operations
- * on feedback items, and management of AI analysis results. It is intended for client-side use only.
+ * A custom hook to manage UI state for the feedback feature.
+ * It acts as a bridge between the UI components and the `feedbackService`, which handles
+ * all data persistence logic. This hook's primary responsibility is to manage React state
+ * and trigger re-renders when data changes.
  *
  * @returns An object containing the state and action dispatchers for the feedback system.
  * @property {boolean} isMounted - True if the component has mounted, used to prevent hydration errors.
@@ -45,46 +31,28 @@ export const useFeedbackStore = () => {
   const [analysisResults, setAnalysisResults] = useState<Record<string, ReviewFeedbackOutput>>({});
 
   useEffect(() => {
+    // This effect runs once on mount to initialize state from the persistence layer (service).
     setIsMounted(true);
-    try {
-      // On mount, load the logged-in user and any saved analysis from localStorage.
-      const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.LOGGED_IN_USER);
-      if (storedUser) {
-        setCurrentUser(storedUser);
-      }
-      const storedAnalysis = localStorage.getItem(LOCAL_STORAGE_KEYS.AI_ANALYSIS);
-      if (storedAnalysis) {
-        setAnalysisResults(JSON.parse(storedAnalysis));
-      }
-    } catch (error) {
-      console.error("Failed to read from localStorage on mount", error);
+    const user = feedbackService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
+      setUserFeedback(feedbackService.getFeedbackForUser(user));
     }
+    setAnalysisResults(feedbackService.getAnalysisResults());
   }, []);
 
-  useEffect(() => {
-    // When the current user changes, load their specific feedback from the general feedback store.
-    if (currentUser && isMounted) {
-      try {
-        const allUsersFeedback = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK) || '{}');
-        setUserFeedback(allUsersFeedback[currentUser] || []);
-      } catch (error) {
-        console.error("Failed to load user feedback from localStorage", error);
-        setUserFeedback([]);
-      }
-    } else {
-      setUserFeedback([]);
-    }
-  }, [currentUser, isMounted]);
-
   const login = useCallback((username: string, type: 'login' | 'signup') => {
+    feedbackService.loginUser(username);
     setCurrentUser(username);
-    localStorage.setItem(LOCAL_STORAGE_KEYS.LOGGED_IN_USER, username);
+    // On login, fetch the feedback for the new user.
+    setUserFeedback(feedbackService.getFeedbackForUser(username));
     toast({ title: type === 'login' ? 'Logged In' : 'Signed Up', description: `Welcome, ${username}!` });
   }, [toast]);
 
   const logout = useCallback(() => {
+    feedbackService.logoutUser();
     setCurrentUser(null);
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.LOGGED_IN_USER);
+    setUserFeedback([]);
     toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
   }, [toast]);
 
@@ -96,26 +64,13 @@ export const useFeedbackStore = () => {
       return false;
     }
 
-    const newFeedbackItem: FeedbackItem = {
-      id: Date.now().toString(),
-      title: title.trim() || "General Feedback",
-      content,
-      submitter: currentUser,
-      timestamp: Date.now(),
-    };
-
     try {
-      const allUsersFeedback = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK) || '{}');
-      const currentUserSpecificFeedback = allUsersFeedback[currentUser] || [];
-      const updatedFeedback = [newFeedbackItem, ...currentUserSpecificFeedback];
-      allUsersFeedback[currentUser] = updatedFeedback;
-
-      localStorage.setItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK, JSON.stringify(allUsersFeedback));
-      setUserFeedback(updatedFeedback);
+      const newFeedbackItem = feedbackService.addFeedbackForUser(currentUser, title, content);
+      setUserFeedback(prev => [newFeedbackItem, ...prev]);
       toast({ title: 'Feedback Submitted', description: 'Thank you for your feedback!' });
       return true;
     } catch (error) {
-      console.error("Failed to save feedback to localStorage", error);
+      console.error("Failed to add feedback via service:", error);
       toast({ title: 'Error', description: 'Could not save your feedback.', variant: 'destructive' });
       return false;
     }
@@ -125,37 +80,28 @@ export const useFeedbackStore = () => {
     if (!currentUser || !feedbackId) return;
 
     try {
-      // Remove feedback from the user's list
-      const allUsersFeedback = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK) || '{}');
-      const currentUserSpecificFeedback = allUsersFeedback[currentUser] || [];
-      const updatedFeedback = currentUserSpecificFeedback.filter((item: FeedbackItem) => item.id !== feedbackId);
-      allUsersFeedback[currentUser] = updatedFeedback;
-      localStorage.setItem(LOCAL_STORAGE_KEYS.USERS_FEEDBACK, JSON.stringify(allUsersFeedback));
+      const updatedFeedback = feedbackService.deleteFeedbackForUser(currentUser, feedbackId);
       setUserFeedback(updatedFeedback);
-
-      // Also remove any associated AI analysis
-      const newAnalysisResults = { ...analysisResults };
-      delete newAnalysisResults[feedbackId];
-      setAnalysisResults(newAnalysisResults);
-      localStorage.setItem(LOCAL_STORAGE_KEYS.AI_ANALYSIS, JSON.stringify(newAnalysisResults));
+      
+      const updatedAnalysis = feedbackService.deleteAnalysisResult(feedbackId);
+      setAnalysisResults(updatedAnalysis);
 
       toast({ title: 'Feedback Deleted', description: 'The feedback item has been removed.' });
     } catch (error) {
-      console.error("Failed to delete feedback from localStorage", error);
+      console.error("Failed to delete feedback via service:", error);
       toast({ title: 'Error', description: 'Could not delete the feedback item.', variant: 'destructive' });
     }
-  }, [currentUser, toast, analysisResults]);
+  }, [currentUser, toast]);
 
   const saveAnalysis = useCallback((feedbackId: string, analysis: ReviewFeedbackOutput) => {
     try {
-      const newResults = { ...analysisResults, [feedbackId]: analysis };
+      const newResults = feedbackService.saveAnalysisResult(feedbackId, analysis);
       setAnalysisResults(newResults);
-      localStorage.setItem(LOCAL_STORAGE_KEYS.AI_ANALYSIS, JSON.stringify(newResults));
     } catch (error) {
-      console.error("Failed to save AI analysis to localStorage", error);
+      console.error("Failed to save AI analysis via service:", error);
       toast({ title: 'Error', description: 'Could not save the AI analysis.', variant: 'destructive' });
     }
-  }, [analysisResults, toast]);
+  }, [toast]);
 
   return {
     isMounted,
