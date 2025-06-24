@@ -126,112 +126,107 @@ This document outlines the step-by-step process for creating the KineticFolio we
 
 ### Step 6: Root Layout (`src/app/layout.tsx`) (10:00 - 12:00)
 
-1.  **Presenter**: "Set up our main `src/app/layout.tsx`."
-2.  Update metadata (`title`, `description`).
-3.  Import Google Fonts (Inter) and set up the CSS variable in `tailwind.config.ts`.
-4.  **Structure the body**: Set `className="dark"`, add `Toaster` for notifications, and our layout components: `ThemeSwitcher`, `Navbar`, and `CookieConsentBanner`.
+1.  **Presenter**: "Now, let's configure our main `src/app/layout.tsx`. This file is the root of our entire application, wrapping every page. We'll set up our global styles, fonts, and the main layout components that are present everywhere, like our navigation and theme switcher."
+2.  Update metadata (`title`, `description`) to improve SEO.
+3.  Import the Inter font from `next/font/google` and set it up as a CSS variable in `tailwind.config.ts`. This is the modern, performant way to handle custom fonts in Next.js.
+4.  **Structure the body**: We'll set the default theme to dark by adding `className="dark"` to the `html` tag. We'll then add our global `Toaster` for notifications and our key layout components: `ThemeSwitcher`, the floating `Navbar`, and the `CookieConsentBanner`. These will now be present on every page of our site.
 
 ### Step 7: Primitive & Common Components (12:00 - 14:00)
 
-*   **Presenter**: "Create fundamental, reusable building blocks."
+*   **Presenter**: "Great applications are built on solid foundations. To keep our code clean and reusable, we'll create a set of primitive components. These are simple wrappers around basic HTML elements, like `Box` for a `div` or `Text` for a paragraph, which we can reuse everywhere."
 1.  Create `src/components/primitives/Box.tsx`, `Flex.tsx`, `Text.tsx`. (Paste code, briefly explain).
-2.  Create `src/components/common/SectionTitle.tsx`. (Paste code, explain). Explain the use of `whileInView` and `viewport={{ once: false }}` to ensure the title animates every time it's scrolled into view.
-3.  Create barrel export files (`index.ts`) for these directories.
+2.  **Presenter**: "We'll also create a `SectionTitle` component. Since almost every section has a title, creating a shared component ensures they are all styled consistently and, more importantly, animated consistently. We'll use Framer Motion's `whileInView` with `viewport={{ once: false }}`. This is a key detail: setting `once` to `false` means the title will animate beautifully every single time it's scrolled into view, whether you're scrolling down or up."
+3.  Create `src/components/common/SectionTitle.tsx`. (Paste code, explain).
+4.  Create barrel export files (`index.ts`) for these directories to simplify our import paths.
 
 ### Step 8: Layout Components (`src/components/layout/`) (14:00 - 17:00)
 
-*   **Presenter**: "Layout components define the main page structure."
-1.  Create `src/components/layout/SectionWrapper.tsx`. (Paste code, explain its purpose).
+*   **Presenter**: "Now for the main structure. Our layout components define the scaffolding of our page."
+1.  Create `src/components/layout/SectionWrapper.tsx`. (Paste code, explain its purpose of providing consistent padding and centering).
 2.  Create `src/components/layout/CookieConsentBanner.tsx`. (Paste code, explain state, effects, Framer Motion).
 3.  Create `src/components/layout/ThemeSwitcher.tsx`. (Paste code, explain).
 4.  **Create the Floating Navbar**: Create `src/components/layout/Navbar.tsx`.
-    *   **(Paste Code & Explain)**: "Instead of a traditional top bar, we're creating a modern, floating pill navigation. It uses icons for a clean look, with tooltips revealing the section names on hover. It's fixed to the viewport and animates in smoothly."
+    *   **(Paste Code & Explain)**: "Instead of a traditional top bar that takes up space, we're creating a modern, floating pill navigation. It's fixed to the viewport and uses clean icons with tooltips that appear on hover to reveal the section names. This keeps the UI minimal and elegant while still being easy to navigate. It animates in smoothly for a polished feel."
 5.  Update `src/app/layout.tsx` to import and use these components.
 
 ### Step 9: Assembling the Main Page (`src/app/page.tsx`) (17:00 - 18:00)
 
-*   **Presenter**: "Now let's assemble all our sections on the main page."
+*   **Presenter**: "With our layout in place, let's assemble all our sections on the main page. Thanks to our component-based architecture, `src/app/page.tsx` becomes incredibly simple and readable."
 1.  Open `src/app/page.tsx`.
-2.  **(Paste Code & Explain)**: "Our page is now very simple. It's a container that sequentially renders each section component. We'll add a subtle grid pattern to the background here, which will be visible in the gaps between our sections."
-3.  Import and render `Hero`, `About`, `Skills`, `Projects`, `Contact`, and `Feedback`.
+2.  **(Paste Code & Explain)**: "Our page is now a simple container that sequentially renders each section component: `Hero`, `About`, `Skills`, and so on. We'll add a subtle grid pattern to the background here. This pattern will be visible in the gaps between our sections, creating a nice visual texture that ties the whole design together."
+3.  Import and render all the section components.
 
 ### Step 10: Building the Hero Section (`src/components/sections/Hero/Hero.tsx`) (18:00 - 21:00)
 
-*   **Presenter**: "Our first major section! We'll make it really dynamic."
+*   **Presenter**: "Now for our first major section, the Hero! This is the first thing users see, so we want it to be impressive. We'll make it really dynamic."
 1.  Create `src/components/sections/Hero/Hero.tsx`.
     *   **(Paste Code & Explain)**
-        *   Structure: Use `div` with `min-h-screen` instead of `SectionWrapper` for a full-bleed background.
-        *   **Visitor Location**: Explain the `useEffect` hook that fetches the visitor's location from `ipwhois.app` on the client-side.
-        *   **Animated Text**: Explain the kinetic typography and the cycling sub-headlines using `useState`, `useEffect`, and `AnimatePresence`.
-        *   **Scroll Hint**: Add the animated `ChevronDown` icon to guide the user.
+        *   Structure: We'll use a `div` with `min-h-screen` to make it take up the full viewport, creating a more immersive entry point than our standard `SectionWrapper`.
+        *   **Visitor Location**: As a neat, personalized touch, we'll add a feature that fetches the visitor's location using a free API. We'll use a `useEffect` hook to call `ipwhois.app` on the client-side, making sure it doesn't slow down the server render.
+        *   **Animated Text**: The headline uses kinetic typography, and below it, we have a cycling sub-headline that rotates through key skills. This is achieved with `useState`, `useEffect`, and Framer Motion's `AnimatePresence` for smooth transitions.
+        *   **Scroll Hint**: Finally, we'll add an animated `ChevronDown` icon to gently guide the user to scroll down and explore the rest of the page.
 
 ### Step 11: Building the About Section (`src/components/sections/About/About.tsx`) (21:00 - 23:00)
 
-*   **Presenter**: "The 'About Me' section."
+*   **Presenter**: "Next up is the 'About Me' section. This is where we tell our story. We'll combine text and imagery with subtle animations."
 1.  Create `src/components/sections/About/About.tsx`.
     *   **(Paste Code & Explain)**
-        *   Structure: `SectionWrapper`, `Image` (from `next/image`), `Text` components.
-        *   **Animate on Scroll**: Point out `whileInView` and `viewport={{ once: false, amount: 0.2 }}`. Explain that `once: false` is what makes the animation re-trigger every time the user scrolls to this section.
-        *   **Download Resume Button**: Add `Button` with an `<a>` tag and `download` attribute. Explain that `DendiRivaldi_Resume.pdf` goes in `/public`.
+        *   Structure: We'll use `SectionWrapper` for consistent padding, and a flexbox layout to place an image next to the text content.
+        *   **Animate on Scroll**: We'll use `whileInView` and `viewport={{ once: false, amount: 0.2 }}`. I want to emphasize `once: false` again. This is the setting that makes the animation re-trigger every time the user scrolls to this section, creating that continuously dynamic feel we're aiming for.
+        *   **Download Resume Button**: We'll add a prominent `Button` with an `<a>` tag and a `download` attribute. This is a standard and effective way to offer a resume. We'll just need to place the `DendiRivaldi_Resume.pdf` file in the `/public` directory.
 
 ### Step 12: Building the Skills Section (`src/components/sections/Skills/Skills.tsx`) (23:00 - 26:00)
 
-*   **Presenter**: "The interactive skills graph."
+*   **Presenter**: "The skills section is a great opportunity to get creative. Instead of a boring list, we'll build an interactive skills graph."
 1.  Create `src/components/sections/Skills/Skills.tsx`.
     *   **(Paste Code & Explain)**
-        *   Data structure for skills and sub-skills.
-        *   `SkillNode` component.
-        *   **Simplified Hover Logic**: "To prevent flickering when moving between cards, we set the active skill on `onMouseEnter` and only reset it when the mouse leaves the entire grid container (`onMouseLeave`). This is a much more robust approach than using timers."
-        *   **Accessibility**: "We add `role="button"` to the `SkillNode` to correctly identify it as an interactive element for screen readers, fixing a common ARIA mismatch issue."
-        *   Show how `AnimatePresence` is used to smoothly show/hide the related sub-skills.
+        *   Data Structure: We'll start by defining our skills and related sub-skills in a clear data structure.
+        *   `SkillNode` Component: Each core skill will be a `SkillNode` component.
+        *   **Simplified Hover Logic**: "We previously encountered a flickering issue when moving the mouse between cards. We'll solve this with a much more robust approach. We'll set the active skill on `onMouseEnter` and only reset it when the mouse leaves the *entire grid container* (`onMouseLeave`). This elegant solution eliminates the need for timers and debounce logic."
+        *   **Accessibility Fix**: "We also had an accessibility issue where ARIA attributes didn't match their roles. We'll fix this by adding `role="button"` to the `SkillNode`. This correctly identifies it as an interactive element for screen readers, resolving the error."
+        *   We'll use `AnimatePresence` to smoothly show and hide the related sub-skills as the user hovers over different core skills.
 
 ### Step 13: Building the Projects Section (`src/components/sections/Projects/Projects.tsx`) (26:00 - 29:00)
 
-*   **Presenter**: "Showcasing work with interactive cards and carousels."
-1.  First, create the 3D card component. Create a new folder `src/components/ui/3d-card`, add `card-3d.tsx` and `index.ts`, and export it from the main `ui/index.ts`. (Paste code).
+*   **Presenter**: "Showcasing projects is the heart of any portfolio. We'll create a gallery of project cards that are interactive and lead to more detailed views."
+1.  **Presenter**: "First, to make our cards pop, we'll implement a cool 3D tilt effect on hover. We'll create a new reusable component called `CardContainer` in `src/components/ui/3d-card`." (Paste code for the 3D card).
 2.  Create `src/components/sections/Projects/Projects.tsx`.
     *   **(Paste Code & Explain)**
-        *   `ProjectCard` component using the new `CardContainer` for a 3D tilt effect on hover.
-        *   `projectsData` array with project details.
-        *   Use of `Dialog` for the modal and `Carousel` (with autoplay) inside to display project media.
-        *   Explain the `viewport={{ once: false }}` on the card animations.
+        *   We'll use our new `CardContainer` to wrap each `ProjectCard`, instantly giving it the 3D tilt effect.
+        *   `projectsData`: We'll define all project information in a `projectsData` array.
+        *   **Modal with Carousel**: "When a user clicks 'View Details', we'll open a `Dialog` modal. Inside this modal, we'll use the ShadCN `Carousel` component with the autoplay plugin to showcase multiple images or videos for each project. This is a great way to show off different aspects of your work in a compact space."
+        *   Again, we'll use `viewport={{ once: false }}` on the card animations so they animate in every time they appear on screen.
 
 ### Step 14: Building the Contact Section (`src/components/sections/Contact/Contact.tsx`) (29:00 - 31:00)
 
-*   **Presenter**: "The contact form."
+*   **Presenter**: "The contact section is our call to action. We need a clean and simple form."
 1.  Create `src/components/sections/Contact/Contact.tsx`.
     *   **(Paste Code & Explain)**
-        *   Use `react-hook-form` and `zod` for validation.
-        *   Apply the grid background to this section's `SectionWrapper` for visual rhythm.
-        *   Animate the form elements into view using `whileInView` and `viewport={{ once: false }}`.
+        *   We'll use `react-hook-form` and `zod` for robust and easy form validation.
+        *   To add some visual rhythm to the page, we'll apply the subtle grid background to this section's `SectionWrapper`, creating an alternating pattern.
+        *   Finally, we'll animate the form elements into view using `whileInView` and `viewport={{ once: false }}` to maintain our dynamic feel.
 
 ### Step 15: Building the Feedback Section with AI (31:00 - 36:00)
 
-*   **Presenter**: "Now for a standout feature. We'll add a feedback system and then enhance it with Generative AI."
+*   **Presenter**: "Now for a standout feature that will really impress. We'll add a feedback system and then enhance it with Generative AI."
 1.  **Part 1: The Base System**
     *   Create `src/components/sections/Feedback/Feedback.tsx`.
     *   **(Paste Code for Base System & Explain)**
-        *   Explain the state management for view, user, and feedback data.
-        *   Show the mock authentication and feedback submission logic using `localStorage`.
-        *   Show how to display and delete feedback for the current user.
+        *   "First, we build the core functionality. We'll use React state to manage the view (login, signup, or manage feedback), the current user, and the feedback data. To persist the data without a database, we'll use the browser's `localStorage`. This is a great way to prototype features quickly. We'll implement mock authentication and functions to submit, display, and delete feedback."
 2.  **Part 2: Enhancing with Genkit AI**
-    *   **Presenter**: "Let's take this to the next level. We'll add an 'AI Review' button that analyzes the feedback."
-    *   **Create the AI Config**: Create `src/ai/genkit.ts`. Explain that this file initializes Genkit with the Google AI plugin. (Paste code).
+    *   **Presenter**: "Now, let's take this to the next level. We'll add an 'AI Review' button that analyzes the user's feedback using Google's Gemini model."
+    *   **Create the AI Config**: Create `src/ai/genkit.ts`. "This file is our AI configuration hub. It's where we initialize Genkit with the necessary plugins, in this case, the `@genkit-ai/googleai` plugin." (Paste code).
     *   **Create the AI Flow**: Create `src/ai/flows/review-feedback-flow.ts`.
-        *   **(Paste Code & Explain)**: "This is a server-side flow. We define input and output structures using Zod. We create a prompt that instructs the AI to analyze feedback for sentiment, a summary, and a suggested action. The `defineFlow` function wraps this logic into a reusable function."
+        *   **(Paste Code & Explain)**: "This is a server-side AI flow. A flow is a function that orchestrates AI models and other logic. Here, we define the expected input and output structures using Zod for type safety. Then, we create a prompt that instructs the AI to act as a helpful assistant, analyzing feedback for its sentiment, providing a summary, and suggesting an action. The `defineFlow` function wraps this all up into a secure, reusable function we can call from our frontend."
     *   **Update the Frontend**: Go back to `Feedback.tsx`.
-        *   Import `reviewFeedback`.
-        *   Add state for `analyzingId` and `analysisResults`.
-        *   Add the "AI Review" button to each feedback card.
-        *   Implement the `handleAiReview` async function to call the flow, handle the loading state, and store the results in state and `localStorage`.
-        *   Add the UI to conditionally render the analysis results.
+        *   "Now we connect the frontend. We'll import our `reviewFeedback` flow. We'll add state to track which feedback item is currently being analyzed and to store the results. We add an 'AI Review' button to each feedback card. When clicked, it calls our AI flow, handles the loading state, and stores the structured result in both our component's state and `localStorage` for persistence. Finally, we'll add the UI to conditionally render the analysis results in a clean, readable format."
 
 ### Step 16: Final Polish & Review (36:00 - 37:00)
 
-*   **Presenter**: "Let's do a final review."
-1.  **Responsiveness**: Briefly show the app on a smaller screen size to demonstrate responsiveness.
-2.  **Animations**: Scroll up and down the page one last time to showcase how all the `viewport={{ once: false }}` animations make the page feel alive.
-3.  **Code Review**: Briefly show the clean `index.ts` barrel exports and the well-organized folder structure.
+*   **Presenter**: "And with that, our core development is complete! Let's do a final review."
+1.  **Responsiveness**: "Let's quickly check the site on a smaller screen size. As you can see, our flexible layouts and components adapt beautifully, providing a great experience on mobile."
+2.  **Animations**: "Now, let's scroll up and down the page one last time. Notice how every section animates into view, every time. This `viewport={{ once: false }}` setting is what gives the page its incredibly alive and responsive feel."
+3.  **Code Quality**: "And let's not forget our codebase. By using a clean folder structure and barrel exports, our project is well-organized, easy to maintain, and a pleasure to work with."
 
 ---
 
