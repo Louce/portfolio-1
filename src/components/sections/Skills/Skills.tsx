@@ -84,6 +84,7 @@ const SkillNode: React.FC<SkillNodeProps> = React.memo(({
   const Icon = skill.icon;
   return (
     <motion.div
+      role="button"
       tabIndex={0}
       aria-label={`${skill.name} skill node. ${isActive ? skill.description : ''}`}
       aria-expanded={isActive}
