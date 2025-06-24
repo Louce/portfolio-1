@@ -1,11 +1,11 @@
 
 'use client';
 
-import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
-import { SectionTitle } from '@/components/common'; // Updated import
+import { SectionTitle } from '@/components/common';
 import { cn } from '@/lib';
 import { CodeIcon as Code, Bot, Gamepad2, Palette, Globe, TerminalSquareIcon as Terminal } from 'lucide-react';
 
@@ -69,7 +69,6 @@ const subSkillsData: SubSkill[] = [
 interface SkillNodeProps {
   skill: Skill;
   onMouseEnter: () => void;
-  onMouseLeave: () => void;
   onFocus: () => void;
   onBlur: () => void;
   isActive: boolean;
@@ -78,7 +77,6 @@ interface SkillNodeProps {
 const SkillNode: React.FC<SkillNodeProps> = React.memo(({ 
   skill, 
   onMouseEnter, 
-  onMouseLeave, 
   onFocus, 
   onBlur, 
   isActive 
@@ -96,7 +94,6 @@ const SkillNode: React.FC<SkillNodeProps> = React.memo(({
           : "bg-card/70 backdrop-blur-sm border-border/20 hover:shadow-primary/30 hover:bg-card/80 hover:backdrop-blur-md hover:border-primary/40"
       )}
       onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
       onFocus={onFocus}
       onBlur={onBlur}
       whileHover={{ y: isActive ? 0 : -5 }}
@@ -127,48 +124,6 @@ SkillNode.displayName = 'SkillNode';
 export const Skills: React.FC = React.memo(() => {
   const [hoveredSkillId, setHoveredSkillId] = useState<string | null>(null);
   
-  const activationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const deactivationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const DEBOUNCE_DELAY = 150; // ms
-
-  const clearAllTimeouts = useCallback(() => {
-    if (activationTimeoutRef.current) {
-      clearTimeout(activationTimeoutRef.current);
-      activationTimeoutRef.current = null;
-    }
-    if (deactivationTimeoutRef.current) {
-      clearTimeout(deactivationTimeoutRef.current);
-      deactivationTimeoutRef.current = null;
-    }
-  }, []);
-
-  const handleNodeMouseEnter = useCallback((skillId: string) => {
-    clearAllTimeouts();
-    activationTimeoutRef.current = setTimeout(() => {
-      setHoveredSkillId(skillId);
-    }, DEBOUNCE_DELAY);
-  }, [clearAllTimeouts]);
-
-  const handleNodeMouseLeave = useCallback(() => {
-    clearAllTimeouts();
-    deactivationTimeoutRef.current = setTimeout(() => {
-      setHoveredSkillId(null);
-    }, DEBOUNCE_DELAY);
-  }, [clearAllTimeouts]);
-
-  const handleNodeFocus = useCallback((skillId: string) => {
-    clearAllTimeouts();
-    setHoveredSkillId(skillId); // Immediate activation on focus
-  }, [clearAllTimeouts]);
-
-  // useEffect for cleanup
-  useEffect(() => {
-    return () => {
-      clearAllTimeouts();
-    };
-  }, [clearAllTimeouts]);
-  
-
   const relatedSubSkills = useMemo(() => {
     if (!hoveredSkillId) return [];
     const coreSkill = coreSkillsData.find(s => s.id === hoveredSkillId);
@@ -182,17 +137,16 @@ export const Skills: React.FC = React.memo(() => {
         <SectionTitle>My Expertise</SectionTitle>
         <div 
           className="w-full max-w-3xl" 
-          onMouseLeave={handleNodeMouseLeave}
+          onMouseLeave={() => setHoveredSkillId(null)}
         >
           <Box className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 w-full">
             {coreSkillsData.map((skill) => (
               <SkillNode 
                 key={skill.id} 
                 skill={skill} 
-                onMouseEnter={() => handleNodeMouseEnter(skill.id)}
-                onMouseLeave={handleNodeMouseLeave}
-                onFocus={() => handleNodeFocus(skill.id)}
-                onBlur={handleNodeMouseLeave} 
+                onMouseEnter={() => setHoveredSkillId(skill.id)}
+                onFocus={() => setHoveredSkillId(skill.id)}
+                onBlur={() => setHoveredSkillId(null)} 
                 isActive={hoveredSkillId === skill.id}
               />
             ))}
