@@ -9,7 +9,4 @@ export const ai = genkit({
   plugins: [
     googleAI(),
   ],
-  // Log developer-friendly errors to the console
-  // during development.
-  enableDevLogs: true,
 });
