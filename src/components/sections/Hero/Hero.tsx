@@ -123,7 +123,7 @@ export const Hero: React.FC = React.memo(() => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-          className="absolute top-4 left-0 right-0 z-10 text-center"
+          className="absolute top-20 left-0 right-0 z-10 text-center"
           aria-label={`Visitor location: ${visitorLocation}`}
         >
         <Flex 
