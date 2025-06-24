@@ -7,7 +7,7 @@ import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
 import { useToast } from "@/components/ui/use-toast";
 import { useFeedbackStore, type FeedbackItem } from '@/hooks';
-import { reviewFeedback } from '@/ai/flows/review-feedback-flow';
+import { reviewFeedback } from '@/ai/flows';
 import { AuthForm, FeedbackForm, FeedbackList } from './components';
 
 export const Feedback: React.FC = () => {

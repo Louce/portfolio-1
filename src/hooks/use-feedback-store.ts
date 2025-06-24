@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from "@/components/ui/use-toast";
-import type { ReviewFeedbackOutput } from '@/ai/flows/review-feedback-flow';
+import type { ReviewFeedbackOutput } from '@/ai/flows';
 
 export interface FeedbackItem {
   id: string;
