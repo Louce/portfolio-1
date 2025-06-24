@@ -150,7 +150,7 @@ The project's code is organized inside the `/src` directory. Here’s a breakdow
 ### Replacing Images & Assets
 
 -   **Resume**: Replace the `DendiRivaldi_Resume.pdf` file in the `/public` directory with your own.
--   **Images**: Project images and other visuals are defined in **`src/data/projectsData.ts`**. Replace the Unsplash URLs with your own.
+-   **Images**: Project images and other visuals are defined in **`src/data/projectsData.ts`**. The project uses placeholder images from `placehold.co` by default. Replace these URLs with your own.
 
 ## 7. Deployment Guide (Vercel)
 
