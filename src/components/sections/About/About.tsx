@@ -19,28 +19,6 @@ import { aboutText, philosophyItems } from '@/data/aboutData';
  * @returns {React.ReactElement} The About section component.
  */
 export const About: React.FC = React.memo(() => {
-  // Animation variants for staggering the appearance of words in the main text.
-  const paragraphAnimation = {
-    hidden: { opacity: 1 }, 
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.02,
-      },
-    },
-  };
-
-  const wordAnimation = {
-    hidden: { opacity: 0, y: 20, filter: 'blur(3px)', scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      scale: 1,
-      transition: { type: 'spring', damping: 15, stiffness: 100 },
-    },
-  };
-
   return (
     <SectionWrapper id="about" className="bg-card">
       <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
@@ -70,24 +48,15 @@ export const About: React.FC = React.memo(() => {
             About Me
           </SectionTitle>
           
-          <motion.div 
-            variants={paragraphAnimation} 
-            initial="hidden" 
-            whileInView="visible" 
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{delay: 0.3}} 
+            transition={{ duration: 0.5, delay: 0.3 }}
             className="font-body text-lg md:text-xl text-foreground/90 leading-loose"
           >
-            {aboutText.split(' ').map((word, index) => (
-              <motion.span 
-                key={word + '-' + index} 
-                variants={wordAnimation} 
-                className="inline-block mr-[0.2em]"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </motion.div>
+            {aboutText}
+          </motion.p>
 
           <motion.div
               initial={{ opacity: 0, y: 20 }}
