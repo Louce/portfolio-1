@@ -142,5 +142,3 @@ The complete, finished source code for everything you saw today is linked right 
 Thanks so much for watching, and I'll see you in the next one. Happy coding!"
 
 **[Video End: Outro music fades in, and an end screen appears with links to other videos and social media profiles.]**
-
-    
