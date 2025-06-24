@@ -888,159 +888,103 @@ Projects.displayName = 'ProjectsSection';
 
 ---
 
-### **(22:00) Chapter 5: The "Wow" Factor - AI-Powered Analysis**
-
-**[ON-SCREEN: Show the file `src/ai/genkit.ts`.]**
+### **(22:00) Chapter 5: Codebase Deep Dive: A Senior Developer's Tour**
 
 **[PRESENTER]:**
-"Our portfolio is already looking incredible. But let's add a truly standout feature: AI. We have a Feedback section that lets users leave comments. We're going to add a button that allows the portfolio owner to get an instant AI-powered analysis of that feedback. We'll use **Genkit**, Google's open-source framework for building with generative AI."
+"Alright, let's put on our architect hats. A project's long-term success is dictated by its structure. A clean, logical, and well-documented folder structure is the difference between a project you can scale and a project you'll dread opening in six months. I've structured KineticFolio based on years of experience, emphasizing **Separation of Concerns**, the **Single Responsibility Principle**, and **maintainability**. Let's walk through it, file by file.
 
-**[PRESENTER]:**
-"First, let's open `src/ai/genkit.ts`. We need to initialize Genkit with the Google AI plugin. This is the modern syntax for Genkit v1, which is much cleaner than older versions."
+#### Root-Level Configuration
 
-**[ACTION]:**
-Create `src/ai/genkit.ts` and paste the following into it.
+First, the files in the project's root directory. These control the entire project's behavior.
+*   `next.config.ts`: This is the configuration file for Next.js. We've used it to define our image sources (`images.unsplash.com` and `placehold.co`), which is a security best practice, and to add a webpack configuration to ensure smooth builds on Vercel.
+*   `tailwind.config.ts`: This file defines our design system in code. It's where we've configured our custom fonts, color palettes (via CSS variables from `globals.css`), and extended Tailwind's default theme.
+*   `package.json`: This is the manifest for our project. It lists all our dependencies (`react`, `next`, `tailwindcss`, `framer-motion`, etc.) and defines our command-line scripts like `npm run dev` and `npm run build`.
+*   `components.json`: This file is specific to **Shadcn/UI**. It tells the Shadcn CLI where to find our components, styles, and utilities, so it knows how to add new components correctly.
 
-```typescript
-import { genkit } from 'genkit';
-import { googleAI } from '@genkit-ai/googleai';
+#### The `/public` Directory: Static Assets
 
-// Correct Genkit v1.x initialization.
-// We create a configured 'ai' instance directly and export it.
-// This replaces the deprecated `configureGenkit` function.
-export const ai = genkit({
-  plugins: [
-    googleAI(),
-  ],
-});
-```
+This is the simplest directory. Anything placed here is served directly by the browser at the root URL.
+*   `DendiRivaldi_Resume.pdf`: The resume file linked in the "About" section.
+*   Other assets like `favicon.ico` and social sharing images (`og-image.png`) would also live here.
 
-**[PRESENTER]:**
-"Now, let's define our AI flow itself in **`src/ai/flows/review-feedback-flow.ts`**. This is a server-side file, which is critical for security."
+#### The `/src` Directory: The Application's Core
 
-**[ACTION]:**
-Create the file `src/ai/flows/review-feedback-flow.ts` and paste the final, modern code into it.
+This is where 99% of our unique code lives. Using a `src` directory is a standard convention that separates our application code from configuration files.
 
-```typescript
-'use server';
-/**
- * @fileOverview An AI flow to review user feedback using Genkit.
- * This file defines the structured input/output schemas with Zod and the Genkit
- * flow that communicates with the Gemini model to analyze sentiment, summarize, and
- * suggest actions for a given piece of feedback.
- *
- * @exports reviewFeedback - The main server action to be called from the frontend.
- * @exports ReviewFeedbackInput - The Zod schema type for the flow's input.
- * @exports ReviewFeedbackOutput - The Zod schema type for the flow's structured output.
- */
+##### `/src/app` - The Heart of Next.js
 
-import {ai} from '@/ai/genkit';
-import {z} from 'zod';
-import {googleAI} from '@genkit-ai/googleai';
+This directory is the core of the Next.js App Router. The file structure here directly maps to the URL routes of our application.
+*   `layout.tsx`: This is the **root layout**, the shell that wraps every single page. It's one of the most important files. Here, we've set up our HTML structure, imported our global font (`Inter`), configured our site's metadata for SEO, and wrapped our application in essential context providers like `<ThemeProvider>` for dark mode and `<TooltipProvider>` for tooltips. Key layout components like the `<Navbar>` and `<ThemeSwitcher>` are also placed here so they are present on all pages.
+*   `page.tsx`: Since this is a one-page portfolio, this file is the main entry point for our homepage (`/`). Its only job is to assemble our various `<Section>` components in the correct order.
+*   `globals.css`: This is where we define our entire visual theme. It contains our custom color palette (using HSL CSS variables for light and dark modes) and a few custom utility classes like `.bg-grid-pattern`. This centralized approach to theming is incredibly powerful.
 
-/**
- * Defines the schema for the input of the feedback review flow.
- * @property {string} feedbackText - The user feedback text to be analyzed.
- */
-const ReviewFeedbackInputSchema = z.object({
-  feedbackText: z.string().describe('The user feedback text to be analyzed.'),
-});
-export type ReviewFeedbackInput = z.infer<typeof ReviewFeedbackInputSchema>;
+##### `/src/components` - The Reusable UI Toolkit
 
-/**
- * Defines the schema for the structured output of the feedback review flow.
- * @property {('Positive' | 'Neutral' | 'Negative')} sentiment - The overall sentiment of the feedback.
- * @property {string} summary - A concise one-sentence summary of the feedback.
- * @property {string} suggestedAction - A brief, actionable next step to address the feedback.
- */
-const ReviewFeedbackOutputSchema = z.object({
-  sentiment: z
-    .enum(['Positive', 'Neutral', 'Negative'])
-    .describe('The overall sentiment of the feedback.'),
-  summary: z.string().describe('A concise one-sentence summary of the feedback.'),
-  suggestedAction: z
-    .string()
-    .describe('A brief, actionable next step to address the feedback.'),
-});
-export type ReviewFeedbackOutput = z.infer<typeof ReviewFeedbackOutputSchema>;
+This is the most organized directory in the project, built on the principle of composition.
+*   `/ui`: This folder contains all the components we've added via **Shadcn/UI**. Critically, this is **our code**. We can modify any of these files to suit our exact design needs without worrying about breaking changes from a third-party library.
+*   `/primitives`: These are our most basic, unstyled building blocks (`Box`, `Flex`, `Text`). They are simple wrappers around HTML elements like `div` that provide convenient props for styling and layout, forming the foundation of all other components.
+*   `/common`: Contains small, highly reusable components that are shared across different sections, like `SectionTitle`.
+*   `/icons`: Holds any custom SVG icons that aren't available in the `lucide-react` library, exported as React components.
+*   `/layout`: This is for major structural components that define the page's overall layout: `Navbar`, `SectionWrapper`, `ThemeSwitcher`, and `CookieConsentBanner`.
+*   `/sections`: This is where the main content sections of the page live. Each section (`Hero`, `About`, `Projects`, etc.) has its own folder. Inside each, you'll find:
+    *   `Projects.tsx`: The main component for that section. It acts as a "container," managing state and composing its children.
+    *   `components/`: A sub-folder for any components that are only used within that specific section. For example, `ProjectCard.tsx` and `ProjectDetailSheet.tsx` live inside `Projects/components/`. This follows the **Single Responsibility Principle**—the main `Projects.tsx` file doesn't need to know the internal details of a card or a detail sheet; it just tells them what data to display.
 
-/**
- * Analyzes a given piece of feedback text using an AI model.
- * This function acts as a server-side entry point to the Genkit flow,
- * providing a structured analysis including sentiment, a summary, and a suggested action.
- * @param {ReviewFeedbackInput} input - The object containing the feedback text.
- * @returns {Promise<ReviewFeedbackOutput>} A promise that resolves to the structured analysis of the feedback.
- * @throws {Error} Throws an error if the AI model fails to return a structured response.
- */
-export async function reviewFeedback(input: ReviewFeedbackInput): Promise<ReviewFeedbackOutput> {
-  return reviewFeedbackFlow(input);
-}
+##### `/src/data` - The Content Layer
 
-/**
- * @internal
- * Defines the Genkit prompt for the feedback review task.
- * It specifies the AI model, the input/output schemas for structured prompting,
- * and the instructions for the AI.
- */
-const reviewPrompt = ai.definePrompt({
-  name: 'reviewFeedbackPrompt',
-  model: googleAI.model('gemini-1.5-flash'),
-  input: {schema: ReviewFeedbackInputSchema},
-  output: {schema: ReviewFeedbackOutputSchema},
-  prompt: `You are a helpful assistant for a portfolio website owner.
-Your task is to analyze a piece of user feedback and provide a structured analysis.
-Your response MUST conform to the specified JSON schema.
+This is a perfect example of **Separation of Concerns**. Our components should not contain hard-coded text or data. By placing all our static content here, we can update the entire portfolio without ever touching a React component.
+*   `aboutData.ts`, `projectsData.ts`, `skillsData.ts`: These files export simple arrays of data. This makes content management a breeze and is a hallmark of a well-architected frontend application.
 
-Analyze the following feedback:
-"{{{feedbackText}}}"
+##### `/src/hooks` - Stateful Logic
 
-Based on your analysis, determine the sentiment, provide a one-sentence summary, and suggest a clear, actionable next step for the portfolio owner.
-`,
-});
+When UI logic gets complex (e.g., managing state across multiple components, handling side effects), we extract it into custom hooks. This keeps our components clean and focused on presentation.
+*   `use-feedback-store.ts`: Manages all the state for the feedback feature: the current user, the list of feedback, and the AI analysis results.
+*   `use-visitor-location.ts`: Encapsulates the asynchronous logic for fetching the user's location from an external API.
 
-/**
- * @internal
- * Defines the main Genkit flow for reviewing feedback.
- * This flow takes the input, calls the defined prompt, and returns the structured output.
- */
-const reviewFeedbackFlow = ai.defineFlow(
-  {
-    name: 'reviewFeedbackFlow',
-    inputSchema: ReviewFeedbackInputSchema,
-    outputSchema: ReviewFeedbackOutputSchema,
-  },
-  async (input) => {
-    const {output} = await reviewPrompt(input);
-    if (!output) {
-      throw new Error('Failed to get a structured response from the AI model.');
-    }
-    return output;
-  }
-);
-```
+##### `/src/services` - The Data Persistence Layer
 
-**[PRESENTER]:**
-"Let's walk through this modern Genkit flow. At the very top, the `'use server';` directive tells Next.js this code should only ever run on the server, keeping our API keys secure. We then use a library called **Zod** to define the exact shape of the JSON object we expect the AI to return. This is called structured prompting, and it's a senior-level best practice that makes our AI interactions type-safe and reliable. We define a prompt using `ai.definePrompt`, and then we wrap it in a flow with `ai.defineFlow`. This gives us a clean, reusable, and powerful server action that our frontend can call."
+This is a crucial abstraction layer. Our application logic (in hooks and components) shouldn't care *how* or *where* data is stored.
+*   `feedbackService.ts`: This service contains all the logic for interacting with `localStorage`. It has functions like `getCurrentUser`, `addFeedbackForUser`, etc. If we ever wanted to move our feedback system to a real database like Firebase, **this is the only file we would need to change**. This powerful separation makes our application incredibly adaptable.
 
-**[PRESENTER]:**
-"Now, how do we use this from our frontend? We apply another architectural principle and create an abstraction layer—a dedicated service. The job of our UI components is to display things. The job of our state management hooks is to manage state. The job of this new service will be to handle data persistence—in our case, reading and writing from the browser's `localStorage`."
+##### `/src/lib` - Utilities & Constants
 
-**[ON-SCREEN: Show the file `src/services/feedbackService.ts`.]**
+This is a standard folder for shared helper functions and constants.
+*   `utils.ts`: Contains the essential `cn` function for merging Tailwind CSS classes.
+*   `constants.ts`: Defines our `localStorage` keys in one place to avoid "magic strings" and prevent typos.
 
-**[PRESENTER]:**
-"This file, `src/services/feedbackService.ts`, encapsulates all our `localStorage` logic. Why do this? Because our components shouldn't care *how* data is stored. By creating this service, we can swap `localStorage` for a real database like Firebase in the future by *only changing this one file*. The rest of our app remains untouched. This is a powerful abstraction."
+##### `/src/ai` - The Generative AI Brain
 
-**[PRESENTER]:**
-"This makes our custom hook at **`src/hooks/use-feedback-store.ts`** much cleaner. It no longer touches `localStorage` directly. Instead, it calls our new service."
-
-**[ON-SCREEN: Show the file `src/hooks/use-feedback-store.ts`, highlighting a call to `feedbackService`.]**
-
-**[PRESENTER]:**
-"This is a perfect example of Separation of Concerns. The **Component** handles the view. The **Hook** manages UI state. The **Service** handles data persistence. The **AI Flow** handles the AI logic. Each part has one clear job."
+All our server-side AI logic is neatly organized here.
+*   `genkit.ts`: Initializes and configures our Genkit instance with the Google AI plugin.
+*   `flows/review-feedback-flow.ts`: This is our **server action**. It defines the entire AI process: the Zod schemas for structured input and output (ensuring type-safe, predictable AI responses), the prompt sent to the Gemini model, and the flow that orchestrates the call. The `'use server';` directive at the top is critical, as it ensures this sensitive code only ever runs on the server."
 
 ---
 
-### **(27:00) Chapter 6: Deployment & Final Thoughts**
+### **(27:00) Chapter 6: How to Customize and Contribute**
+
+**[PRESENTER]:**
+"Now that you understand the architecture, customizing this portfolio is incredibly straightforward.
+
+##### Updating Content
+
+*   **Project Information**: To change project details, open **`src/data/projectsData.ts`** and edit the `projectsData` array.
+*   **Skill Information**: To update skills, open **`src/data/skillsData.ts`** and modify the `coreSkillsData` and `subSkillsData` arrays.
+*   **About Me Text**: To change the bio, open **`src/data/aboutData.ts`**.
+*   **Other Text**: Most other text can be found directly within the respective section component in `src/components/sections/`.
+
+##### Changing Styles
+
+*   **Colors & Theme**: To change the color palette for light and dark modes, edit the HSL CSS variables at the top of **`src/app/globals.css`**.
+*   **Component Styles**: To change the style of a specific element, find the component file and modify its Tailwind CSS utility classes.
+
+##### Replacing Images & Assets
+
+*   **Resume**: Replace the `DendiRivaldi_Resume.pdf` file in the `/public` directory with your own.
+*   **Images**: Project images and other visuals are defined in **`src/data/projectsData.ts`**. We are using live, working images from Unsplash, but you should replace these URLs with your own."
+
+---
+
+### **(28:30) Chapter 7: Deployment & Final Thoughts**
 
 **[ON-SCREEN: Browser showing the finished, polished application. Then, switch to the Vercel dashboard.]**
 
@@ -1052,7 +996,7 @@ const reviewFeedbackFlow = ai.defineFlow(
 
 ---
 
-### **(28:30) Outro**
+### **(29:30) Outro**
 
 **[ON-SCREEN: Back to the finished application, perhaps slowly cycling through the dark and light themes. A final slate with links appears.]**
 
