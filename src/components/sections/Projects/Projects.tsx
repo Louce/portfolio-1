@@ -9,7 +9,7 @@ import { Flex, Text, Box } from '@/components/primitives';
 import { SectionTitle } from '@/components/common';
 import {
   Button,
-  Sheet, SheetContent, SheetHeader, SheetTitle as ShadSheetTitle, SheetDescription as ShadSheetDescription, SheetClose,
+  Sheet, SheetContent, SheetHeader, SheetTitle as ShadSheetTitle, SheetDescription as ShadSheetDescription, SheetClose, SheetFooter,
   Badge,
   Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext,
   CardContainer, CardBody, CardItem,
@@ -49,7 +49,6 @@ const projectsData: Project[] = [
     mediaGallery: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'product grid' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1599544158439-952a123389ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'checkout page' },
-      { type: 'video', url: 'https://videos.pexels.com/video-files/4781412/4781412-hd.mp4' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'user dashboard' },
     ],
     techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Stripe'],
@@ -66,7 +65,6 @@ const projectsData: Project[] = [
     mediaGallery: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1611079838318-58d9657aff8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'main chart' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1534430480872-3498386e7856?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'map visualization' },
-      { type: 'video', url: 'https://videos.pexels.com/video-files/3214439/3214439-hd.mp4' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'report export' },
     ],
     techStack: ['React', 'TypeScript', 'D3.js', 'Framer Motion', 'Python (Flask)'],
@@ -81,7 +79,6 @@ const projectsData: Project[] = [
     coverDataAiHint: 'ai application',
     mediaGallery: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1587614203976-365c7d6297d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'generator ui' },
-      { type: 'video', url: 'https://videos.pexels.com/video-files/853878/853878-hd.mp4' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1535378620166-273708d44e4c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&h=720&q=80', dataAiHint: 'abstract brain' },
     ],
     techStack: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'Python', 'FastAPI', 'Genkit'],
@@ -214,7 +211,7 @@ export const Projects: React.FC = React.memo(() => {
               </ShadSheetDescription>
             </SheetHeader>
             
-            <Box className="space-y-4 p-4 md:p-6">
+            <Box className="space-y-4 p-4 md:p-6 pb-24">
               {selectedProject.mediaGallery && selectedProject.mediaGallery.length > 0 ? (
                 <Carousel
                   opts={{
@@ -321,6 +318,13 @@ export const Projects: React.FC = React.memo(() => {
                 )}
               </Flex>
             </Box>
+            <SheetFooter className="p-4 border-t border-border/20 sticky bottom-0 bg-card/90 backdrop-blur-lg z-10">
+              <SheetClose asChild>
+                <Button type="button" variant="outline" className="w-full">
+                  Close
+                </Button>
+              </SheetClose>
+            </SheetFooter>
           </SheetContent>
         )}
       </Sheet>
