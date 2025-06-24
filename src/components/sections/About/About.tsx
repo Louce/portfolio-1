@@ -40,7 +40,7 @@ export const About: React.FC = React.memo(() => {
         <motion.div
           initial={{ opacity: 0, scale: 0.85, x: -50, rotate: -3 }} 
           whileInView={{ opacity: 1, scale: 1, x: 0, rotate: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{ once: false, amount: 0.25 }}
           transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
           className="w-full max-w-md lg:w-2/5"
         >
@@ -68,7 +68,7 @@ export const About: React.FC = React.memo(() => {
             variants={paragraphAnimation} 
             initial="hidden" 
             whileInView="visible" 
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{delay: 0.3}} 
             className="font-body text-lg md:text-xl text-foreground/90 leading-loose"
           >
@@ -86,7 +86,7 @@ export const About: React.FC = React.memo(() => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
+            viewport={{ once: false, amount: 0.5 }}
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.3 + (aboutText.split(' ').length * 0.02) }}
           >
             <Text variant="lead" className="font-body text-foreground/80">
@@ -97,7 +97,7 @@ export const About: React.FC = React.memo(() => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.4 + (aboutText.split(' ').length * 0.02), duration: 0.5 }}
             className="mt-6"
           >

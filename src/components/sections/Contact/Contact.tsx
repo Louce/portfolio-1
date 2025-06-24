@@ -131,7 +131,8 @@ export const Contact: React.FC = () => {
               aria-label={link.ariaLabel}
               className="text-foreground/70 hover:text-primary transition-colors duration-300"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.5 }}
               transition={{ duration: 0.5, delay: 0.2 * index }}
               whileHover={{ scale: 1.1, y: -2 }}
             >
