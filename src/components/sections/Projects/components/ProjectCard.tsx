@@ -50,7 +50,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = React.memo(({ project, on
               data-ai-hint={project.coverDataAiHint || project.title.toLowerCase().split(' ').slice(0,2).join(' ')}
               fill
               className="object-cover group-hover/card:scale-105 transition-transform duration-300"
-              priority={project.id === 'project-1'}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </CardItem>
