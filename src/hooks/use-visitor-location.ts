@@ -3,6 +3,14 @@
 
 import { useState, useEffect } from 'react';
 
+/**
+ * A custom hook that fetches the visitor's approximate geographical location based on their IP address.
+ * It uses the 'ipwhois.app' service. This hook is intended for client-side use only.
+ * It includes a simulation for localhost development and handles API errors gracefully.
+ *
+ * @returns {string | null} The visitor's location as a formatted string (e.g., "City, Region, Country"),
+ * "Location: Unknown" on failure, or null during the initial fetch.
+ */
 export const useVisitorLocation = () => {
   const [visitorLocation, setVisitorLocation] = useState<string | null>(null);
 

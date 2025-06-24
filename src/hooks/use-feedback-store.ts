@@ -13,6 +13,23 @@ export interface FeedbackItem {
   timestamp: number;
 }
 
+/**
+ * A custom hook to manage all feedback-related state and interactions with localStorage.
+ * This hook encapsulates logic for user authentication, CRUD operations on feedback items,
+ * and management of AI analysis results. It is intended for client-side use only.
+ *
+ * @returns {{
+ *  isMounted: boolean;
+ *  currentUser: string | null;
+ *  userFeedback: FeedbackItem[];
+ *  analysisResults: Record<string, ReviewFeedbackOutput>;
+ *  login: (username: string, type: 'login' | 'signup') => void;
+ *  logout: () => void;
+ *  addFeedback: (title: string, content: string) => boolean;
+ *  deleteFeedback: (feedbackId: string) => void;
+ *  saveAnalysis: (feedbackId: string, analysis: ReviewFeedbackOutput) => void;
+ * }} An object containing the state and action dispatchers for the feedback system.
+ */
 export const useFeedbackStore = () => {
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);

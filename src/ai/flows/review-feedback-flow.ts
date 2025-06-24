@@ -28,6 +28,14 @@ const ReviewFeedbackOutputSchema = z.object({
 });
 export type ReviewFeedbackOutput = z.infer<typeof ReviewFeedbackOutputSchema>;
 
+/**
+ * Analyzes a given piece of feedback text using an AI model.
+ * This function acts as a server-side entry point to the Genkit flow,
+ * providing a structured analysis including sentiment, a summary, and a suggested action.
+ * @param {ReviewFeedbackInput} input - The object containing the feedback text.
+ * @returns {Promise<ReviewFeedbackOutput>} A promise that resolves to the structured analysis of the feedback.
+ * @throws {Error} Throws an error if the AI model fails to return a structured response.
+ */
 export async function reviewFeedback(input: ReviewFeedbackInput): Promise<ReviewFeedbackOutput> {
   return reviewFeedbackFlow(input);
 }
