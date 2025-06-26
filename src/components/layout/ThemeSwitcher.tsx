@@ -50,10 +50,11 @@ export function ThemeSwitcher() {
       { duration: 0 }
     );
 
+    // Expand the circle with an ease-in curve
     await animate(
       scope.current,
-      { transform: 'translate(-50%, -50%) scale(100)' },
-      { duration: 0.7, ease: 'easeIn' }
+      { transform: 'translate(-50%, -50%) scale(150)' },
+      { duration: 0.9, ease: 'easeIn' }
     );
 
     // 2. Change the theme after the screen is covered.
@@ -62,11 +63,11 @@ export function ThemeSwitcher() {
     // 3. Wait for the next frame to allow the theme to apply before collapsing.
     await new Promise((resolve) => requestAnimationFrame(resolve));
 
-    // 4. Collapse the overlay.
+    // 4. Collapse the circle with an ease-out curve.
     await animate(
       scope.current,
       { transform: 'translate(-50%, -50%) scale(0)' },
-      { duration: 0.7, ease: 'easeOut' }
+      { duration: 0.9, ease: 'easeOut' }
     );
     
     // Reset opacity for the next run
@@ -123,7 +124,6 @@ export function ThemeSwitcher() {
             zIndex: 9999,
             transformOrigin: 'center',
             opacity: 0,
-            // Start scaled to 0
             transform: 'translate(-50%, -50%) scale(0)',
           }}
         />,
