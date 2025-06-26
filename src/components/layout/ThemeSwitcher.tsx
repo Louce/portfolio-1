@@ -10,11 +10,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/Tooltip/tooltip';
+import { motion } from 'framer-motion';
 
 /**
  * A theme-switching component that toggles between light and dark modes.
- * It uses a simple, clean implementation with a smooth cross-fade
- * transition handled globally via CSS.
+ * It uses Framer Motion to create a fluid, physics-based "spring" animation,
+ * making the transition between the sun and moon icons feel more natural and responsive.
  *
  * @returns {React.ReactElement} A button to toggle the application's theme.
  */
@@ -25,7 +26,7 @@ export function ThemeSwitcher() {
   React.useEffect(() => {
     setIsMounted(true);
   }, []);
-  
+
   if (!isMounted) {
     // Render a placeholder on the server and during hydration to avoid mismatches.
     return (
@@ -40,6 +41,12 @@ export function ThemeSwitcher() {
   };
 
   const label = resolvedTheme === 'dark' ? 'Enable Light Mode' : 'Enable Dark Mode';
+  
+  const spring = {
+    type: 'spring',
+    stiffness: 700,
+    damping: 30,
+  };
 
   return (
     <Tooltip>
@@ -51,8 +58,20 @@ export function ThemeSwitcher() {
           className="group relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200 hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
           aria-label={label}
         >
-          <Sun className={`h-5 w-5 text-foreground/80 transition-all duration-300 ease-in-out ${resolvedTheme === 'dark' ? 'rotate-90 scale-0' : 'rotate-0 scale-100'}`} />
-          <Moon className={`absolute h-5 w-5 text-foreground/80 transition-all duration-300 ease-in-out ${resolvedTheme === 'dark' ? 'rotate-0 scale-100' : '-rotate-90 scale-0'}`} />
+          <motion.div
+            className="absolute"
+            animate={{ scale: resolvedTheme === 'dark' ? 0 : 1, rotate: resolvedTheme === 'dark' ? 90 : 0 }}
+            transition={spring}
+          >
+            <Sun className="h-5 w-5 text-foreground/80" />
+          </motion.div>
+          <motion.div
+            className="absolute"
+            animate={{ scale: resolvedTheme === 'dark' ? 1 : 0, rotate: resolvedTheme === 'dark' ? 0 : -90 }}
+            transition={spring}
+          >
+            <Moon className="h-5 w-5 text-foreground/80" />
+          </motion.div>
           <span className="sr-only">{label}</span>
         </Button>
       </TooltipTrigger>
