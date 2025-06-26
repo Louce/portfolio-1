@@ -38,37 +38,35 @@ export function ThemeSwitcher() {
 
     const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
 
-    // 1. Position the overlay at the click position.
+    // 1. Position the overlay at the click position and make it visible.
     await animate(
       scope.current,
       {
         top: `${event.clientY}px`,
         left: `${event.clientX}px`,
-        opacity: 1,
         transform: 'translate(-50%, -50%) scale(0)',
+        opacity: 1,
       },
       { duration: 0 }
     );
     
-    // 2. Change the theme immediately while starting the animation.
+    // 2. Change the theme and start the expansion animation simultaneously.
     setTheme(newTheme);
-
-    // 3. Expand the circle.
     await animate(
       scope.current,
       { transform: 'translate(-50%, -50%) scale(150)' },
       { duration: 0.7, ease: 'easeIn' }
     );
 
-    // 4. Collapse the circle.
+    // 3. Quickly fade out the overlay to reveal the new theme.
     await animate(
-      scope.current,
-      { transform: 'translate(-50%, -50%) scale(0)' },
-      { duration: 0.7, ease: 'easeOut' }
+      scope.current, 
+      { opacity: 0 }, 
+      { duration: 0.3, ease: 'easeOut' }
     );
-    
-    // Reset opacity for the next run
-    await animate(scope.current, { opacity: 0 }, { duration: 0 });
+
+    // 4. Reset scale for the next run (happens while invisible).
+    await animate(scope.current, { transform: 'translate(-50%, -50%) scale(0)' }, { duration: 0 });
 
     setIsAnimating(false);
   };
@@ -112,7 +110,7 @@ export function ThemeSwitcher() {
       {mounted && createPortal(
         <div
           ref={scope}
-          className="pointer-events-none bg-background/30 backdrop-blur-md"
+          className="pointer-events-none"
           style={{
             position: 'fixed',
             width: '40px',
@@ -122,6 +120,10 @@ export function ThemeSwitcher() {
             transformOrigin: 'center',
             opacity: 0,
             transform: 'translate(-50%, -50%) scale(0)',
+            // The "lens flare" effect: a blurred radial gradient.
+            backgroundImage: 'radial-gradient(circle, hsl(var(--background)/0.1), transparent 70%)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
           }}
         />,
         document.body
