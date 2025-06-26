@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -14,11 +13,17 @@ import {
   TooltipTrigger,
 } from '@/components/ui/Tooltip/tooltip';
 
+// HSL values are sourced directly from globals.css to ensure a perfect color match for the masking effect.
+const COLORS = {
+  light: 'hsl(220 50% 98%)',
+  dark: 'hsl(0 0% 7%)',
+};
+
 /**
  * A theme-switching button that provides a high-quality, performant, and visually
- * seamless transition between light and dark modes using a "fluid light" effect.
- * This version uses a physics-based spring animation and a one-way fade-out for a
- * "buttery smooth" and natural feel.
+ * seamless transition between light and dark modes. This final version uses a
+ * "Perfected Masking" technique with a physics-based spring animation to ensure a
+ * flawless, snappy, and natural-feeling transition.
  *
  * @returns {React.ReactElement} A button to toggle the application's theme, with a portal-based animation overlay.
  */
@@ -28,7 +33,6 @@ export function ThemeSwitcher() {
   const [scope, animate] = useAnimate();
 
   const toggleTheme = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    // Prevent starting a new animation while one is in progress
     if (isAnimating || !scope.current) return;
 
     setIsAnimating(true);
@@ -36,40 +40,38 @@ export function ThemeSwitcher() {
     const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
     const { clientX, clientY } = event;
     
-    // Configure the glassmorphic overlay
-    scope.current.style.backgroundColor = "hsl(var(--background) / 0.5)";
-    scope.current.style.backdropFilter = "blur(8px)";
-    scope.current.style.webkitBackdropFilter = "blur(8px)";
-    
-    // Animate IN with a physics-based spring for a natural feel
-    await animate(
+    // 1. Set the overlay to the TARGET theme's background color. This is the key to a seamless blend.
+    scope.current.style.backgroundColor = COLORS[newTheme];
+
+    // 2. Animate IN: Expand the circle from the click point with a snappy, physics-based spring animation.
+    const expansionAnimation = animate(
       scope.current,
       { clipPath: `circle(150vw at ${clientX}px ${clientY}px)` },
-      { type: "spring", stiffness: 100, damping: 20, mass: 0.7 }
+      { type: "spring", stiffness: 120, damping: 20, mass: 0.8 }
     );
+    await expansionAnimation;
     
-    // Change the theme once the screen is covered, ensuring a seamless switch
+    // 3. Change the theme only AFTER the screen is fully covered.
     setTheme(newTheme);
 
-    // Animate OUT with a simple, elegant fade. This is faster and more fluid.
+    // 4. Animate OUT: A quick fade reveals the new content instantly. This feels fast and clean.
     await animate(
       scope.current,
       { opacity: [1, 0] },
-      { duration: 0.4, ease: "easeOut" }
+      { duration: 0.25, ease: "easeOut" }
     );
     
-    // Reset overlay styles for the next transition
+    // 5. Reset overlay styles for the next transition.
     scope.current.style.clipPath = `circle(0% at ${clientX}px ${clientY}px)`;
     scope.current.style.opacity = '1';
 
     setIsAnimating(false);
   };
   
-  const isMounted = React.useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
+  const [isMounted, setIsMounted] = React.useState(false);
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   if (!isMounted) {
     return (
@@ -119,7 +121,7 @@ export function ThemeSwitcher() {
             height: '100vh',
             zIndex: 9999,
             borderRadius: '50%',
-            clipPath: 'circle(0% at 50% 50%)' // Initial state
+            clipPath: 'circle(0% at 50% 50%)'
           }}
         />,
         document.body
