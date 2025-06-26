@@ -1,7 +1,6 @@
-
 'use client';
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -10,6 +9,8 @@ const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,':()?!@#$ ".split("");
 
 /**
  * A single character "ticker" that animates by scrolling through the CHARS array.
+ * This version uses a more robust layout where each character in the reel
+ * occupies the full height of the container, making percentage-based transforms reliable.
  * @param {object} props
  * @param {string} props.anikey - A unique key to trigger re-animation.
  * @param {string} props.children - The target character to display.
@@ -19,37 +20,35 @@ const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,':()?!@#$ ".split("");
 const Ticker = ({ anikey, children: targetChar, className: passedClassName }) => {
   const targetIndex = CHARS.indexOf(targetChar) ?? 0;
 
-  // Use a spring for a natural, physical feel.
-  const spring = useSpring(0, {
+  // useSpring will animate from its last value to the new initial value on re-render.
+  const spring = useSpring(targetIndex, {
     damping: 12,
     stiffness: 150,
     mass: 0.5,
   });
 
-  // Map the spring value to a transform Y value for the scrolling effect.
-  const y = useTransform(spring, (val) => `${-val * 100}%`);
-
-  useEffect(() => {
-    // Animate the spring to the target character's index.
-    spring.set(targetIndex);
-  }, [spring, targetIndex]);
+  // Transform the spring value (the target index) into a `y` transform.
+  // Since each character span inside is 100% height, `y: -val * 100%`
+  // correctly shifts the strip up by `val` items.
+  const y = useTransform(spring, (val) => `-${val * 100}%`);
 
   return (
     <div key={anikey} className="h-full overflow-hidden">
-      <motion.span
-        style={{ y }}
-        className={cn("inline-block tabular-nums", passedClassName)}
-      >
+      <motion.div style={{ y }} className={cn("h-full", passedClassName)}>
         {CHARS.map((char) => (
-          <span className="block" key={char}>
+          <span
+            key={char}
+            className="flex h-full w-full items-center justify-center tabular-nums"
+          >
             {char === " " ? "\u00A0" : char}
           </span>
         ))}
-      </motion.span>
+      </motion.div>
     </div>
   );
 };
 Ticker.displayName = "Ticker";
+
 
 /**
  * A component that displays a string with a "split-flap" or "slot machine" animation effect.
