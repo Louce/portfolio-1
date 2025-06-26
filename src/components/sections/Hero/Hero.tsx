@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -7,7 +8,6 @@ import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
 import { useVisitorLocation } from '@/hooks';
-import { SplitFlapDisplay } from './components';
 
 // Static text content for the hero section.
 const subHeadlineBase = "A Python, Automation, and Game Development enthusiast, blending logic with creative design.";
@@ -21,6 +21,32 @@ const dynamicSubHeadlines = [
 ];
 
 /**
+ * Renders a phrase with styled separators.
+ * This function allows for granular control over the colors of the slashes.
+ * @param {string} phrase - The string to format.
+ * @returns {React.ReactElement} A React fragment with the styled text.
+ */
+const renderStyledPhrase = (phrase: string) => {
+  const parts = phrase.split('//');
+  return (
+    <>
+      {parts.map((part, i) => (
+        <React.Fragment key={i}>
+          <span className="text-chromatic-aberration">{part.trim()}</span>
+          {i < parts.length - 1 && (
+            <span className="mx-2 font-light tracking-normal">
+              <span className="text-primary/70">/</span>
+              <span className="text-accent/70">/</span>
+            </span>
+          )}
+        </React.Fragment>
+      ))}
+    </>
+  );
+};
+
+
+/**
  * The Hero section component.
  * This is the main "above-the-fold" content that serves as the introduction to the portfolio.
  * It features a large animated headline, a cycling sub-headline, a brief bio,
@@ -30,6 +56,15 @@ const dynamicSubHeadlines = [
  */
 export const Hero: React.FC = React.memo(() => {
   const visitorLocation = useVisitorLocation();
+  const [headlineIndex, setHeadlineIndex] = useState(0);
+
+  // Effect to cycle through the dynamic headlines.
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
+    }, 3000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <section id="hero" className="relative flex flex-col min-h-screen w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
@@ -71,17 +106,20 @@ export const Hero: React.FC = React.memo(() => {
           </span>
         </motion.h1>
 
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
-          className="text-center h-8 sm:h-10 md:h-12"
-        >
-          <SplitFlapDisplay 
-            phrases={dynamicSubHeadlines} 
-            className="text-xl sm:text-2xl md:text-3xl font-light text-foreground tracking-wider text-center text-chromatic-aberration"
-          />
-        </motion.div>
+        <div className="text-center h-8 sm:h-10 md:h-12">
+            <AnimatePresence mode="wait">
+                <motion.h2
+                    key={dynamicSubHeadlines[headlineIndex]}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ ease: 'easeInOut', duration: 0.4 }}
+                    className="text-xl sm:text-2xl md:text-3xl font-light text-foreground tracking-wider text-center"
+                >
+                    {renderStyledPhrase(dynamicSubHeadlines[headlineIndex])}
+                </motion.h2>
+            </AnimatePresence>
+        </div>
         
         <motion.div
           initial={{ opacity: 0, y: 25 }}
