@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -115,7 +114,7 @@ export const Hero: React.FC = React.memo(() => {
         >
           <SplitFlapDisplay 
             phrases={dynamicSubHeadlines} 
-            className="h-12 text-lg sm:text-2xl md:text-3xl font-light tracking-wider text-center tabular-nums"
+            className="h-12 text-base sm:text-xl md:text-2xl font-light tracking-normal sm:tracking-wider text-center tabular-nums"
           />
         </motion.div>
         
