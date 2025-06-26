@@ -127,7 +127,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body 
-        className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out"
+        className="font-body antialiased bg-background text-foreground min-h-screen"
       >
         <ThemeProvider
             attribute="class"
