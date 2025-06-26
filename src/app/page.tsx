@@ -27,17 +27,13 @@ import { Box } from '@/components/primitives';
  */
 export default function PortfolioPage() {
   return (
-    <Box className="bg-background">
-      <main>
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Feedback />
-        <Contact />
-      </main>
+    <Box>
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Feedback />
+      <Contact />
     </Box>
   );
 }
-
-    

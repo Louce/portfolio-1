@@ -22,7 +22,7 @@ export const Footer: React.FC = React.memo(() => {
   ];
 
   return (
-    <footer className="w-full bg-background border-t border-border/20 py-6 px-4 md:px-8">
+    <footer className="w-full bg-background border-t border-border/20 py-6 px-4 md:px-8 relative z-10">
       <Flex direction="col" align="center" gap="1rem" className="max-w-6xl mx-auto sm:flex-row sm:justify-between">
         <Text variant="small" className="text-muted-foreground">
           © {currentYear} Dendi Rivaldi. All Rights Reserved.
@@ -47,5 +47,3 @@ export const Footer: React.FC = React.memo(() => {
 });
 
 Footer.displayName = 'Footer';
-
-    

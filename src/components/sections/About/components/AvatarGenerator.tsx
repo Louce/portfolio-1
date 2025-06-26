@@ -72,9 +72,10 @@ export const AvatarGenerator: React.FC = () => {
           >
             <Image
               src={image.url}
-              alt={`AI-generated portrait in a ${image.style} style`}
+              alt={`AI-generated portrait of a developer in a ${image.style} style`}
               data-ai-hint={image.aiHint}
               fill
+              priority={true} // Prioritize loading for LCP improvement
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
             />

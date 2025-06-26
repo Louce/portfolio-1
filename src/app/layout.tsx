@@ -136,7 +136,7 @@ export default function RootLayout({
         >
           <TooltipProvider delayDuration={100}>
             <Navbar />
-            {children}
+            <main>{children}</main>
             <Footer />
             <Toaster />
             <CookieConsentBanner />
@@ -147,5 +147,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-    
