@@ -32,39 +32,46 @@ export function ThemeSwitcher() {
   const [scope, animate] = useAnimate();
 
   const toggleTheme = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    // Prevent starting a new animation while one is in progress
     if (isAnimating || !scope.current) return;
+
+    setIsAnimating(true);
     
     const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
     const targetColor = THEME_COLORS[newTheme];
-
-    setIsAnimating(true);
+    
+    const { clientX, clientY } = event;
     
     // Set the overlay to the target theme's color
     scope.current.style.backgroundColor = targetColor;
 
-    // Position the overlay at the click position and make it visible.
+    // Position the overlay at the click position and animate its expansion.
     await animate(
       scope.current,
       {
-        clipPath: `circle(0% at ${event.clientX}px ${event.clientY}px)`,
+        clipPath: `circle(150% at ${clientX}px ${clientY}px)`,
       },
-      { duration: 0 }
+      { duration: 0.7, ease: "easeIn" }
     );
     
-    // Animate the expansion to cover the screen.
-    const animationPromise = animate(
-      scope.current,
-      { clipPath: `circle(150% at ${event.clientX}px ${event.clientY}px)` },
-      { duration: 0.6, ease: 'easeIn' }
-    );
-    
-    // Change the theme concurrently with the animation start for a seamless blend.
+    // Once the screen is covered, instantly change the theme.
     setTheme(newTheme);
 
-    await animationPromise;
-    
-    // Reset for the next run
-    await animate(scope.current, { clipPath: 'circle(0% at 0px 0px)' }, { duration: 0 });
+    // After the theme is changed, animate the overlay out with a graceful fade.
+    await animate(
+      scope.current,
+      {
+        opacity: [1, 0]
+      },
+      {
+        duration: 0.4,
+        ease: 'easeOut'
+      }
+    )
+
+    // Reset the clipPath and opacity for the next transition.
+    await animate(scope.current, { clipPath: `circle(0% at ${clientX}px ${clientY}px)` }, { duration: 0 });
+    scope.current.style.opacity = '1';
 
     setIsAnimating(false);
   };
@@ -122,7 +129,7 @@ export function ThemeSwitcher() {
             width: '100vw',
             height: '100vh',
             zIndex: 9999,
-            clipPath: 'circle(0% at 0px 0px)'
+            clipPath: 'circle(0% at 50% 50%)' // Initial state
           }}
         />,
         document.body
