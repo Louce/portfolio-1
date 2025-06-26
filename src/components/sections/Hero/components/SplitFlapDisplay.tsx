@@ -36,17 +36,28 @@ const Character: React.FC<CharacterProps> = React.memo(({ value, height, charInd
     }
   }, [value, height, charIndexInSet, y]);
 
-  // Determine the styling for the character based on its value.
+  // Determine the styling for the character based on its value and position.
   const getCharStyle = () => {
-    if (value === '/') {
-      // Both slashes will now use the vibrant 'primary' color (cyan).
-      return 'text-primary';
+    if (value !== '/') {
+      return value === ' ' ? '' : 'text-chromatic-aberration';
     }
-    if (value === ' ') {
-      return ''; // No style for space
+
+    // Find the indices of all slashes to determine which separator this is
+    const firstSeparatorIndex = fullPhrase.indexOf('//');
+    const secondSeparatorIndex = fullPhrase.indexOf('//', firstSeparatorIndex + 1);
+
+    // Check if the current character's index matches the first separator
+    if (firstSeparatorIndex !== -1 && (charIndex === firstSeparatorIndex || charIndex === firstSeparatorIndex + 1)) {
+      return 'text-primary'; // Cyan for the first separator
     }
-    // Default styling for letters, applying the chromatic aberration effect.
-    return 'text-chromatic-aberration';
+
+    // Check if the current character's index matches the second separator
+    if (secondSeparatorIndex !== -1 && (charIndex === secondSeparatorIndex || charIndex === secondSeparatorIndex + 1)) {
+      return 'text-accent'; // Magenta for the second separator
+    }
+
+    // Fallback for any other slashes, though not expected in current data
+    return 'text-primary';
   };
 
   return (
@@ -105,11 +116,10 @@ export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({
   const centeredPhrase = ' '.repeat(leftPadding) + currentPhrase;
 
   return (
-    <div ref={ref} className={cn("flex justify-center items-center", className)} aria-label={currentPhrase}>
+    <div ref={ref} className={cn("flex justify-center items-center h-full", className)} aria-label={currentPhrase}>
       {/* Always render 'maxLength' characters to keep the component stable. */}
       {Array.from({ length: maxLength }).map((_, index) => {
         const char = (centeredPhrase[index] || ' ').toUpperCase();
-        // The full phrase is padded to ensure the styling logic for the slashes always works correctly.
         const fullPaddedPhrase = centeredPhrase.padEnd(maxLength, ' '); 
         return <Character key={index} value={char} height={height} charIndex={index} fullPhrase={fullPaddedPhrase} />;
       })}
