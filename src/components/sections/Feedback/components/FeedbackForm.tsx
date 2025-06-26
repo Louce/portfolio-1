@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, FormEvent } from 'react';
-import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
+import { Button, Input, Textarea, Card, CardContent, CardHeader, CardTitle, Avatar, AvatarFallback, AvatarImage, Alert, AlertTitle, AlertDescription } from '@/components/ui';
 import { Flex, Text, Box } from '@/components/primitives';
 import { LogOut, MessageSquarePlus } from 'lucide-react';
 
@@ -64,9 +64,12 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
       </Flex>
 
       <Box className="w-full max-w-3xl mx-auto px-4">
-        <Text className="text-sm text-center text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-600/50 dark:border-yellow-400/50 rounded-md p-2">
-          ⚠️ **DEMO NOTICE:** This feedback feature is for demonstration purposes only. No real accounts are created, and feedback is stored only in your browser's local storage.
-        </Text>
+        <Alert variant="warning">
+          <AlertTitle>Demo Notice</AlertTitle>
+          <AlertDescription>
+            This feedback feature is for demonstration purposes only. No real accounts are created, and feedback is stored only in your browser's local storage.
+          </AlertDescription>
+        </Alert>
       </Box>
 
       <Card className="w-full max-w-2xl mx-auto bg-card/70 backdrop-blur-md border border-border/30">

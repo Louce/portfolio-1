@@ -7,9 +7,9 @@ import type { Skill, SubSkill } from '@/data/skillsData';
 import { Flex } from '@/components/primitives';
 
 /**
- * Props for the SkillCard component.
+ * Props for the SkillGroup component.
  */
-interface SkillCardProps {
+interface SkillGroupProps {
   /** The core skill data object to display. */
   skill: Skill;
   /** An array of sub-skills related to the core skill. */
@@ -41,10 +41,10 @@ const itemVariants = {
  * effective for quick review by recruiters and technical managers. It clearly communicates
  * core competencies and associated technologies, which is the primary goal of this section.
  *
- * @param {SkillCardProps} props - The properties for the component.
+ * @param {SkillGroupProps} props - The properties for the component.
  * @returns {React.ReactElement} A card containing a skill summary and technology badges.
  */
-export const SkillCard: React.FC<SkillCardProps> = ({ skill, subSkills }) => {
+export const SkillGroup: React.FC<SkillGroupProps> = ({ skill, subSkills }) => {
   const Icon = skill.icon;
 
   return (
@@ -82,4 +82,4 @@ export const SkillCard: React.FC<SkillCardProps> = ({ skill, subSkills }) => {
   );
 };
 
-SkillCard.displayName = 'SkillCard';
+SkillGroup.displayName = 'SkillGroup';

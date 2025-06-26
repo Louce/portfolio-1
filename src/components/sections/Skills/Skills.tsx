@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { SectionTitle } from '@/components/common';
 import { coreSkillsData, subSkillsData } from '@/data/skillsData';
-import { SkillCard } from './components';
+import { SkillGroup } from './components';
 
 /**
  * The "My Expertise" (Skills) section of the portfolio.
@@ -34,7 +34,7 @@ export const Skills: React.FC = React.memo(() => {
               const relatedSubSkills = subSkillsData.filter(
                 (s) => s.coreSkillId === skill.id
               );
-              return <SkillCard key={skill.id} skill={skill} subSkills={relatedSubSkills} />;
+              return <SkillGroup key={skill.id} skill={skill} subSkills={relatedSubSkills} />;
             })}
           </div>
         </motion.div>
