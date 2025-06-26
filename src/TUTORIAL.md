@@ -93,11 +93,33 @@ npm install framer-motion next-themes embla-carousel-autoplay
 ```
 
 **[PRESENTER]:**
-"Our foundation is set. It's time to define our visual identity."
+"Our foundation is set. Now, before we write a single line of CSS, let's talk about the *blueprint* for our application. Let's talk architecture."
 
 ---
 
-### **(7:00) Chapter 3: Global Styles & Root Layout**
+### **(5:30) Chapter 3: The Blueprint - Our Architectural Principles**
+
+**[ON-SCREEN: Show the VS Code file tree, highlighting the main directories like `/src/components`, `/src/data`, and `/src/services` as the presenter speaks about them.]**
+
+**[PRESENTER]:**
+"This is what separates a student project from a professional one. It's not just about making it work; it's about making it clean, maintainable, and scalable. We achieve this by following three core software design principles.
+
+First is the **Separation of Concerns**. This is our guiding star. It means that every part of our application has a distinct, well-defined job.
+*   Our React components in `/src/components` are only responsible for *how things look*.
+*   Our static content—like the text for my projects and skills—lives in `/src/data`. This means we can update our portfolio's content without ever touching our complex component code.
+*   And our logic for saving and loading data, which we'll use for the feedback feature, is completely abstracted away in `/src/services`. This is huge—it means if we wanted to switch from using the browser's storage to a real online database, we would only have to change *one file*.
+
+Second is the **Single Responsibility Principle**. This is Separation of Concerns on a micro level. Every component should have one, and only one, reason to change. For example, our `ProjectCard` is only responsible for showing a project *summary*. The `ProjectDetailSheet` is responsible for showing the *full details*. By keeping them separate, we keep them simple and easy to manage.
+
+And third is the principle of **DRY: Don't Repeat Yourself**. We avoid writing the same code over and over. We'll create a component called `SectionWrapper` that provides the same padding and layout to all our main page sections. We'll create a custom CSS class called `.bg-grid-pattern` so we don't have to rewrite a complex gradient every time we want to use it.
+
+By following these principles from the very beginning, we are setting ourselves up for success. We're building a project that is a joy to work on, not a nightmare to maintain.
+
+Alright, with our blueprint in place, it's time to define our visual identity."
+
+---
+
+### **(7:30) Chapter 4: Global Styles & Root Layout**
 
 **[ON-SCREEN: VS Code is focused on the file `src/app/globals.css`. It should contain the default Tailwind and Shadcn boilerplate.]**
 
@@ -187,7 +209,7 @@ Replace the entire contents of `src/app/globals.css` with the following code.
 **[PRESENTER]:**
 "Let's break this down. The `:root` selector defines our default light theme colors using HSL values. The `.dark` selector right below it contains all the overrides for our dark theme.
 
-"At the bottom, inside `@layer utilities`, we've added a custom `.bg-grid-pattern` class. This is an application of the **DRY principle—Don't Repeat Yourself**. Instead of writing a complex `linear-gradient` in our JSX, we've abstracted it into a reusable utility class. This is a senior-level practice that keeps our component code clean."
+"At the bottom, inside `@layer utilities`, we've added our custom `.bg-grid-pattern` class. This is an application of the **DRY principle** we just talked about. Instead of writing a complex `linear-gradient` in our JSX, we've abstracted it into a reusable utility class. This is a senior-level practice that keeps our component code clean."
 
 **[PRESENTER]:**
 "Next, let's open **`src/app/layout.tsx`**. This is the root shell of our entire application."
@@ -205,7 +227,7 @@ Replace the contents of `src/app/layout.tsx` with its final, polished version.
 
 ---
 
-### **(12:30) Chapter 4: The Core Build - A Component Deep Dive**
+### **(12:30) Chapter 5: The Core Build - A Component Deep Dive**
 
 **[ON-SCREEN: Show the VS Code sidebar. Highlight the `src/data` and `src/components/sections/Projects` directories.]**
 
@@ -237,7 +259,7 @@ Create `src/components/sections/Projects/Projects.tsx` and paste its final code 
 
 ---
 
-### **(22:00) Chapter 5: Codebase Deep Dive: A Senior Developer's Tour**
+### **(22:00) Chapter 6: Codebase Deep Dive: A Senior Developer's Tour**
 
 **[PRESENTER]:**
 "Alright, let's put on our architect hats. A project's long-term success is dictated by its structure. A clean, logical, and well-documented folder structure is the difference between a project you can scale and a project you'll dread opening in six months. I've structured KineticFolio based on years of experience, emphasizing **Separation of Concerns**, the **Single Responsibility Principle**, and **maintainability**. Let's walk through it.
@@ -303,7 +325,7 @@ All our server-side AI logic is neatly organized here.
 
 ---
 
-### **(27:00) Chapter 6: How to Customize and Contribute**
+### **(27:00) Chapter 7: How to Customize and Contribute**
 
 **[PRESENTER]:**
 "Now that you understand the architecture, customizing this portfolio is incredibly straightforward.
@@ -326,7 +348,7 @@ All our server-side AI logic is neatly organized here.
 
 ---
 
-### **(28:30) Chapter 7: Deployment & Final Thoughts**
+### **(28:30) Chapter 8: Deployment & Final Thoughts**
 
 **[ON-SCREEN: Browser showing the finished, polished application. Then, switch to the Vercel dashboard.]**
 
@@ -352,5 +374,3 @@ I really hope you found this masterclass valuable. If you did, do me a huge favo
 Thanks so much for watching, and I'll see you in the next one. Happy coding!"
 
 **[Video End: Outro music fades in, and an end screen appears with links to other videos and social media profiles.]**
-
-    
