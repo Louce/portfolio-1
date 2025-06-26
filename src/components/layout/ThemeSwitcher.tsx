@@ -38,7 +38,7 @@ export function ThemeSwitcher() {
 
     const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
 
-    // 1. Position the overlay at the click position and expand it.
+    // 1. Position the overlay at the click position.
     await animate(
       scope.current,
       {
@@ -49,25 +49,22 @@ export function ThemeSwitcher() {
       },
       { duration: 0 }
     );
+    
+    // 2. Change the theme immediately while starting the animation.
+    setTheme(newTheme);
 
-    // Expand the circle with an ease-in curve
+    // 3. Expand the circle.
     await animate(
       scope.current,
       { transform: 'translate(-50%, -50%) scale(150)' },
-      { duration: 0.9, ease: 'easeIn' }
+      { duration: 0.7, ease: 'easeIn' }
     );
 
-    // 2. Change the theme after the screen is covered.
-    setTheme(newTheme);
-
-    // 3. Wait for the next frame to allow the theme to apply before collapsing.
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-
-    // 4. Collapse the circle with an ease-out curve.
+    // 4. Collapse the circle.
     await animate(
       scope.current,
       { transform: 'translate(-50%, -50%) scale(0)' },
-      { duration: 0.9, ease: 'easeOut' }
+      { duration: 0.7, ease: 'easeOut' }
     );
     
     // Reset opacity for the next run
