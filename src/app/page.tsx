@@ -13,15 +13,11 @@ import { Box } from '@/components/primitives';
 
 /**
  * The main entry point and homepage for the portfolio application.
- * This component composes the different sections of the single-page layout in a narrative order,
- * guiding the user from an introduction to a final call-to-action.
- * The flow is designed to build interest:
- * 1. Hero: Captivating introduction.
- * 2. About: Personal connection and story.
- * 3. Skills: Scannable proof of expertise.
- * 4. Projects: Concrete examples of work.
- * 5. Feedback: A live, full-stack demonstration of AI skills.
- * 6. Contact: The final, focused call-to-action.
+ * This component follows the Single Responsibility Principle by having one job:
+ * to assemble the different sections of the page in a deliberate, narrative order.
+ * This composition creates a guided user journey, starting with a hook (Hero),
+ * building credibility (About, Skills, Projects), and ending with a call to action
+ * (Feedback, Contact).
  *
  * @returns {React.ReactElement} The complete, single-page portfolio application.
  */

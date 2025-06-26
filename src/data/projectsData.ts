@@ -1,9 +1,9 @@
 /**
- * @fileOverview
- * This file contains the static data for the "Featured Projects" section.
- * Separating data from the component logic (Separation of Concerns) makes the
- * project easier to maintain and update. To change project information, you
- * only need to edit this file.
+ * @fileOverview This file serves as the "Content Layer" for project data.
+ * A core principle of this application's architecture is the Separation of Concerns.
+ * By isolating static data from the component logic that displays it, we create a
+ * system that is far easier to update and maintain. To change project information,
+ * a developer only needs to edit this file, without touching any complex React components.
  */
 
 /**

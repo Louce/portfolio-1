@@ -99,23 +99,27 @@ npm install framer-motion next-themes embla-carousel-autoplay
 
 ### **(5:30) Chapter 3: The Blueprint - Our Architectural Principles**
 
-**[ON-SCREEN: Show the VS Code file tree, highlighting the main directories like `/src/components`, `/src/data`, and `/src/services` as the presenter speaks about them.]**
+**[ON-SCREEN: A diagram or clean slide showing three main principles: Separation of Concerns, Single Responsibility, and DRY.]**
 
 **[PRESENTER]:**
-"This is what separates a student project from a professional one. It's not just about making it work; it's about making it clean, maintainable, and scalable. We achieve this by following three core software design principles.
+"This is what separates a student project from a professional one. It's not just about making it work; it's about making it clean, maintainable, and scalable. Our entire project is built on three core software design principles. Understanding these is key to understanding the *why* behind our code.
 
-First is the **Separation of Concerns**. This is our guiding star. It means that every part of our application has a distinct, well-defined job.
-*   Our React components in `/src/components` are only responsible for *how things look*.
-*   Our static content—like the text for my projects and skills—lives in `/src/data`. This means we can update our portfolio's content without ever touching our complex component code.
-*   And our logic for saving and loading data, which we'll use for the feedback feature, is completely abstracted away in `/src/services`. This is huge—it means if we wanted to switch from using the browser's storage to a real online database, we would only have to change *one file*.
+First, and most importantly, is the **Separation of Concerns (SoC)**. This is our guiding star. It means that every part of our application has a distinct, well-defined job, and it doesn't know or care about the inner workings of other parts.
+*   **Presentation Logic (`/src/components`)**: Our React components are only responsible for *how things look*. They receive data as props and render UI.
+*   **Content (`/src/data`)**: All static text and data for our projects and skills live here. This is our 'Content Layer'. If we want to add a new project, we edit a file here—we don't touch our complex components.
+*   **Data Persistence (`/src/services`)**: All logic for how data is saved and loaded is completely abstracted away in our `feedbackService.ts`. Our app doesn't know if the data is in `localStorage` or a real database. This makes our app incredibly flexible.
+*   **Stateful UI Logic (`/src/hooks`)**: When UI logic gets complex, we extract it into custom hooks, like `useFeedbackStore`. This keeps our components clean and focused on rendering.
 
-Second is the **Single Responsibility Principle**. This is Separation of Concerns on a micro level. Every component should have one, and only one, reason to change. For example, our `ProjectCard` is only responsible for showing a project *summary*. The `ProjectDetailSheet` is responsible for showing the *full details*. By keeping them separate, we keep them simple and easy to manage.
+Second, the **Single Responsibility Principle (SRP)**. This is SoC on a micro level. Every component and module should have one, and only one, reason to change.
+*   Our `Projects.tsx` component is a great example. Its only job is to manage state (which project is selected). It *delegates* the job of displaying the project summary to the `ProjectCard.tsx` component and the job of displaying details to the `ProjectDetailSheet.tsx` component. Each has a single, clear responsibility.
 
-And third is the principle of **DRY: Don't Repeat Yourself**. We avoid writing the same code over and over. We'll create a component called `SectionWrapper` that provides the same padding and layout to all our main page sections. We'll create a custom CSS class called `.bg-grid-pattern` so we don't have to rewrite a complex gradient every time we want to use it.
+And third, the principle of **DRY: Don't Repeat Yourself**. We aggressively avoid writing the same code over and over.
+*   The `SectionWrapper.tsx` component is the best example. Instead of applying the same padding, centering, and layout styles to every single page section, we created one reusable component that does it for us.
+*   Our custom `.bg-grid-pattern` class in `globals.css` is another. We abstracted a complex CSS gradient into a simple, reusable utility class.
 
-By following these principles from the very beginning, we are setting ourselves up for success. We're building a project that is a joy to work on, not a nightmare to maintain.
+By building our entire application around these three principles, we create a codebase that is not just professional, but a genuine joy to work on.
 
-Alright, with our blueprint in place, it's time to define our visual identity."
+Alright, with our blueprint in place, it's time to build."
 
 ---
 
@@ -124,145 +128,30 @@ Alright, with our blueprint in place, it's time to define our visual identity."
 **[ON-SCREEN: VS Code is focused on the file `src/app/globals.css`. It should contain the default Tailwind and Shadcn boilerplate.]**
 
 **[PRESENTER]:**
-"Before we build our first component, we need to define the soul of our application: the theme. A professional color palette is what separates amateur projects from professional ones. We'll do this in `src/app/globals.css` by defining our colors using CSS variables. This is the modern way to handle theming and is essential for light and dark modes."
+"Before we build our first component, we need to define the soul of our application: the theme. We'll do this in `src/app/globals.css` by defining our colors using CSS variables. This is the modern way to handle theming and is essential for light and dark modes."
 
 **[ACTION]:**
-Replace the entire contents of `src/app/globals.css` with the following code.
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    /* Light Mode - More vibrant and contrasty */
-    --background: 220 50% 98%;
-    --foreground: 220 25% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 25% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 15%;
-    --primary: 205 88% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 25% 85%;
-    --secondary-foreground: 220 25% 25%;
-    --muted: 220 30% 90%;
-    --muted-foreground: 220 20% 45%;
-    --accent: 340 90% 55%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 30% 88%;
-    --input: 220 30% 92%;
-    --ring: 205 88% 50%;
-    --radius: 0.5rem;
-  }
- 
-  .dark {
-    --background: 0 0% 7%;
-    --foreground: 43 67% 96%;
-    --card: 0 0% 10%;
-    --card-foreground: 43 67% 96%;
-    --popover: 0 0% 5%;
-    --popover-foreground: 43 67% 96%;
-    --primary: 182 100% 74%;
-    --primary-foreground: 0 0% 7%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 43 67% 96%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 300 100% 50%;
-    --accent-foreground: 43 67% 96%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 43 67% 96%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 182 100% 74%;
-  }
-}
- 
-@layer base {
-  * { @apply border-border; }
-  html { scroll-behavior: smooth; }
-  ::selection {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-  }
-}
-
-@layer utilities {
-  .bg-grid-pattern {
-    background-image: linear-gradient(to right, hsl(var(--border)/0.4) 1px, transparent 1px),
-                      linear-gradient(to bottom, hsl(var(--border)/0.4) 1px, transparent 1px);
-    background-size: 18px 28px;
-  }
-  .masked-radial-gradient {
-    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
-  }
-  .text-chromatic-aberration {
-    text-shadow: 1px 1px 0px hsl(var(--primary) / 0.7), -1px -1px 0px hsl(var(--accent) / 0.7);
-  }
-}
-```
+Replace the entire contents of `src/app/globals.css` with the final version.
 
 **[PRESENTER]:**
-"Let's break this down. The `:root` selector defines our default light theme colors using HSL values. The `.dark` selector right below it contains all the overrides for our dark theme.
-
-"At the bottom, inside `@layer utilities`, we've added our custom `.bg-grid-pattern` class. This is an application of the **DRY principle** we just talked about. Instead of writing a complex `linear-gradient` in our JSX, we've abstracted it into a reusable utility class. This is a senior-level practice that keeps our component code clean."
+"The `:root` selector defines our default light theme colors using HSL values. The `.dark` selector right below it contains all the overrides for our dark theme. At the bottom, our custom utility classes like `.bg-grid-pattern` are a perfect example of the **DRY principle** in action."
 
 **[PRESENTER]:**
-"Next, let's open **`src/app/layout.tsx`**. This is the root shell of our entire application."
-
-**[ON-SCREEN: Show the file `src/app/layout.tsx` and its default content.]**
-
-**[PRESENTER]:**
-"We need to replace the boilerplate in here with our own fully configured layout. This will include our optimized web font, providers for theming and tooltips, and our main structural components like the Navbar and Footer."
+"Next, we'll set up our root layout and providers. This is a key architectural step demonstrating **Separation of Concerns**. We'll create a new client component called `AppProviders.tsx`."
 
 **[ACTION]:**
-Replace the contents of `src/app/layout.tsx` with its final, polished version.
+1.  Create `src/app/providers.tsx`. Paste in its final code.
+2.  Open `src/app/layout.tsx`. Paste in its final, simplified code.
 
 **[PRESENTER]:**
-"Inside the `<body>`, we're setting up our global providers. `<ThemeProvider>` handles our light and dark mode switching. Then we have `<TooltipProvider>` from Shadcn, which enables all tooltips across the app. Crucially, I've placed our `<Navbar>` at the top and the `<Footer>` at the bottom, outside the `children`. This ensures they frame every page of our application."
+"Notice what we did here. Our `layout.tsx` is now a clean **Server Component**. Its only job is to handle the root HTML structure and metadata for SEO. All the client-side logic—our theme provider, tooltip provider, Navbar, and Footer—has been moved into `AppProviders.tsx`, which is marked with `'use client'`. This separation is a best practice in the Next.js App Router and is crucial for performance."
 
 ---
 
-### **(12:30) Chapter 5: The Core Build - A Component Deep Dive**
-
-**[ON-SCREEN: Show the VS Code sidebar. Highlight the `src/data` and `src/components/sections/Projects` directories.]**
+### **(12:30) Chapter 5: Codebase Deep Dive: A Senior Developer's Tour**
 
 **[PRESENTER]:**
-"Okay, this is where the magic happens. We're going to build the most visually impressive part of our portfolio: the Projects section. But before we write a single line of component code, we're going to apply a foundational software design principle: **Separation of Concerns**. Our React components should only be responsible for *how things look*. They should not be responsible for the *data* they display.
-
-To achieve this, we'll create a dedicated data layer."
-
-**[ACTION]:**
-Create a new file at `src/data/projectsData.ts`. Paste the project data into the new file.
-
-**[PRESENTER]:**
-"By defining our data and its TypeScript types here, our project becomes incredibly easy to update. Want to add a new project? You just edit this array. You don't have to touch any of our complex React components. This is a senior-level practice that pays huge dividends."
-
-**[PRESENTER]:**
-"Now, let's build the UI. We'll apply another key principle: the **Single Responsibility Principle**. Each component should do one thing, and do it well. Our main `Projects.tsx` file shouldn't manage the project grid *and* the complex detail view. So, we'll break it down into smaller, dedicated components."
-
-**[ACTION]:**
-Create the necessary files: `src/components/sections/Projects/components/ProjectCard.tsx` and `ProjectDetailSheet.tsx`, and paste in their final code.
-
-**[PRESENTER]:**
-"Finally, we assemble everything in our main section file: **`src/components/sections/Projects/Projects.tsx`**. Its code is now beautifully simple because all the hard work is delegated to its children."
-
-**[ACTION]:**
-Create `src/components/sections/Projects/Projects.tsx` and paste its final code into it.
-
-**[PRESENTER]:**
-"Look how clean that is! This component is now a 'container' component. Its only job is to manage state and compose its smaller children. This architecture is clean, maintainable, and incredibly easy to reason about."
-
----
-
-### **(22:00) Chapter 6: Codebase Deep Dive: A Senior Developer's Tour**
-
-**[PRESENTER]:**
-"Alright, let's put on our architect hats. A project's long-term success is dictated by its structure. A clean, logical, and well-documented folder structure is the difference between a project you can scale and a project you'll dread opening in six months. I've structured KineticFolio based on years of experience, emphasizing **Separation of Concerns**, the **Single Responsibility Principle**, and **maintainability**. Let's walk through it.
+"Alright, let's put on our architect hats. A project's long-term success is dictated by its structure. I've structured KineticFolio based on years of experience, emphasizing the architectural principles we just discussed. Let's walk through it.
 
 #### Root-Level Configuration
 
@@ -278,54 +167,49 @@ This is the simplest directory. Anything here is served directly by the browser.
 
 #### The `/src` Directory: The Application's Core
 
-This is where 99% of our unique code lives.
+This is where 99% of our unique code lives, and it's where our principles come to life.
 
 ##### `/src/app` - The Heart of Next.js
 
 This directory is the core of the Next.js App Router.
-*   `layout.tsx`: This is the **root layout**. It's one of the most important files. Here, we've set up our HTML structure, imported our global font, configured site metadata for SEO, and wrapped our application in essential context providers like `<ThemeProvider>` for dark mode. Key layout components like the `<Navbar>` and `<Footer>` are placed here.
-*   `page.tsx`: This file is the main entry point for our homepage (`/`). Its only job is to assemble our various `<Section>` components in the correct narrative order.
-*   `globals.css`: This is where we define our entire visual theme, including our custom color palette and utility classes like `.bg-grid-pattern`.
+*   `layout.tsx`: This is the **root layout** and a **Server Component**. Its job is to set up our HTML structure and handle site-wide metadata for SEO. It remains on the server for fast initial loads.
+*   `providers.tsx`: This is a **Client Component** and a perfect example of **Separation of Concerns**. It holds all of our global client-side providers, like `ThemeProvider` and `TooltipProvider`, as well as our main layout components like the Navbar and Footer.
+*   `page.tsx`: This is the entry point for our homepage (`/`). It applies the **Single Responsibility Principle** by doing only one thing: assembling our various `<Section>` components in the correct narrative order.
+*   `globals.css`: Our global stylesheet where we define our theme and apply the **DRY principle** with custom utility classes.
 
 ##### `/src/components` - The Reusable UI Toolkit
 
-This is the most organized directory in the project, built on the principle of composition.
-*   `/ui`: This folder contains all the components we've added via **Shadcn/UI**. This is **our code**, and we can modify it freely.
+This directory is built on the principle of composition.
+*   `/ui`: Contains all the components we've added via **Shadcn/UI**. This is **our code**, and we can modify it freely.
 *   `/primitives`: Our most basic, unstyled building blocks (`Box`, `Flex`, `Text`).
 *   `/common`: Contains small, highly reusable components like `SectionTitle`.
-*   `/layout`: This is for major structural components: `Navbar`, `Footer`, `SectionWrapper`, and `ThemeSwitcher`.
-*   `/sections`: This is where the main content sections of the page live. Each section (`Hero`, `About`, `Projects`, etc.) has its own folder containing its main component and any sub-components, like `ProjectCard.tsx`.
+*   `/layout`: This is for major structural components that appear on every page: `Navbar`, `Footer`, `SectionWrapper`.
+*   `/sections`: This is where the main content sections of the page live. Each section (`Hero`, `About`, `Projects`, etc.) has its own folder containing its main component and any sub-components. This enforces a clean, modular structure.
 
 ##### `/src/data` - The Content Layer
 
-A perfect example of **Separation of Concerns**. By placing all our static content here (`projectsData.ts`, `skillsData.ts`, etc.), we can update the portfolio without touching a React component.
+A perfect example of **Separation of Concerns**. By placing all our static content here (`projectsData.ts`, `skillsData.ts`, etc.), we can update the portfolio without touching a single React component.
 
-##### `/src/hooks` - Stateful Logic
+##### `/src/hooks` - Stateful Logic Layer
 
-When UI logic gets complex, we extract it into custom hooks.
-*   `use-feedback-store.ts`: Manages all state for the feedback feature.
-*   `use-visitor-location.ts`: Encapsulates the logic for fetching the user's location.
+Another example of **SoC**. When UI logic gets complex (like managing the feedback feature), we extract it into custom hooks. `useFeedbackStore.ts` encapsulates all the state management logic, keeping our `Feedback.tsx` component clean and focused on presentation.
 
 ##### `/src/services` - The Data Persistence Layer
 
-This is a crucial abstraction layer. Our application logic shouldn't care *how* data is stored.
-*   `feedbackService.ts`: This service contains all the logic for interacting with `localStorage`. If we ever wanted to move to a real database, **this is the only file we would need to change**.
-
-##### `/src/lib` - Utilities & Constants
-
-A standard folder for shared helper functions (`utils.ts`) and constants (`constants.ts`).
+This is our most powerful abstraction layer and a critical example of **SoC**.
+*   `feedbackService.ts`: This service contains all the logic for interacting with `localStorage`. If we ever wanted to move to a real database, **this is the only file we would need to change**. The rest of the application remains completely unaware of the data source.
 
 ##### `/src/ai` - The Generative AI Brain
 
-All our server-side AI logic is neatly organized here.
+All our server-side AI logic is neatly organized here, following **SoC**.
 *   `genkit.ts`: Initializes our Genkit instance.
-*   `flows/`: This folder contains our **server actions**.
-    *   `review-feedback-flow.ts`: Defines the AI process for analyzing feedback text.
-    *   `generate-avatar-flow.ts`: Defines the AI process for generating the interactive avatar images in the 'About' section."
+*   `flows/`: This folder contains our **server actions**, which are the functions that securely communicate with the AI models on the backend.
+
+This structure isn't arbitrary. It's a deliberate architecture designed for clarity, scalability, and maintainability. It's what makes this project truly professional grade."
 
 ---
 
-### **(27:00) Chapter 7: How to Customize and Contribute**
+### **(27:00) Chapter 6: How to Customize and Contribute**
 
 **[PRESENTER]:**
 "Now that you understand the architecture, customizing this portfolio is incredibly straightforward.
@@ -348,7 +232,7 @@ All our server-side AI logic is neatly organized here.
 
 ---
 
-### **(28:30) Chapter 8: Deployment & Final Thoughts**
+### **(28:30) Chapter 7: Deployment & Final Thoughts**
 
 **[ON-SCREEN: Browser showing the finished, polished application. Then, switch to the Vercel dashboard.]**
 

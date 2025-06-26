@@ -19,9 +19,9 @@ interface SectionWrapperProps extends React.HTMLAttributes<HTMLElement> {
 
 /**
  * A reusable layout component that wraps each major section of the page.
- * It provides consistent styling, including min-height for a full-screen feel,
- * padding, and centering. Using this component ensures a rhythmic and well-paced
- * vertical layout, enforcing the DRY (Don't Repeat Yourself) principle.
+ * It provides consistent styling (padding, centering, min-height) for a rhythmic
+ * vertical layout. This component is a clear application of the DRY (Don't Repeat
+ * Yourself) principle, abstracting common layout code into a single, reusable solution.
  *
  * @param {SectionWrapperProps} props - The properties for the component.
  * @returns {React.ReactElement} A styled `<section>` element containing the children.

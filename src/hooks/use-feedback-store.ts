@@ -8,20 +8,12 @@ import type { FeedbackItem } from '@/services/feedbackService';
 
 /**
  * A custom hook to manage all client-side state for the feedback feature.
- * It acts as a bridge between the UI components and the `feedbackService`, which handles
- * all data persistence logic. This hook's primary responsibility is to manage React state
- * and trigger re-renders when data changes, following the Separation of Concerns principle.
+ * This hook is a powerful example of Separation of Concerns. Its one responsibility
+ * is to act as a bridge between the UI components and the `feedbackService`. It
+ * manages React state (`useState`, `useCallback`) and triggers re-renders, while
+ * all the logic for *how* the data is stored and retrieved is handled by the service.
  *
  * @returns An object containing the state and action dispatchers for the feedback system.
- * @property {boolean} isMounted - True if the component has mounted, used to prevent hydration errors.
- * @property {string | null} currentUser - The username of the currently logged-in user.
- * @property {FeedbackItem[]} userFeedback - An array of feedback items for the current user.
- * @property {Record<string, ReviewFeedbackOutput>} analysisResults - A map of AI analysis results keyed by feedback ID.
- * @property {(username: string, type: 'login' | 'signup') => void} login - Function to log a user in.
- * @property {() => void} logout - Function to log the current user out.
- * @property {(title: string, content: string) => boolean} addFeedback - Function to add a new feedback item.
- * @property {(feedbackId: string) => void} deleteFeedback - Function to delete a feedback item.
- * @property {(feedbackId: string, analysis: ReviewFeedbackOutput) => void} saveAnalysis - Function to save an AI analysis result.
  */
 export const useFeedbackStore = () => {
   const { toast } = useToast();
@@ -32,7 +24,8 @@ export const useFeedbackStore = () => {
 
   useEffect(() => {
     // This effect runs once on mount to initialize state from the persistence layer (service).
-    // This is crucial for working with `localStorage` in a Next.js App Router environment.
+    // This is crucial for working with `localStorage` in a Next.js App Router environment
+    // to avoid hydration mismatches between the server and client.
     setIsMounted(true);
     const user = feedbackService.getCurrentUser();
     if (user) {

@@ -9,10 +9,11 @@ import { ProjectCard, ProjectDetailSheet } from './components';
 
 /**
  * The "Featured Projects" section of the portfolio.
- * It displays a grid of `ProjectCard` components. Clicking a card opens a
- * `ProjectDetailSheet` with more detailed information. This component acts as a
- * "container" or "controller" component, managing the state for which project
-is currently selected and displayed in the sheet.
+ * This component acts as a "container" or "controller," adhering to the Single
+ * Responsibility Principle. Its sole responsibility is to manage the state of which
+ * project is currently selected. It then delegates the rendering logic to its
+ * child components: `ProjectCard` for the summary view and `ProjectDetailSheet`
+ * for the detailed view.
  *
  * @returns {React.ReactElement} The Projects section component.
  */

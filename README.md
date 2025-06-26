@@ -39,15 +39,21 @@ This project uses a modern, opinionated tech stack and is built upon core softwa
 
 ### Architectural Principles in Practice
 
--   **Separation of Concerns**: This is the cornerstone of our architecture. We strictly separate different aspects of the application:
-    -   **Presentation Logic (`/src/components`)**: React components are responsible only for rendering the UI.
-    -   **Stateful UI Logic (`/src/hooks`)**: Complex state management and lifecycle logic (e.g., `useFeedbackStore`) are extracted into custom hooks. This keeps our components clean and focused on presentation.
-    -   **Data Persistence Logic (`/src/services`)**: The logic for how data is stored and retrieved (currently `localStorage`) is abstracted into a dedicated service layer. This allows us to switch our backend in the future without changing any UI code.
-    -   **Static Content (`/src/data`)**: All static text and data for projects, skills, etc., are stored in a dedicated directory. This allows for easy content updates without touching component code.
+This project's architecture is built on three core software design principles:
 
--   **Single Responsibility Principle (SRP)**: Each component and module has one, and only one, reason to change. For example, the `ProjectCard.tsx` component is responsible only for displaying a project summary, while the `ProjectDetailSheet.tsx` component handles the detailed view.
+-   **Separation of Concerns (SoC)**: This is our guiding star. Every part of the application has a distinct, well-defined job.
+    -   **Presentation (`/src/components`)**: Components only handle how things look.
+    -   **Content (`/src/data`)**: All static text (project info, skills) is stored in a dedicated "content layer," making updates easy.
+    -   **Data Persistence (`/src/services`)**: The `feedbackService` handles *how* data is stored (`localStorage`). The rest of the app doesn't know or care, making it easy to swap in a real database later.
+    -   **Stateful UI Logic (`/src/hooks`)**: Complex UI state (like for the feedback feature) is extracted into custom hooks to keep components clean.
+    -   **Client-Side Providers (`/src/app/providers.tsx`)**: All client-only providers (`ThemeProvider`, etc.) are separated from the main server-rendered `layout.tsx` for better performance.
 
--   **Don't Repeat Yourself (DRY)**: We avoid code duplication by creating reusable abstractions. The `SectionWrapper` component provides consistent padding and layout for all main sections. Complex CSS, like the background grid pattern, is abstracted into a utility class in `globals.css` instead of being repeated in multiple components.
+-   **Single Responsibility Principle (SRP)**: Each component has one, and only one, reason to change.
+    -   The `Projects.tsx` component's only job is to manage state. It delegates the work of rendering to `ProjectCard.tsx` (for summaries) and `ProjectDetailSheet.tsx` (for details). Each has a single, focused job.
+
+-   **Don't Repeat Yourself (DRY)**: We avoid code duplication by creating reusable abstractions.
+    -   The `SectionWrapper.tsx` component provides consistent padding and layout for all main sections.
+    -   Custom utility classes in `globals.css` (like `.bg-grid-pattern`) abstract complex CSS so it can be applied with a single class.
 
 ## 4. Getting Started: Local Development
 
@@ -97,8 +103,9 @@ The project's code is organized inside the `/src` directory. Here’s a breakdow
 ```
 /src
 ├── app/                  // Next.js App Router core. The heart of the application.
-│   ├── layout.tsx        // The root layout for the entire site. Wraps all pages.
-│   ├── page.tsx          // The main entry point for the homepage.
+│   ├── layout.tsx        // The root layout (a Server Component) for site-wide metadata.
+│   ├── page.tsx          // The main entry point for the homepage, assembling all sections.
+│   ├── providers.tsx     // A Client Component for all global client-side providers.
 │   └── globals.css       // Global styles, theme, and custom utility classes.
 │
 ├── components/
@@ -108,7 +115,7 @@ The project's code is organized inside the `/src` directory. Here’s a breakdow
 │   ├── primitives/       // Basic HTML element wrappers (Box, Flex, Text).
 │   ├── sections/         // The main page sections (Hero, About, Projects, etc.).
 │   │   └── [SectionName]/  // Each section has its own folder...
-│   │       └── components/ // ...which may contain its own sub-components.
+│   │       └── components/ // ...which may contain its own sub-components (e.g., ProjectCard).
 │   └── ui/               // Shadcn UI components. You own this code.
 │
 ├── data/                 // Static content. The "database" of the site.

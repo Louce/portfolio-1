@@ -37,8 +37,9 @@ const itemVariants = {
 
 /**
  * A component that visualizes a core skill and its related technologies as a "spec card".
- * This scannable format is more effective for quick review by recruiters and AI crawlers than a chart.
- * It uses badges to represent individual technologies and animations to add visual appeal and a sense of quality.
+ * This scannable format is intentionally chosen over a chart because it is more
+ * effective for quick review by recruiters and technical managers. It clearly communicates
+ * core competencies and associated technologies, which is the primary goal of this section.
  *
  * @param {SkillCardProps} props - The properties for the component.
  * @returns {React.ReactElement} A card containing a skill summary and technology badges.
@@ -82,5 +83,3 @@ export const SkillCard: React.FC<SkillCardProps> = ({ skill, subSkills }) => {
 };
 
 SkillCard.displayName = 'SkillCard';
-
-    

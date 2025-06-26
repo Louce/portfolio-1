@@ -1,12 +1,14 @@
 'use client';
 
 /**
- * @fileOverview
- * This service module encapsulates all data persistence logic for the feedback feature.
- * Currently, it uses `localStorage` as a mock database. This abstraction is a key
- * architectural principle (Separation of Concerns) that allows for an easy swap to a
- * real database (like Firebase Firestore) in the future without changing any of the
- * application's UI or state management hooks.
+ * @fileOverview This service module encapsulates all data persistence logic for the feedback feature.
+ * This is a critical architectural decision that demonstrates the **Separation of Concerns**
+ * principle. By creating this abstraction layer, the rest of the application (UI components, hooks)
+ * does not need to know *how* or *where* the data is stored.
+ *
+ * Currently, it uses `localStorage` as a mock database. In the future, we could swap this
+ * out for a real database (like Firebase Firestore or Supabase) by changing only this file,
+ * with zero changes required in our React components.
  */
 
 import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
@@ -196,5 +198,3 @@ export const feedbackService = {
   saveAnalysisResult,
   deleteAnalysisResult,
 };
-
-    
