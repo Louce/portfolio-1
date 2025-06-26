@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -29,7 +30,7 @@ export const Projects: React.FC = React.memo(() => {
   };
 
   return (
-    <SectionWrapper id="projects" className="bg-background">
+    <SectionWrapper id="projects" className="bg-card">
       <SectionTitle>Featured Projects</SectionTitle>
       <Box className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
         {projectsData.map(project => (

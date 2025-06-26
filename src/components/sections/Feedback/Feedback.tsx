@@ -63,7 +63,7 @@ export const Feedback: React.FC = () => {
   // This prevents hydration errors related to localStorage access.
   if (!isMounted) {
     return (
-      <SectionWrapper id="feedback" className="bg-transparent">
+      <SectionWrapper id="feedback" className="bg-background">
         <Flex align="center" justify="center" className="h-full">
           <Text>Loading Feedback Section...</Text>
         </Flex>
@@ -72,8 +72,9 @@ export const Feedback: React.FC = () => {
   }
 
   return (
-    <SectionWrapper id="feedback" className="bg-transparent">
-      <Flex direction="col" align="center" justify="start" className="h-auto min-h-full w-full py-8">
+    <SectionWrapper id="feedback" className="bg-background relative">
+      <div className="absolute inset-0 z-0 bg-grid-pattern masked-radial-gradient" />
+      <Flex direction="col" align="center" justify="start" className="relative z-10 h-auto min-h-full w-full py-8">
         {!currentUser ? (
           // If no user is logged in, show the authentication form.
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
