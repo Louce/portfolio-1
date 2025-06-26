@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/Tooltip/tooltip';
 
 // HSL values are sourced directly from globals.css to ensure a perfect color match for the masking effect.
-// This is the key to a seamless transition.
 const COLORS = {
   light: 'hsl(220 50% 98%)',
   dark: 'hsl(0 0% 7%)',
@@ -23,9 +22,9 @@ const COLORS = {
 
 /**
  * A theme-switching button that provides a high-quality, performant, and visually
- * seamless transition between light and dark modes. This final version uses a
- * "Perfected Masking" technique with a physics-based spring animation to ensure a
- * flawless, snappy, and natural-feeling transition, inspired by classic CSS wipe effects.
+ * seamless transition between light and dark modes. This definitive version uses a
+ * "Perfected Masking" technique to ensure a flawless, snappy, and natural-feeling
+ * transition, orchestrated with an imperative animation sequence to prevent bugs.
  *
  * @returns {React.ReactElement} A button to toggle the application's theme, with a portal-based animation overlay.
  */
@@ -35,7 +34,8 @@ export function ThemeSwitcher() {
   const [scope, animate] = useAnimate();
 
   /**
-   * The core animation logic. This function orchestrates the entire theme transition.
+   * The core animation logic. This function orchestrates the entire theme transition
+   * in a precise, imperative sequence.
    * @param {React.MouseEvent<HTMLButtonElement>} event - The click event from the button.
    */
   const toggleTheme = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -47,44 +47,44 @@ export function ThemeSwitcher() {
     const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
     const { clientX, clientY } = event;
     
-    // 1. Set the overlay to the TARGET theme's background color. This is the secret to a seamless blend.
+    // 1. PREPARE: Before animating, explicitly reset the overlay to its starting state.
+    // This is the crucial step that fixes the "works only once" bug.
     scope.current.style.backgroundColor = COLORS[newTheme];
+    await Promise.all([
+      animate(scope.current, { opacity: 1 }, { duration: 0 }),
+      animate(
+        scope.current,
+        { clipPath: `circle(0% at ${clientX}px ${clientY}px)` },
+        { duration: 0 }
+      ),
+    ]);
 
-    // 2. Animate IN: Expand the circle from the click point with a snappy, physics-based spring animation.
-    // This creates a natural, "buttery smooth" motion.
+    // 2. ANIMATE IN: Expand the circle from the click point with a snappy spring animation.
     const expansionAnimation = animate(
       scope.current,
       { clipPath: `circle(150vw at ${clientX}px ${clientY}px)` },
-      { type: "spring", stiffness: 120, damping: 20, mass: 0.8 }
+      { type: "spring", stiffness: 100, damping: 20 }
     );
     await expansionAnimation;
     
-    // 3. Change the theme only AFTER the screen is fully covered by the overlay.
-    // The user doesn't see this switch because it's hidden behind the mask.
+    // 3. CHANGE THEME: Switch the theme only AFTER the screen is fully masked.
     setTheme(newTheme);
 
-    // 4. Animate OUT: A quick fade reveals the new content instantly. This feels fast and clean.
-    // A slight delay ensures the theme has been fully applied by the browser before the reveal.
+    // 4. ANIMATE OUT: Perform a quick, clean fade-out to reveal the new theme.
     await animate(
       scope.current,
-      { opacity: [1, 0] },
-      { duration: 0.25, ease: "easeOut", delay: 0.05 }
+      { opacity: 0 },
+      { duration: 0.3, ease: "easeOut", delay: 0.05 }
     );
     
-    // 5. Reset overlay styles for the next transition, ensuring it's ready for the next click.
-    scope.current.style.clipPath = `circle(0% at ${clientX}px ${clientY}px)`;
-    scope.current.style.opacity = '1';
-
     setIsAnimating(false);
   };
   
-  // This state prevents rendering the component on the server, which would cause hydration mismatches.
   const [isMounted, setIsMounted] = React.useState(false);
   React.useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Render a disabled placeholder until the component is mounted on the client.
   if (!isMounted) {
     return (
       <Button
@@ -121,11 +121,6 @@ export function ThemeSwitcher() {
         <TooltipContent side="bottom"><p>{label}</p></TooltipContent>
       </Tooltip>
       
-      {/* 
-        Using a React Portal is the professional way to render a screen-covering overlay.
-        It breaks the component out of its parent's stacking context and places it at the
-        end of the document.body, ensuring it can cover everything without z-index issues.
-      */}
       {isMounted && createPortal(
         <div
           ref={scope}
@@ -137,8 +132,8 @@ export function ThemeSwitcher() {
             width: '100vw',
             height: '100vh',
             zIndex: 9999,
-            // The initial state for the clip-path animation.
-            clipPath: 'circle(0% at 50% 50%)'
+            opacity: 0, // Start fully transparent
+            clipPath: 'circle(0% at 50% 50%)' // Initial state
           }}
         />,
         document.body
