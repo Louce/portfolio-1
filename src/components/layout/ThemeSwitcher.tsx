@@ -16,8 +16,8 @@ import {
 
 /**
  * A theme-switching button that toggles between light and dark modes.
- * It now includes a "circular wipe" transition effect, providing a smooth
- * and visually engaging blend between themes.
+ * It uses a performant, glassmorphic "circular wipe" transition to provide
+ * a smooth and visually engaging blend between themes.
  *
  * @returns {React.ReactElement} A button to toggle the application's theme, with a portal-based animation overlay.
  */
@@ -35,7 +35,6 @@ export function ThemeSwitcher() {
   const toggleTheme = () => {
     if (isAnimating || !buttonRef.current) return;
     
-    // Get the position of the button to originate the animation from it
     const rect = buttonRef.current.getBoundingClientRect();
     setCoords({
       top: rect.top + rect.height / 2,
@@ -60,7 +59,6 @@ export function ThemeSwitcher() {
   
   const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
   const label = resolvedTheme === 'dark' ? 'Enable Light Mode' : 'Enable Dark Mode';
-  const newThemeBg = newTheme === 'dark' ? 'hsl(0 0% 7%)' : 'hsl(220 50% 98%)';
 
   return (
     <>
@@ -83,13 +81,12 @@ export function ThemeSwitcher() {
         <TooltipContent side="bottom"><p>{label}</p></TooltipContent>
       </Tooltip>
       
-      {/* Portal the animation overlay to the body to ensure it covers the entire screen */}
       {mounted && createPortal(
         <AnimatePresence>
           {isAnimating && (
             <motion.div
+              className="pointer-events-none bg-background/30 backdrop-blur-md"
               style={{
-                backgroundColor: newThemeBg,
                 position: 'fixed',
                 top: coords.top,
                 left: coords.left,
@@ -102,13 +99,11 @@ export function ThemeSwitcher() {
               }}
               initial={{ scale: 0 }}
               animate={{ scale: 100 }}
-              transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+              transition={{ duration: 1.0, ease: [0.25, 1, 0.5, 1] }}
               onAnimationComplete={() => {
                 setTheme(newTheme);
-                // A short delay to allow the theme to apply before we hide the overlay
                 setTimeout(() => setIsAnimating(false), 50);
               }}
-              className="pointer-events-none"
             />
           )}
         </AnimatePresence>,
