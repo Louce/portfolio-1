@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
@@ -29,28 +29,6 @@ const dynamicSubHeadlines = [
  */
 export const Hero: React.FC = React.memo(() => {
   const visitorLocation = useVisitorLocation();
-  const [headlineIndex, setHeadlineIndex] = useState(0);
-
-  // Effect to cycle through the dynamic headlines.
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
-    }, 4000);
-    return () => clearInterval(intervalId);
-  }, []);
-
-  // This is the crucial fix for centering:
-  // 1. Find the length of the longest string in the array.
-  const maxLength = useMemo(() =>
-    Math.max(...dynamicSubHeadlines.map(s => s.length)),
-    [] // No dependencies, this is calculated once
-  );
-
-  // 2. Center the current phrase within a string of `maxLength` by padding it with spaces.
-  // This ensures the visual block of text remains centered, regardless of content length.
-  const currentPhrase = dynamicSubHeadlines[headlineIndex];
-  const padding = Math.floor((maxLength - currentPhrase.length) / 2);
-  const displayPhrase = ' '.repeat(padding) + currentPhrase + ' '.repeat(maxLength - currentPhrase.length - padding);
 
   return (
     <section id="hero" className="relative flex flex-col min-h-screen w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
@@ -87,9 +65,10 @@ export const Hero: React.FC = React.memo(() => {
         </h1>
         
         {/* The container that defines the size and position of the animation */}
-        <div className="text-center h-12 w-full flex items-center justify-center">
-            <SplitFlapDisplay phrase={displayPhrase} />
-        </div>
+        <SplitFlapDisplay 
+          phrases={dynamicSubHeadlines} 
+          className="h-12 text-xl sm:text-2xl md:text-3xl font-light tracking-wider text-center tabular-nums"
+        />
         
         <div
           className="max-w-xl text-center px-4"

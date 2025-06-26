@@ -1,80 +1,120 @@
 'use client';
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { motion, useSpring } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-/**
- * Props for the AnimatedChar component.
- */
-interface AnimatedCharProps {
-  char: string;
-  charIndex: number; // Index of character in the full phrase
-  fullPhrase: string; // The entire phrase for context
+// The set of characters the display can "roll" through.
+// Having the space at the start helps with the animation logic for empty characters.
+const CHARS = " /ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+interface CharacterProps {
+  value: string;
+  height: number;
+  charIndex: number;
+  fullPhrase: string;
 }
 
 /**
- * An individual character reel for the slot-machine style display.
- * It animates vertically when the character changes.
- * This component also handles the specific coloring for letters vs. separators.
+ * A single character in the split-flap display. It "rolls" to the target character.
  */
-const AnimatedChar: React.FC<AnimatedCharProps> = ({ char, charIndex, fullPhrase }) => {
-  let charStyle = 'text-chromatic-aberration'; // Default style for letters
+const Character: React.FC<CharacterProps> = React.memo(({ value, height, charIndex, fullPhrase }) => {
+  // Find the index of the target character in our character set.
+  const charIndexInSet = CHARS.indexOf(value);
+  
+  // Use a spring animation for a natural, physical feel.
+  const y = useSpring(0, {
+    stiffness: 200,
+    damping: 25,
+    mass: 0.5,
+  });
 
-  // Logic to correctly apply distinct primary and accent colors to the slashes.
-  if (char === '/' && charIndex > 0 && fullPhrase[charIndex - 1] === '/') {
-    // This is the RIGHT slash. It should be magenta (accent).
-    charStyle = 'text-accent';
-  } else if (char === '/' && charIndex < fullPhrase.length - 1 && fullPhrase[charIndex + 1] === '/') {
-    // This is the LEFT slash. It should be cyan (primary).
-    charStyle = 'text-primary';
-  }
+  // When the target character ('value') changes, update the spring's target 'y' position.
+  useLayoutEffect(() => {
+    if (height > 0) {
+      y.set(-charIndexInSet * height);
+    }
+  }, [value, height, charIndexInSet, y]);
+
+  // Determine the styling for the character based on its value and position.
+  const getCharStyle = () => {
+    if (value === '/' && charIndex > 0 && fullPhrase[charIndex - 1] === '/') {
+      return 'text-accent'; // Right slash (magenta)
+    }
+    if (value === '/' && charIndex < fullPhrase.length - 1 && fullPhrase[charIndex + 1] === '/') {
+      return 'text-primary'; // Left slash (cyan)
+    }
+    if (value === ' ') {
+      return ''; // No style for space
+    }
+    return 'text-chromatic-aberration'; // Default for letters
+  };
 
   return (
-    // The container acts as a mask with overflow:hidden.
-    <div className="relative h-full w-[0.7em] overflow-hidden">
-      <AnimatePresence>
-        <motion.span
-          // The key is crucial for AnimatePresence to detect when the character changes.
-          key={char + charIndex}
-          initial={{ y: '100%' }}
-          animate={{ y: '0%' }}
-          exit={{ y: '-100%' }}
-          transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-          className={cn("absolute inset-0 flex items-center justify-center h-full w-full", charStyle)}
-        >
-          {/* Use a non-breaking space to ensure spaces occupy layout space. */}
-          {char === ' ' ? '\u00A0' : char}
-        </motion.span>
-      </AnimatePresence>
+    <div style={{ height }} className={cn("overflow-hidden", getCharStyle())}>
+      <motion.div style={{ y }} className="flex flex-col items-center">
+        {CHARS.split("").map((char, i) => (
+          <span key={i} style={{ height }} className="flex items-center justify-center">
+            {char === " " ? "\u00A0" : char}
+          </span>
+        ))}
+      </motion.div>
     </div>
   );
-};
-AnimatedChar.displayName = 'AnimatedChar';
+});
+Character.displayName = "Character";
 
-/**
- * Props for the SplitFlapDisplay component.
- */
 interface SplitFlapDisplayProps {
-  phrase: string;
+  phrases: string[];
+  className?: string;
+  phraseDuration?: number;
 }
 
+
 /**
- * A "slot-machine" or "airport clock" style display that animates characters vertically.
- * This component correctly centers the text regardless of length and applies specific
- * styles for letters and separators.
+ * A component that displays a series of phrases with a split-flap "airport clock" animation effect.
  */
-export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({ phrase }) => {
-  const characters = phrase.split('');
+export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({
+  phrases,
+  className,
+  phraseDuration = 4000,
+}) => {
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [height, setHeight] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Measure the component's height once it's mounted to ensure characters align perfectly.
+  useLayoutEffect(() => {
+    if (ref.current) {
+      setHeight(ref.current.clientHeight);
+    }
+  }, []);
+
+  // Set up an interval to cycle through the provided phrases.
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIndex((prev) => (prev + 1) % phrases.length);
+    }, phraseDuration);
+    return () => clearInterval(interval);
+  }, [phrases.length, phraseDuration]);
+
+  // Calculate the centered phrase. This is crucial for stability.
+  const maxLength = Math.max(...phrases.map(p => p.length));
+  const currentPhrase = phrases[phraseIndex];
+  const paddingNeeded = maxLength - currentPhrase.length;
+  const leftPadding = Math.floor(paddingNeeded / 2);
+  const centeredPhrase = ' '.repeat(leftPadding) + currentPhrase;
 
   return (
-    // The main container sets the font styles and overall layout.
-    <div className="flex items-center justify-center h-12 text-xl sm:text-2xl md:text-3xl font-light tracking-wider text-center tabular-nums">
-      {characters.map((char, index) => (
-        // Each character is rendered in its own animated component.
-        <AnimatedChar key={index} char={char} charIndex={index} fullPhrase={phrase} />
-      ))}
+    <div ref={ref} className={cn("flex justify-center items-center", className)} aria-label={currentPhrase}>
+      {/* Always render 'maxLength' characters to keep the component stable. */}
+      {Array.from({ length: maxLength }).map((_, index) => {
+        const char = (centeredPhrase[index] || ' ').toUpperCase();
+        // The full phrase is padded to ensure the styling logic for the slashes always works correctly.
+        const fullPaddedPhrase = centeredPhrase.padEnd(maxLength, ' '); 
+        return <Character key={index} value={char} height={height} charIndex={index} fullPhrase={fullPaddedPhrase} />;
+      })}
     </div>
   );
 };
-SplitFlapDisplay.displayName = 'SplitFlapDisplay';
+SplitFlapDisplay.displayName = "SplitFlapDisplay";
