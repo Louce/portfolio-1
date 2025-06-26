@@ -10,8 +10,8 @@ import { Wand2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 const initialImage = {
-  url: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=1974&auto=format&fit=crop",
-  aiHint: "developer portrait",
+  url: "https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=1974&auto=format&fit=crop",
+  aiHint: "developer setup",
   style: "photography"
 };
 
@@ -47,7 +47,7 @@ export const AvatarGenerator: React.FC = () => {
       whileInView={{ opacity: 1, scale: 1, x: 0, rotate: 0 }}
       viewport={{ once: false, amount: 0.25 }}
       transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
-      className="w-full max-w-md lg:w-2/5 relative"
+      className="w-full max-w-md lg:w-full relative"
     >
       <Box className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group bg-card/80 backdrop-blur-lg border border-white/10">
         <AnimatePresence>

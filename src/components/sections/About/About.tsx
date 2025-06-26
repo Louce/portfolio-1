@@ -21,10 +21,12 @@ import { AvatarGenerator } from './components';
 export const About: React.FC = React.memo(() => {
   return (
     <SectionWrapper id="about" className="bg-card">
-      <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:gap-16">
-        <AvatarGenerator />
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center w-full max-w-6xl">
+        <div className="lg:col-span-2 flex justify-center">
+          <AvatarGenerator />
+        </div>
 
-        <Flex direction="col" justify="center" className="w-full lg:w-3/5 space-y-6 text-center lg:text-left">
+        <div className="lg:col-span-3 space-y-6 text-center lg:text-left">
           <SectionTitle className="text-center lg:text-left mb-4">
             About Me
           </SectionTitle>
@@ -77,8 +79,8 @@ export const About: React.FC = React.memo(() => {
               </a>
             </Button>
           </motion.div>
-        </Flex>
-      </Flex>
+        </div>
+      </div>
     </SectionWrapper>
   );
 });
