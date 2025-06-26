@@ -88,7 +88,7 @@ export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({
   return (
     <div 
       ref={ref} 
-      // Ensure the component fills its parent container to guarantee a measurable height.
+      // Ensure the component fills its parent container and centers its content.
       className={cn("flex justify-center items-center overflow-hidden h-full", className)} 
       aria-label={currentPhrase}
     >
