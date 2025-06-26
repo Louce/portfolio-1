@@ -6,15 +6,17 @@ import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/Button/button';
-import { Box } from '@/components/primitives';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/Tooltip/tooltip';
 
 /**
  * A theme-switching button that toggles between light and dark modes.
- * It uses the `next-themes` package to manage theme state and applies the
- * `.dark` class to the `<html>` element.
- * It handles server-side rendering gracefully to avoid hydration mismatches.
+ * It is designed to be integrated into other components, like the Navbar.
  *
- * @returns {React.ReactElement} A button to toggle the application's theme.
+ * @returns {React.ReactElement} A button to toggle the application's theme, wrapped in a tooltip.
  */
 export function ThemeSwitcher() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -25,16 +27,18 @@ export function ThemeSwitcher() {
     setMounted(true);
   }, []);
 
+  // To prevent layout shift, render a disabled placeholder button until mounted.
   if (!mounted) {
-    // Render a disabled placeholder on the server to prevent layout shift.
     return (
-        <Box className="fixed bottom-4 right-4 z-40">
-            <Button variant="outline" size="icon" disabled className="bg-card/80 backdrop-blur-md border-border/50 hover:bg-card hover:border-border">
-                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                <span className="sr-only">Toggle theme</span>
-            </Button>
-        </Box>
+      <Button
+        variant="ghost"
+        size="icon"
+        disabled
+        className="h-10 w-10 rounded-full"
+        aria-label="Toggle theme"
+      >
+        <Sun className="h-5 w-5" />
+      </Button>
     );
   }
 
@@ -46,19 +50,26 @@ export function ThemeSwitcher() {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };
 
+  const label = resolvedTheme === 'dark' ? 'Enable Light Mode' : 'Enable Dark Mode';
+
   return (
-    <Box className="fixed bottom-4 right-4 z-40">
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={toggleTheme}
-        className="bg-card/80 backdrop-blur-md border-border/50 hover:bg-card hover:border-border overflow-hidden"
-        aria-label={resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        <Sun className={`h-[1.2rem] w-[1.2rem] transition-all duration-500 ease-in-out ${resolvedTheme === 'dark' ? 'rotate-90 scale-0' : 'rotate-0 scale-100'}`} />
-        <Moon className={`absolute h-[1.2rem] w-[1.2rem] transition-all duration-500 ease-in-out ${resolvedTheme === 'dark' ? 'rotate-0 scale-100' : '-rotate-90 scale-0'}`} />
-        <span className="sr-only">Toggle theme</span>
-      </Button>
-    </Box>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          className="group relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200 hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+          aria-label="Toggle theme"
+        >
+          <Sun className={`h-5 w-5 text-foreground/80 transition-all duration-300 group-hover:text-primary ${resolvedTheme === 'dark' ? 'rotate-90 scale-0' : 'rotate-0 scale-100'}`} />
+          <Moon className={`absolute h-5 w-5 text-foreground/80 transition-all duration-300 group-hover:text-primary ${resolvedTheme === 'dark' ? 'rotate-0 scale-100' : '-rotate-90 scale-0'}`} />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="bottom">
+        <p>{label}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }

@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import { HomeIcon, UserIcon, CodeIcon, LayersIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
 import { cn } from '@/lib';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/Tooltip/tooltip';
+import { Separator } from '@/components/ui';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 /**
  * Defines the structure for each navigation item in the Navbar.
@@ -16,14 +18,14 @@ const navItems = [
   { id: 'about', label: 'About', icon: UserIcon },
   { id: 'skills', label: 'Skills', icon: CodeIcon },
   { id: 'projects', label: 'Projects', icon: LayersIcon },
-  { id: 'contact', label: 'Contact', icon: MailIcon },
   { id: 'feedback', label: 'Feedback', icon: MessageSquareIcon },
+  { id: 'contact', label: 'Contact', icon: MailIcon },
 ];
 
 /**
  * A floating, animated navigation bar for the single-page application.
- * It provides smooth scrolling links to different sections of the page.
- * Each link is an icon that reveals its label via a tooltip on hover.
+ * It provides smooth scrolling links to different sections of the page and includes
+ * the theme switcher control.
  *
  * @returns {React.ReactElement} The application's main navigation component.
  */
@@ -35,8 +37,8 @@ export const Navbar = () => {
       transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className="mx-auto mt-4 max-w-md rounded-full border border-border/30 bg-background/50 p-2 shadow-lg backdrop-blur-md">
-        <ul className="flex items-center justify-center gap-2">
+      <div className="mx-auto mt-4 max-w-max rounded-full border border-border/30 bg-background/50 p-2 shadow-lg backdrop-blur-md">
+        <ul className="flex items-center justify-center gap-1">
           {navItems.map((item) => (
             <li key={item.id}>
               <Tooltip>
@@ -59,6 +61,10 @@ export const Navbar = () => {
               </Tooltip>
             </li>
           ))}
+          <Separator orientation="vertical" className="h-6 mx-1 bg-border/50" />
+          <li>
+            <ThemeSwitcher />
+          </li>
         </ul>
       </div>
     </motion.nav>
