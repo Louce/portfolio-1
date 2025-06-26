@@ -11,7 +11,6 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
-import {googleAI} from '@genkit-ai/googleai';
 
 /** An array of artistic styles for the avatar generation. */
 const avatarStyles = [
@@ -66,7 +65,7 @@ const generateAvatarFlow = ai.defineFlow(
 
     const {media} = await ai.generate({
       // Use the experimental image generation model from Google AI.
-      model: googleAI.model('gemini-2.0-flash-preview-image-generation'),
+      model: 'googleai/gemini-2.0-flash-preview-image-generation',
       prompt: prompt,
       config: {
         // The API requires both IMAGE and TEXT modalities for this model.
@@ -74,7 +73,8 @@ const generateAvatarFlow = ai.defineFlow(
       },
     });
 
-    if (!media.url) {
+    // Handle the case where image generation might fail and not return media.
+    if (!media || !media.url) {
       throw new Error('Image generation failed to return a data URI.');
     }
 
