@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -36,13 +35,21 @@ export const Hero: React.FC = React.memo(() => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
-    }, 4000); // Increased interval for the new animation
+    }, 4000);
     return () => clearInterval(intervalId);
   }, []);
 
+  // This is the crucial fix for centering:
+  // 1. Find the length of the longest string in the array.
   const maxLength = React.useMemo(() => 
     Math.max(...dynamicSubHeadlines.map(s => s.length)), 
-  []);
+  [/* No dependencies, this is calculated once */]);
+  
+  // 2. Center the current phrase within a string of `maxLength` by padding it with spaces.
+  // This ensures the visual block of text remains centered, regardless of content length.
+  const currentPhrase = dynamicSubHeadlines[headlineIndex];
+  const padding = Math.floor((maxLength - currentPhrase.length) / 2);
+  const displayPhrase = ' '.repeat(padding) + currentPhrase + ' '.repeat(maxLength - currentPhrase.length - padding);
 
   return (
     <section id="hero" className="relative flex flex-col min-h-screen w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
@@ -78,11 +85,8 @@ export const Hero: React.FC = React.memo(() => {
           </span>
         </h1>
         
-        <div className="text-center h-8 sm:h-10 md:h-12 w-full flex items-center justify-center">
-            <SplitFlapDisplay
-                key={headlineIndex}
-                phrase={dynamicSubHeadlines[headlineIndex].padEnd(maxLength, ' ')}
-            />
+        <div className="text-center h-12 w-full flex items-center justify-center">
+            <SplitFlapDisplay phrase={displayPhrase} />
         </div>
         
         <div
