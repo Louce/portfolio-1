@@ -36,18 +36,17 @@ const Character: React.FC<CharacterProps> = React.memo(({ value, height, charInd
     }
   }, [value, height, charIndexInSet, y]);
 
-  // Determine the styling for the character based on its value and position.
+  // Determine the styling for the character based on its value.
   const getCharStyle = () => {
-    if (value === '/' && charIndex > 0 && fullPhrase[charIndex - 1] === '/') {
-      return 'text-accent'; // Right slash (magenta)
-    }
-    if (value === '/' && charIndex < fullPhrase.length - 1 && fullPhrase[charIndex + 1] === '/') {
-      return 'text-primary'; // Left slash (cyan)
+    if (value === '/') {
+      // Both slashes will now use the vibrant 'accent' color for a unified look.
+      return 'text-accent';
     }
     if (value === ' ') {
       return ''; // No style for space
     }
-    return 'text-chromatic-aberration'; // Default for letters
+    // Default styling for letters, applying the chromatic aberration effect.
+    return 'text-chromatic-aberration';
   };
 
   return (
