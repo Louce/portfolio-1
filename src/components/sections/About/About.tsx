@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { SectionWrapper } from '@/components/layout';
-import { Flex, Text, Box } from '@/components/primitives';
+import { Flex, Text } from '@/components/primitives';
 import { SectionTitle } from '@/components/common';
 import { Button, Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui';
 import { Download } from 'lucide-react';
 import { aboutText, philosophyItems } from '@/data/aboutData';
+import { AvatarGenerator } from './components';
 
 /**
  * The About section of the portfolio.
@@ -21,27 +21,8 @@ import { aboutText, philosophyItems } from '@/data/aboutData';
 export const About: React.FC = React.memo(() => {
   return (
     <SectionWrapper id="about" className="bg-card">
-      <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:flex-row lg:gap-16">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, x: -50, rotate: -3 }} 
-          whileInView={{ opacity: 1, scale: 1, x: 0, rotate: 0 }}
-          viewport={{ once: false, amount: 0.25 }}
-          transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
-          className="w-full max-w-md lg:w-2/5"
-        >
-          <Box className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group bg-card/80 backdrop-blur-lg border border-white/10">
-            <Image
-              src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=1974&auto=format&fit=crop"
-              alt="Portrait of Dendi Rivaldi, Python, Automation, and Game Development enthusiast"
-              data-ai-hint="developer portrait"
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:brightness-110"
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
-              style={{ objectFit: 'cover' }}
-            />
-            <Box className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
-          </Box>
-        </motion.div>
+      <Flex direction="col" align="center" justify="center" className="h-full gap-12 lg:gap-16">
+        <AvatarGenerator />
 
         <Flex direction="col" justify="center" className="w-full lg:w-3/5 space-y-6 text-center lg:text-left">
           <SectionTitle className="text-center lg:text-left mb-4">
@@ -89,7 +70,7 @@ export const About: React.FC = React.memo(() => {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.6, duration: 0.5 }}
             className="mt-6 flex items-center justify-center lg:justify-start"
           >
-            <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-md transform hover:scale-105 transition-transform duration-300 rounded-lg">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transform hover:scale-105 transition-transform duration-300 rounded-lg">
               <a href="/DendiRivaldi_Resume.pdf" download="DendiRivaldi_Resume.pdf" aria-label="Download Dendi Rivaldi's resume">
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume
