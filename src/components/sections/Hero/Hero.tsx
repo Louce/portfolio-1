@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -72,7 +73,7 @@ export const Hero: React.FC = React.memo(() => {
       {visitorLocation && (
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0, transition: { delay: 1.5, duration: 0.5 } }}
+          animate={{ opacity: 1, y: 0, transition: { delay: 0.9, duration: 0.5 } }}
           className="absolute top-20 left-0 right-0 z-10 text-center"
           aria-label={`Visitor location: ${visitorLocation}`}
         >
@@ -103,14 +104,14 @@ export const Hero: React.FC = React.memo(() => {
               variants={letterVariants}
               className="relative inline-block leading-none"
             >
-              {letter === " " ? "\u00A0" : letter}
+              {letter === " " ? " " : letter}
             </motion.span>
           ))}
         </motion.h1>
         
         <motion.div
           initial={{opacity: 0, y: 20}}
-          animate={{opacity: 1, y: 0, transition: {delay: 1.0, duration: 0.5, ease: "easeOut"}}}
+          animate={{opacity: 1, y: 0, transition: {delay: 0.6, duration: 0.5, ease: "easeOut"}}}
         >
           <SplitFlapDisplay 
             phrases={dynamicSubHeadlines} 
@@ -120,7 +121,7 @@ export const Hero: React.FC = React.memo(() => {
         
         <motion.div
           initial={{opacity: 0, y: 20}}
-          animate={{opacity: 1, y: 0, transition: {delay: 1.2, duration: 0.5, ease: "easeOut"}}}
+          animate={{opacity: 1, y: 0, transition: {delay: 0.7, duration: 0.5, ease: "easeOut"}}}
           className="max-w-xl text-center px-4"
         >
             <Text 
@@ -135,7 +136,7 @@ export const Hero: React.FC = React.memo(() => {
 
         <motion.div
           initial={{opacity: 0, y: 20}}
-          animate={{opacity: 1, y: 0, transition: {delay: 1.4, duration: 0.5, ease: "easeOut"}}}
+          animate={{opacity: 1, y: 0, transition: {delay: 0.8, duration: 0.5, ease: "easeOut"}}}
           className="pt-2"
         >
           <Button asChild
@@ -151,7 +152,7 @@ export const Hero: React.FC = React.memo(() => {
 
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 1.6, duration: 0.5 } }}
+        animate={{ opacity: 1, transition: { delay: 1.0, duration: 0.5 } }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <Link

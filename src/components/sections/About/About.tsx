@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -38,7 +39,7 @@ export const About: React.FC = React.memo(() => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="font-body text-lg md:text-xl text-foreground/90 leading-loose"
           >
             {aboutText}
@@ -48,7 +49,7 @@ export const About: React.FC = React.memo(() => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             className="w-full"
           >
             <Accordion type="single" collapsible className="w-full">
@@ -72,7 +73,7 @@ export const About: React.FC = React.memo(() => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.6, duration: 0.5 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.4, duration: 0.5 }}
             className="mt-6 flex items-center justify-center lg:justify-start"
           >
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transform hover:scale-105 transition-transform duration-300 rounded-lg">
