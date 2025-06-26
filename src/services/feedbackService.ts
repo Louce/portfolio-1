@@ -3,9 +3,10 @@
 /**
  * @fileOverview
  * This service module encapsulates all data persistence logic for the feedback feature.
- * Currently, it uses localStorage as a mock database. This abstraction allows for
- * an easy swap to a real database (like Firestore) in the future without changing
- * the application's UI or state management hooks.
+ * Currently, it uses `localStorage` as a mock database. This abstraction is a key
+ * architectural principle (Separation of Concerns) that allows for an easy swap to a
+ * real database (like Firebase Firestore) in the future without changing any of the
+ * application's UI or state management hooks.
  */
 
 import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
@@ -13,7 +14,7 @@ import type { ReviewFeedbackOutput } from '@/ai/flows';
 
 /**
  * Represents a single feedback item.
- * This is the canonical data model for feedback.
+ * This is the canonical data model for feedback throughout the application.
  */
 export interface FeedbackItem {
   id: string;
@@ -24,10 +25,11 @@ export interface FeedbackItem {
 }
 
 /**
-* Helper function to safely parse JSON from localStorage.
-* @param key The localStorage key.
-* @param fallback The fallback value if parsing fails or window is not defined.
-* @returns The parsed data or the fallback value.
+* Helper function to safely parse JSON from localStorage. It handles cases where
+* `window` is not defined (during server-side rendering) and catches JSON parsing errors.
+* @param {string} key - The localStorage key.
+* @param {T} fallback - The fallback value if parsing fails or window is not defined.
+* @returns {T} The parsed data or the fallback value.
 */
 const safeJsonParse = <T>(key: string, fallback: T): T => {
   if (typeof window === 'undefined') {
@@ -46,7 +48,7 @@ const safeJsonParse = <T>(key: string, fallback: T): T => {
 
 /**
 * Retrieves the currently logged-in user from localStorage.
-* @returns The username, or null if not logged in.
+* @returns {string | null} The username, or null if not logged in.
 */
 export const getCurrentUser = (): string | null => {
   if (typeof window === 'undefined') return null;
@@ -55,7 +57,7 @@ export const getCurrentUser = (): string | null => {
 
 /**
 * Saves the logged-in user to localStorage.
-* @param username The username to save.
+* @param {string} username - The username to save.
 */
 export const loginUser = (username: string): void => {
   if (typeof window !== 'undefined') {
@@ -76,8 +78,8 @@ export const logoutUser = (): void => {
 
 /**
 * Retrieves all feedback for a specific user.
-* @param username The user whose feedback to retrieve.
-* @returns An array of feedback items.
+* @param {string} username - The user whose feedback to retrieve.
+* @returns {FeedbackItem[]} An array of feedback items, sorted with the newest first.
 */
 export const getFeedbackForUser = (username: string): FeedbackItem[] => {
   const allFeedback = safeJsonParse<Record<string, FeedbackItem[]>>(LOCAL_STORAGE_KEYS.USERS_FEEDBACK, {});
@@ -86,10 +88,10 @@ export const getFeedbackForUser = (username: string): FeedbackItem[] => {
 
 /**
 * Adds a new feedback item for a user.
-* @param username The user submitting the feedback.
-* @param title The title of the feedback.
-* @param content The content of the feedback.
-* @returns The newly created feedback item.
+* @param {string} username - The user submitting the feedback.
+* @param {string} title - The title of the feedback.
+* @param {string} content - The content of the feedback.
+* @returns {FeedbackItem} The newly created feedback item.
 */
 export const addFeedbackForUser = (username: string, title: string, content: string): FeedbackItem => {
   const allFeedback = safeJsonParse<Record<string, FeedbackItem[]>>(LOCAL_STORAGE_KEYS.USERS_FEEDBACK, {});
@@ -110,9 +112,9 @@ export const addFeedbackForUser = (username: string, title: string, content: str
 
 /**
 * Deletes a specific feedback item for a user.
-* @param username The user who owns the feedback.
-* @param feedbackId The ID of the feedback item to delete.
-* @returns The updated array of feedback items for the user.
+* @param {string} username - The user who owns the feedback.
+* @param {string} feedbackId - The ID of the feedback item to delete.
+* @returns {FeedbackItem[]} The updated array of feedback items for the user.
 */
 export const deleteFeedbackForUser = (username: string, feedbackId: string): FeedbackItem[] => {
   const allFeedback = safeJsonParse<Record<string, FeedbackItem[]>>(LOCAL_STORAGE_KEYS.USERS_FEEDBACK, {});
@@ -130,7 +132,7 @@ export const deleteFeedbackForUser = (username: string, feedbackId: string): Fee
 
 /**
 * Retrieves all saved AI analysis results.
-* @returns A record of analysis results keyed by feedback ID.
+* @returns {Record<string, ReviewFeedbackOutput>} A record of analysis results keyed by feedback ID.
 */
 export const getAnalysisResults = (): Record<string, ReviewFeedbackOutput> => {
   return safeJsonParse<Record<string, ReviewFeedbackOutput>>(LOCAL_STORAGE_KEYS.AI_ANALYSIS, {});
@@ -138,9 +140,9 @@ export const getAnalysisResults = (): Record<string, ReviewFeedbackOutput> => {
 
 /**
 * Saves a new AI analysis result for a feedback item.
-* @param feedbackId The ID of the feedback item.
-* @param analysis The analysis result object to save.
-* @returns The updated record of all analysis results.
+* @param {string} feedbackId - The ID of the feedback item.
+* @param {ReviewFeedbackOutput} analysis - The analysis result object to save.
+* @returns {Record<string, ReviewFeedbackOutput>} The updated record of all analysis results.
 */
 export const saveAnalysisResult = (feedbackId: string, analysis: ReviewFeedbackOutput): Record<string, ReviewFeedbackOutput> => {
   const allResults = getAnalysisResults();
@@ -151,8 +153,8 @@ export const saveAnalysisResult = (feedbackId: string, analysis: ReviewFeedbackO
 
 /**
 * Deletes the AI analysis result associated with a feedback item.
-* @param feedbackId The ID of the feedback item whose analysis should be deleted.
-* @returns The updated record of all analysis results.
+* @param {string} feedbackId - The ID of the feedback item whose analysis should be deleted.
+* @returns {Record<string, ReviewFeedbackOutput>} The updated record of all analysis results.
 */
 export const deleteAnalysisResult = (feedbackId: string): Record<string, ReviewFeedbackOutput> => {
   const allResults = getAnalysisResults();

@@ -7,7 +7,8 @@ import { Mail } from 'lucide-react';
 
 /**
  * The application's footer component.
- * It displays copyright information and social media links.
+ * It serves as a consistent, final element on the page, providing copyright
+ * information and essential professional links.
  *
  * @returns {React.ReactElement} The footer component.
  */
@@ -15,9 +16,9 @@ export const Footer: React.FC = React.memo(() => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { name: 'GitHub', icon: GitHubIcon, url: 'https://github.com/Louce', ariaLabel: 'View Dendi Rivaldi\'s GitHub profile' },
-    { name: 'LinkedIn', icon: LinkedInIcon, url: 'https://www.linkedin.com/in/dendyrivaldi/', ariaLabel: 'Connect with Dendi Rivaldi on LinkedIn' },
-    { name: 'Email', icon: Mail, url: 'mailto:rivaldydendy459@gmail.com', ariaLabel: 'Send an email to Dendi Rivaldi' },
+    { name: 'GitHub', icon: GitHubIcon, url: 'https://github.com/Louce', ariaLabel: "View Dendi Rivaldi's GitHub profile" },
+    { name: 'LinkedIn', icon: LinkedInIcon, url: 'https://www.linkedin.com/in/dendyrivaldi/', ariaLabel: "Connect with Dendi Rivaldi on LinkedIn" },
+    { name: 'Email', icon: Mail, url: 'mailto:rivaldydendy459@gmail.com', ariaLabel: "Send an email to Dendi Rivaldi" },
   ];
 
   return (

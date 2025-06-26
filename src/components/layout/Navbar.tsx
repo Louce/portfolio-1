@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -24,8 +23,9 @@ const navItems = [
 
 /**
  * A floating, animated navigation bar for the single-page application.
- * It provides smooth scrolling links to different sections of the page and includes
- * the theme switcher control.
+ * It appears with a subtle animation and provides smooth-scrolling links to different
+ * sections of the page. It consolidates primary navigation and the theme switcher
+ * into a single, clean, and accessible component.
  *
  * @returns {React.ReactElement} The application's main navigation component.
  */
@@ -36,6 +36,7 @@ export const Navbar = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
       className="fixed top-0 left-0 right-0 z-50"
+      aria-label="Main Navigation"
     >
       <div className="mx-auto mt-4 max-w-max rounded-full border border-border/30 bg-background/50 p-2 shadow-lg backdrop-blur-md">
         <ul className="flex items-center justify-center gap-1">

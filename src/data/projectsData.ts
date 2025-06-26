@@ -1,44 +1,47 @@
 /**
  * @fileOverview
  * This file contains the static data for the "Featured Projects" section.
- * Separating data from the component logic makes the project easier to maintain and update.
+ * Separating data from the component logic (Separation of Concerns) makes the
+ * project easier to maintain and update. To change project information, you
+ * only need to edit this file.
  */
 
 /**
  * Represents a media item (image or video) in a project's gallery.
- * @property {'image' | 'video'} type - The type of media.
- * @property {string} url - The URL of the media asset.
- * @property {string} [dataAiHint] - Optional hint for AI tools or image generation services.
  */
 export interface MediaItem {
+  /** The type of media, used to determine the correct HTML tag. */
   type: 'image' | 'video';
+  /** The URL of the media asset. */
   url: string;
+  /** Optional hint for AI tools or image generation services. */
   dataAiHint?: string;
 }
 
 /**
  * Represents a single project to be displayed in the portfolio.
- * @property {string} id - A unique identifier for the project.
- * @property {string} title - The title of the project.
- * @property {string} description - A short, one-sentence description for the project card.
- * @property {string} [longDescription] - A more detailed description for the project's detail view.
- * @property {string} coverImageUrl - The URL for the main image shown on the project card.
- * @property {string} [coverDataAiHint] - Optional hint for the cover image.
- * @property {MediaItem[]} mediaGallery - An array of images and videos for the detail view carousel.
- * @property {string[]} techStack - An array of technologies used in the project.
- * @property {string} [liveSiteUrl] - Optional URL to the live, deployed project.
- * @property {string} [githubUrl] - Optional URL to the project's source code repository.
+ * This is the canonical data structure for a project.
  */
 export interface Project {
+  /** A unique identifier for the project, used for React keys. */
   id: string;
+  /** The title of the project. */
   title: string;
+  /** A short, one-sentence description for the project card. */
   description: string;
+  /** A more detailed description for the project's detail view. */
   longDescription?: string;
+  /** The URL for the main image shown on the project card. */
   coverImageUrl: string;
+  /** Optional hint for the cover image. */
   coverDataAiHint?: string;
+  /** An array of images and videos for the detail view carousel. */
   mediaGallery: MediaItem[];
+  /** An array of technologies used in the project. */
   techStack: string[];
+  /** Optional URL to the live, deployed project. */
   liveSiteUrl?: string;
+  /** Optional URL to the project's source code repository. */
   githubUrl?: string;
 }
 

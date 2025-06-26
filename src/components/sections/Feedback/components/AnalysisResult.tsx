@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -12,13 +11,14 @@ import { Sparkles } from 'lucide-react';
  * Props for the AnalysisResult component.
  */
 interface AnalysisResultProps {
-  /** The AI analysis result object to display. */
+  /** The AI analysis result object from the Genkit flow to display. */
   analysis: ReviewFeedbackOutput;
 }
 
 /**
- * A dedicated sub-component to display the results of a Genkit AI feedback analysis.
- * It neatly formats the sentiment, summary, and suggested action from the AI model.
+ * A dedicated sub-component to display the structured results of a Genkit AI
+ * feedback analysis. It neatly formats the sentiment, summary, and suggested
+ * action returned from the AI model, providing a clear and visually appealing summary.
  *
  * @param {AnalysisResultProps} props - The properties for the component.
  * @returns {React.ReactElement} A formatted display of the AI analysis.

@@ -1,8 +1,8 @@
-
 /**
  * @fileOverview
  * This file contains the static data for the "My Expertise" (Skills) section.
- * It defines the structure for core skills and their related sub-skills.
+ * It defines the structure for core skills and their related sub-skills,
+ * making it easy to update the skills showcased in the portfolio.
  */
 
 import React from 'react';
@@ -12,9 +12,13 @@ import { CodeIcon as Code, Bot, Gamepad2, Palette, Database, Cog } from 'lucide-
  * Represents a core skill category.
  */
 export interface Skill {
+  /** A unique identifier for the skill category. */
   id: string;
+  /** The name of the skill category (e.g., "Python"). */
   name: string;
+  /** A Lucide React icon component to visually represent the skill. */
   icon: React.ElementType;
+  /** A short description of the skill category. */
   description: string;
 }
 
@@ -22,13 +26,17 @@ export interface Skill {
  * Represents a specific technology or sub-skill related to a core skill.
  */
 export interface SubSkill {
+  /** A unique identifier for the sub-skill. */
   id: string;
+  /** The name of the technology (e.g., "React", "Docker"). */
   name: string;
+  /** The ID of the core skill this sub-skill belongs to. */
   coreSkillId: string;
 }
 
 /**
- * The definitive array of core skills data, now a single flat array for direct mapping.
+ * The definitive array of core skills data.
+ * This array is mapped to create the main "Skill Cards" in the UI.
  */
 export const coreSkillsData: Skill[] = [
   { id: 'python', name: 'Python', icon: Code, description: "Versatile programming for scripting, automation, and backend logic." },
@@ -41,8 +49,7 @@ export const coreSkillsData: Skill[] = [
 
 /**
  * The definitive array of sub-skills and technologies data.
- * The 'proficiency' and verbose 'description' fields have been removed for a cleaner,
- * more scannable presentation using badges.
+ * Each item is related to a core skill via `coreSkillId`.
  */
 export const subSkillsData: SubSkill[] = [
   // Python

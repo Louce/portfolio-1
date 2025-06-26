@@ -1,14 +1,14 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 
 /**
  * A custom hook that fetches the visitor's approximate geographical location based on their IP address.
- * It uses the free, privacy-friendly 'ipwhois.app' service. This hook is intended for client-side use only.
- * It includes a simulation for localhost development and handles API errors gracefully.
+ * It uses the free, privacy-friendly 'ipwhois.app' service. This hook is intended for
+ * client-side use only (`'use client'`). It includes a simulation for localhost development to avoid
+ * unnecessary API calls and handles API errors gracefully.
  *
- * @returns {string | null} The visitor's location as a formatted string (e.g., "City, Region, Country"),
+ * @returns {string | null} The visitor's location as a formatted string (e.g., "City, Country"),
  * "Location: Unknown" on failure, or null during the initial fetch.
  */
 export const useVisitorLocation = () => {
@@ -59,11 +59,7 @@ export const useVisitorLocation = () => {
               locationString = data.country;
             }
           }
-          if (locationString) {
-            setVisitorLocation(locationString);
-          } else {
-            setVisitorLocation("Location: Unknown");
-          }
+          setVisitorLocation(locationString || "Location: Unknown");
         } else {
            console.warn('IPWHOIS API reported failure:', data.message || 'Unknown reason');
            setVisitorLocation("Location: Unknown");

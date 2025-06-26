@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 
 /**
  * Props for the SectionTitle component.
- * Extends standard HTML heading element attributes.
+ * @extends React.HTMLAttributes<HTMLHeadingElement>
  */
 interface SectionTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   /** The text content of the title. */
@@ -18,10 +18,11 @@ interface SectionTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 
 /**
  * A reusable, animated title component for major sections of the page.
- * It uses Framer Motion for a subtle "fade-in and slide-down" effect.
+ * It uses Framer Motion for a subtle "fade-in and slide-down" effect,
+ * creating a consistent and polished entrance for each section.
  *
  * @param {SectionTitleProps} props - The properties for the component.
- * @returns {React.ReactElement} An animated section title.
+ * @returns {React.ReactElement} An animated section title (`<h2>`).
  */
 export const SectionTitle: React.FC<SectionTitleProps> = ({ children, className, ...props }) => {
   return (

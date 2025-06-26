@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -9,20 +8,30 @@ import { projectsData, type Project } from '@/data/projectsData';
 import { ProjectCard, ProjectDetailSheet } from './components';
 
 /**
- * The Projects section of the portfolio.
- * It displays a grid of project cards. Clicking a card opens a detailed view
- * in a side sheet, which includes a media carousel and links.
- * This component manages the state for which project is selected.
+ * The "Featured Projects" section of the portfolio.
+ * It displays a grid of `ProjectCard` components. Clicking a card opens a
+ * `ProjectDetailSheet` with more detailed information. This component acts as a
+ * "container" or "controller" component, managing the state for which project
+is currently selected and displayed in the sheet.
  *
  * @returns {React.ReactElement} The Projects section component.
  */
 export const Projects: React.FC = React.memo(() => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
+  /**
+   * Handles opening the detail sheet for a specific project.
+   * @param {Project} project - The project to display.
+   */
   const handleOpenSheet = (project: Project) => {
     setSelectedProject(project);
   };
   
+  /**
+   * Handles the open/close state change of the sheet.
+   * When the sheet is closed, the selected project state is cleared.
+   * @param {boolean} isOpen - The new open state of the sheet.
+   */
   const handleSheetOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
       setSelectedProject(null);

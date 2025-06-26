@@ -9,10 +9,9 @@ import { useVisitorLocation } from '@/hooks';
 import { SplitFlapDisplay } from './components/SplitFlapDisplay';
 import { motion } from 'framer-motion';
 
-// Refined, more impactful sub-headline text.
-const subHeadlineBase = "A creative developer crafting elegant, high-performance solutions that bridge the gap between logic and user experience.";
-
-// An array of dynamic headlines that cycle for an animated effect.
+/**
+ * An array of dynamic headlines that cycle in the SplitFlapDisplay component.
+ */
 const dynamicSubHeadlines = [
   "PYTHON // AUTOMATION // GAME DEV",
   "DESIGN // INNOVATION // SOLUTIONS",
@@ -20,9 +19,16 @@ const dynamicSubHeadlines = [
   "CODE // BUILD // PLAY"
 ];
 
+/**
+ * The main introductory text for the hero section.
+ */
+const subHeadlineBase = "A creative developer crafting elegant, high-performance solutions that bridge the gap between logic and user experience.";
+
 const name = "Dendi Rivaldi".split("");
 
-// Framer Motion variants for the staggered letter animation.
+/**
+ * Framer Motion variants for the staggered letter animation in the main title.
+ */
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -45,9 +51,12 @@ const letterVariants = {
 };
 
 /**
- * The Hero section component, now featuring a fully animated entrance sequence.
- * The title, sub-headline, and call-to-action are orchestrated with Framer Motion
- * to create a dynamic and elegant first impression.
+ * The Hero section component, designed to make a powerful first impression.
+ * It features a fully animated entrance sequence using Framer Motion:
+ * - A 3D, staggered letter animation for the main title.
+ * - An animated "split-flap" display for cycling sub-headlines.
+ * - Sequenced fade-ins for the description and call-to-action button.
+ * - A hook-driven visitor location display for a personalized touch.
  *
  * @returns {React.ReactElement} The Hero section component.
  */

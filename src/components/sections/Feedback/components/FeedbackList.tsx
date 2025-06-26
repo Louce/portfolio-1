@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -25,16 +24,23 @@ interface FeedbackListProps {
   analysisResults: Record<string, ReviewFeedbackOutput>;
   /** The ID of the feedback item currently being analyzed, or null. */
   analyzingId: string | null;
-  /** Callback function to trigger an AI review for a feedback item. */
+  /** 
+   * Callback function to trigger an AI review for a feedback item.
+   * @param {FeedbackItem} item - The feedback item to be reviewed.
+   */
   onAiReview: (item: FeedbackItem) => void;
-  /** Callback function to delete a feedback item. */
+  /** 
+   * Callback function to delete a feedback item.
+   * @param {string} feedbackId - The ID of the feedback item to delete.
+   */
   onDelete: (feedbackId: string) => void;
 }
 
 /**
  * Displays a list of feedback items submitted by the user.
  * It allows for deleting feedback and triggering an AI review for each item.
- * Includes a confirmation dialog for the delete action and a styled scroll area for long lists.
+ * Includes a confirmation dialog for the delete action to prevent accidental data loss,
+ * and a styled scroll area for managing long lists of feedback.
  *
  * @param {FeedbackListProps} props - The properties for the component.
  * @returns {React.ReactElement} The list of user-submitted feedback.

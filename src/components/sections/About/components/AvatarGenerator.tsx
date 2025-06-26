@@ -9,12 +9,23 @@ import { Button, Skeleton } from '@/components/ui';
 import { Wand2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
+/**
+ * The initial image to display before any AI generation occurs.
+ */
 const initialImage = {
   url: "https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=1974&auto=format&fit=crop",
   aiHint: "developer setup",
   style: "photography"
 };
 
+/**
+ * An interactive component that demonstrates live AI image generation.
+ * It displays a portrait image and a button that, when clicked, calls a Genkit
+ * flow to generate a new avatar in a random artistic style. This serves as a
+ * powerful "show, don't tell" feature for AI development skills.
+ *
+ * @returns {React.ReactElement} The AI Avatar Generator component.
+ */
 export const AvatarGenerator: React.FC = () => {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
@@ -47,7 +58,7 @@ export const AvatarGenerator: React.FC = () => {
       whileInView={{ opacity: 1, scale: 1, x: 0, rotate: 0 }}
       viewport={{ once: false, amount: 0.25 }}
       transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
-      className="w-full max-w-md lg:w-full relative"
+      className="w-full max-w-sm lg:w-full relative"
     >
       <Box className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group bg-card/80 backdrop-blur-lg border border-white/10">
         <AnimatePresence>
@@ -66,7 +77,6 @@ export const AvatarGenerator: React.FC = () => {
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
-              style={{ objectFit: 'cover' }}
             />
           </motion.div>
         </AnimatePresence>

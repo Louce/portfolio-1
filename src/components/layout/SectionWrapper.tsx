@@ -1,3 +1,4 @@
+'use client';
 
 import type React from 'react';
 import { cn } from '@/lib';
@@ -5,12 +6,12 @@ import { Box } from '@/components/primitives';
 
 /**
  * Props for the SectionWrapper component.
- * Extends standard HTML section element attributes.
+ * @extends React.HTMLAttributes<HTMLElement>
  */
 interface SectionWrapperProps extends React.HTMLAttributes<HTMLElement> {
   /** The content to be rendered inside the section. */
   children: React.ReactNode;
-  /** The ID of the section, used for anchor links. */
+  /** The ID of the section, used for anchor links (`<a href="#id">`). */
   id?: string;
   /** Optional additional class names for styling. */
   className?: string;
@@ -18,12 +19,12 @@ interface SectionWrapperProps extends React.HTMLAttributes<HTMLElement> {
 
 /**
  * A reusable layout component that wraps each major section of the page.
- * It provides consistent styling, including min-height for full-screen feel,
- * padding, centering, and overflow handling. Using this component ensures
- * a rhythmic and well-paced vertical layout.
+ * It provides consistent styling, including min-height for a full-screen feel,
+ * padding, and centering. Using this component ensures a rhythmic and well-paced
+ * vertical layout, enforcing the DRY (Don't Repeat Yourself) principle.
  *
  * @param {SectionWrapperProps} props - The properties for the component.
- * @returns {React.ReactElement} A styled <section> element containing the children.
+ * @returns {React.ReactElement} A styled `<section>` element containing the children.
  */
 export const SectionWrapper: React.FC<SectionWrapperProps> = ({
   children,

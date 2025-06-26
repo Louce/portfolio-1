@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -9,10 +8,11 @@ import { coreSkillsData, subSkillsData } from '@/data/skillsData';
 import { SkillCard } from './components';
 
 /**
- * The Skills section of the portfolio.
- * It now displays a clean grid of "Skill Cards," which are more modern and scannable
- * than the previous chart-based implementation. This design is optimized for quick
- * review by recruiters and AI tools.
+ * The "My Expertise" (Skills) section of the portfolio.
+ * It displays a grid of "Skill Cards," which are a modern, scannable, and visually
+ * appealing way to present technical competencies. This design is optimized for quick
+ * review by recruiters and AI crawlers, prioritizing clarity and impact over complex
+ * visualizations like charts.
  *
  * @returns {React.ReactElement} The Skills section component.
  */

@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, FormEvent } from 'react';
@@ -16,6 +15,8 @@ interface FeedbackFormProps {
   onLogout: () => void;
   /**
    * Callback function to handle adding new feedback.
+   * @param {string} title - The title of the feedback.
+   * @param {string} content - The main content of the feedback.
    * @returns {boolean} True if the feedback was added successfully, otherwise false.
    */
   onAddFeedback: (title: string, content: string) => boolean;
@@ -23,8 +24,9 @@ interface FeedbackFormProps {
 
 /**
  * A component for authenticated users to submit new feedback.
- * It includes a welcome message, a form for the feedback title and content,
- * and a logout button.
+ * It includes a welcome message with the user's avatar, a form for the feedback
+ * title and content, and a logout button. It clearly communicates its demo
+ * nature to the user.
  *
  * @param {FeedbackFormProps} props - The properties for the component.
  * @returns {React.ReactElement} The feedback submission form component.
@@ -35,7 +37,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
 
   /**
    * Handles the form submission for adding new feedback.
-   * @param {FormEvent} e - The form event.
+   * @param {FormEvent} e - The form submission event.
    */
   const handleAddFeedback = (e: FormEvent) => {
     e.preventDefault();
@@ -51,7 +53,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
       <Flex justify="between" align="center" className="w-full px-4">
         <Flex align="center" gap={3}>
           <Avatar>
-            <AvatarImage src={`https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${currentUser}`} alt={currentUser} />
+            <AvatarImage src={`https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${currentUser}`} alt={`Avatar for ${currentUser}`} />
             <AvatarFallback>{currentUser.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
           <Text as="h3" className="text-2xl md:text-3xl font-semibold text-primary">Welcome, {currentUser}!</Text>

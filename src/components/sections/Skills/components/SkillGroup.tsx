@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -17,6 +16,9 @@ interface SkillCardProps {
   subSkills: SubSkill[];
 }
 
+/**
+ * Framer Motion variants for staggering animations.
+ */
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
@@ -36,7 +38,8 @@ const itemVariants = {
 /**
  * A component that visualizes a core skill and its related technologies as a "spec card".
  * This scannable format is more effective for quick review than a chart. It uses badges
- * to represent individual technologies and animations to add visual appeal.
+ * to represent individual technologies and animations to add visual appeal and a sense
+ * of quality.
  *
  * @param {SkillCardProps} props - The properties for the component.
  * @returns {React.ReactElement} A card containing a skill summary and technology badges.

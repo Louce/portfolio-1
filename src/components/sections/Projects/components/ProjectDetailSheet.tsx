@@ -39,7 +39,6 @@ export const ProjectDetailSheet: React.FC<ProjectDetailSheetProps> = ({ project,
   const [carouselApi, setCarouselApi] = useState<CarouselApi | undefined>();
   const [isPlaying, setIsPlaying] = useState(true);
 
-  // Set up the autoplay plugin for the carousel.
   const autoplayPlugin = useRef(
     Autoplay({
       delay: 3500,
@@ -48,8 +47,8 @@ export const ProjectDetailSheet: React.FC<ProjectDetailSheetProps> = ({ project,
     })
   );
 
-  // Effect to control the autoplay state based on user interaction or component state.
   useEffect(() => {
+    // Effect to control the autoplay state based on user interaction or component state.
     if (!carouselApi) {
       return;
     }
@@ -60,13 +59,12 @@ export const ProjectDetailSheet: React.FC<ProjectDetailSheetProps> = ({ project,
     }
   }, [carouselApi, isPlaying, project]);
 
-  // Toggles the play/pause state of the carousel autoplay.
   const togglePlay = () => {
     setIsPlaying(prev => !prev);
   };
 
-  // Reset autoplay to playing whenever a new project is selected.
   useEffect(() => {
+    // Reset autoplay to playing whenever a new project is selected.
     if (project) {
       setIsPlaying(true);
     } else {

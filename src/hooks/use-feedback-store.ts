@@ -7,10 +7,10 @@ import { feedbackService } from '@/services';
 import type { FeedbackItem } from '@/services/feedbackService';
 
 /**
- * A custom hook to manage UI state for the feedback feature.
+ * A custom hook to manage all client-side state for the feedback feature.
  * It acts as a bridge between the UI components and the `feedbackService`, which handles
  * all data persistence logic. This hook's primary responsibility is to manage React state
- * and trigger re-renders when data changes.
+ * and trigger re-renders when data changes, following the Separation of Concerns principle.
  *
  * @returns An object containing the state and action dispatchers for the feedback system.
  * @property {boolean} isMounted - True if the component has mounted, used to prevent hydration errors.
@@ -32,6 +32,7 @@ export const useFeedbackStore = () => {
 
   useEffect(() => {
     // This effect runs once on mount to initialize state from the persistence layer (service).
+    // This is crucial for working with `localStorage` in a Next.js App Router environment.
     setIsMounted(true);
     const user = feedbackService.getCurrentUser();
     if (user) {
@@ -44,7 +45,6 @@ export const useFeedbackStore = () => {
   const login = useCallback((username: string, type: 'login' | 'signup') => {
     feedbackService.loginUser(username);
     setCurrentUser(username);
-    // On login, fetch the feedback for the new user.
     setUserFeedback(feedbackService.getFeedbackForUser(username));
     toast({ title: type === 'login' ? 'Logged In' : 'Signed Up', description: `Welcome, ${username}!` });
   }, [toast]);

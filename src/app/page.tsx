@@ -14,10 +14,10 @@ import { Box } from '@/components/primitives';
 
 /**
  * The main entry point and homepage for the portfolio application.
- * This component composes the different sections of the single-page layout.
- * Individual sections are now responsible for their own backgrounds for better encapsulation.
+ * This component composes the different sections of the single-page layout in a narrative order,
+ * guiding the user from an introduction to a final call-to-action.
  *
- * @returns {React.ReactElement} The complete portfolio page.
+ * @returns {React.ReactElement} The complete, single-page portfolio application.
  */
 export default function PortfolioPage() {
   return (

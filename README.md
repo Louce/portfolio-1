@@ -10,12 +10,13 @@ The core design philosophy is **"Kinetic Elegance,"** creating an "unfolding nar
 
 ## 2. Core Features
 
--   **Dynamic Hero Section**: A captivating entry point with animated typography and subtle user interactions.
+-   **Dynamic Hero Section**: A captivating entry point with a 3D animated title and a "split-flap" sub-headline display.
+-   **AI-Powered Avatar**: The "About Me" section features an interactive avatar that can be regenerated in different artistic styles using AI image generation.
 -   **Animated Section Transitions**: Fluid animations powered by Framer Motion create a seamless scrolling experience.
--   **Interactive Skills Showcase**: An organized and interactive display of core competencies and related technologies.
+-   **Modern Skills Showcase**: An organized and instantly scannable display of core competencies using "spec cards" with animated badges.
 -   **3D-Effect Project Gallery**: Project cards feature a 3D tilt effect on hover, opening into a detailed view with an image carousel.
--   **AI-Powered Feedback Analysis**: A mock-authentication system allows users to leave feedback, which can then be analyzed for sentiment and summary using Google's AI via Genkit.
--   **Responsive Design & Theming**: The site is fully responsive and features a beautiful light/dark mode theme switcher.
+-   **Full-Stack Feedback System**: A mock-authentication system allows users to leave feedback, which can then be analyzed for sentiment and summary using Google's AI via Genkit.
+-   **Responsive Design & Theming**: The site is fully responsive and features a beautiful light/dark mode theme switcher integrated into the main navigation.
 
 ## 3. Technical Architecture & Architectural Principles
 
@@ -34,7 +35,7 @@ This project uses a modern, opinionated tech stack and is built upon core softwa
     -   **Why?**: It provides a simple, declarative API for creating complex, production-grade animations directly within our React components.
 
 -   **Generative AI**: **Genkit**
-    -   **Why?**: Genkit is Google's open-source framework for building AI-powered features. We use it on the server-side (as a Next.js Server Action) to securely call the Gemini model for feedback analysis.
+    -   **Why?**: Genkit is Google's open-source framework for building AI-powered features. We use it on the server-side (as a Next.js Server Action) to securely call the Gemini model for feedback analysis and image generation.
 
 ### Architectural Principles in Practice
 
@@ -44,7 +45,7 @@ This project uses a modern, opinionated tech stack and is built upon core softwa
     -   **Data Persistence Logic (`/src/services`)**: The logic for how data is stored and retrieved (currently `localStorage`) is abstracted into a dedicated service layer. This allows us to switch our backend in the future without changing any UI code.
     -   **Static Content (`/src/data`)**: All static text and data for projects, skills, etc., are stored in a dedicated directory. This allows for easy content updates without touching component code.
 
--   **Single Responsibility Principle (SRP)**: Each component and module has one, and only one, reason to change. For example, the `ProjectCard.tsx` component is responsible only for displaying a project summary, while the `ProjectDetailSheet.tsx` component handles the detailed view. This makes the code easier to understand, test, and maintain.
+-   **Single Responsibility Principle (SRP)**: Each component and module has one, and only one, reason to change. For example, the `ProjectCard.tsx` component is responsible only for displaying a project summary, while the `ProjectDetailSheet.tsx` component handles the detailed view.
 
 -   **Don't Repeat Yourself (DRY)**: We avoid code duplication by creating reusable abstractions. The `SectionWrapper` component provides consistent padding and layout for all main sections. Complex CSS, like the background grid pattern, is abstracted into a utility class in `globals.css` instead of being repeated in multiple components.
 
@@ -103,7 +104,7 @@ The project's code is organized inside the `/src` directory. Here’s a breakdow
 ├── components/
 │   ├── common/           // Small, highly reusable components (e.g., SectionTitle).
 │   ├── icons/            // Custom SVG icons as React components.
-│   ├── layout/           // Major structural components (Navbar, SectionWrapper).
+│   ├── layout/           // Major structural components (Navbar, Footer, SectionWrapper).
 │   ├── primitives/       // Basic HTML element wrappers (Box, Flex, Text).
 │   ├── sections/         // The main page sections (Hero, About, Projects, etc.).
 │   │   └── [SectionName]/  // Each section has its own folder...
@@ -150,7 +151,7 @@ The project's code is organized inside the `/src` directory. Here’s a breakdow
 ### Replacing Images & Assets
 
 -   **Resume**: Replace the `DendiRivaldi_Resume.pdf` file in the `/public` directory with your own.
--   **Images**: Project images and other visuals are defined in **`src/data/projectsData.ts`**. The project uses placeholder images from `placehold.co` by default. Replace these URLs with your own.
+-   **Images**: Project images are defined in **`src/data/projectsData.ts`**. The project uses high-quality images from `images.unsplash.com`. You can replace these URLs with your own. The AI avatar in the "About" section can be changed by updating the `initialImage` constant in `src/components/sections/About/components/AvatarGenerator.tsx`.
 
 ## 7. Deployment Guide (Vercel)
 

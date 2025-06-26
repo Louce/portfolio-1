@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -11,13 +10,14 @@ import { reviewFeedback } from '@/ai/flows';
 import { AuthForm, FeedbackForm, FeedbackList } from './components';
 
 /**
- * The main component for the Feedback section.
- * This component acts as a controller, managing the overall state and view logic.
- * It orchestrates the authentication, feedback submission, and feedback display functionalities
- * by composing the `AuthForm`, `FeedbackForm`, and `FeedbackList` sub-components.
+ * The main component for the "Feedback" section.
+ * This component is a live, full-stack demonstration of key skills:
+ * - Mock authentication and state management with a custom hook (`useFeedbackStore`).
+ * - Data persistence using a service layer that abstracts `localStorage`.
+ * - AI integration via a Genkit flow (`reviewFeedback`) for sentiment analysis.
  *
- * It uses the `useFeedbackStore` custom hook to manage all state related to feedback,
- * ensuring a clean separation of concerns.
+ * It acts as a controller, orchestrating the `AuthForm`, `FeedbackForm`,
+ * and `FeedbackList` sub-components to create a complete interactive experience.
  *
  * @returns {React.ReactElement} The Feedback section component.
  */
@@ -40,11 +40,12 @@ export const Feedback: React.FC = () => {
 
   /**
    * Handles the AI review request for a feedback item.
-   * It calls the `reviewFeedback` server action and saves the result using the feedback store.
+   * Calls the `reviewFeedback` server action and saves the result to the store.
+   * Manages the loading state to provide user feedback.
    * @param {FeedbackItem} item - The feedback item to be analyzed.
    */
   const handleAiReview = async (item: FeedbackItem) => {
-    if (analyzingId) return;
+    if (analyzingId) return; // Prevent multiple simultaneous analyses.
 
     setAnalyzingId(item.id);
     try {
@@ -60,7 +61,7 @@ export const Feedback: React.FC = () => {
   };
 
   // Render a loading state until the component is mounted on the client.
-  // This prevents hydration errors related to localStorage access.
+  // This is a crucial step to prevent hydration errors when accessing `localStorage`.
   if (!isMounted) {
     return (
       <SectionWrapper id="feedback" className="bg-background">

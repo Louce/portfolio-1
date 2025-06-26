@@ -14,7 +14,8 @@ import { Send } from 'lucide-react';
 
 /**
  * Defines the validation schema for the contact form using Zod.
- * This ensures that form data is valid before submission.
+ * This ensures that form data is valid before submission, providing a robust
+ * and user-friendly validation experience.
  */
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -29,9 +30,10 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 /**
- * The Contact section of the portfolio.
- * It features a fully-validated contact form built with React Hook Form and Zod,
- * along with links to social profiles. It provides a primary call-to-action for visitors.
+ * The "Get In Touch" section, serving as the primary call-to-action for the portfolio.
+ * It features a fully-validated contact form built with React Hook Form and Zod.
+ * This section is designed to be the final step in the user's journey, making it easy
+ * for potential clients or employers to reach out.
  *
  * @returns {React.ReactElement} The Contact section component.
  */
@@ -50,12 +52,12 @@ export const Contact: React.FC = () => {
 
   /**
    * Handles form submission.
-   * Simulates an API call and displays a success toast message.
+   * In a real application, this would send the data to a backend endpoint. Here,
+   * it simulates an API call and displays a success toast message upon completion.
    * @param {ContactFormValues} data - The validated form data.
    */
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
-    // In a real application, you would send this data to a backend endpoint.
-    console.log(data);
+    console.log("Form submitted with data:", data);
     await new Promise(resolve => setTimeout(resolve, 1000));
     toast({ title: "Message Sent!", description: "Thanks for reaching out. I'll get back to you soon." });
     form.reset();
@@ -73,7 +75,7 @@ export const Contact: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <Text variant="lead" className="text-center max-w-xl text-foreground/80 font-body mt-[-0.5rem] md:mt-[-0.75rem]">
-            Have a project in mind, a question, or just want to connect? Feel free to reach out.
+            Have a project in mind, a question, or just want to connect? Feel free to reach out using the form below.
           </Text>
         </motion.div>
 

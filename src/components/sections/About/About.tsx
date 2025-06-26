@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
-import { Flex, Text } from '@/components/primitives';
+import { Flex } from '@/components/primitives';
 import { SectionTitle } from '@/components/common';
 import { Button, Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui';
 import { Download } from 'lucide-react';
@@ -11,10 +11,11 @@ import { aboutText, philosophyItems } from '@/data/aboutData';
 import { AvatarGenerator } from './components';
 
 /**
- * The About section of the portfolio.
- * It displays a personal photo, a biographical summary, an accordion detailing
- * design philosophies, and a button to download a resume.
- * The section is heavily animated with Framer Motion for a dynamic entrance.
+ * The "About" section of the portfolio.
+ * It presents a biographical summary, core philosophies, and a downloadable resume.
+ * A key feature is the AI-powered AvatarGenerator, which serves as a live demonstration
+ * of AI integration skills. The section uses a two-column layout for visual balance
+ * and is animated with Framer Motion for a dynamic entrance.
  *
  * @returns {React.ReactElement} The About section component.
  */
@@ -22,10 +23,12 @@ export const About: React.FC = React.memo(() => {
   return (
     <SectionWrapper id="about" className="bg-card">
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center w-full max-w-6xl">
+        {/* Left Column: AI Avatar Generator */}
         <div className="lg:col-span-2 flex justify-center">
           <AvatarGenerator />
         </div>
 
+        {/* Right Column: Text Content and Resume */}
         <div className="lg:col-span-3 space-y-6 text-center lg:text-left">
           <SectionTitle className="text-center lg:text-left mb-4">
             About Me
@@ -42,27 +45,27 @@ export const About: React.FC = React.memo(() => {
           </motion.p>
 
           <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="w-full"
-            >
-              <Accordion type="single" collapsible className="w-full">
-                {philosophyItems.map((item) => (
-                  <AccordionItem value={item.value} key={item.value}>
-                    <AccordionTrigger className="text-base font-semibold hover:text-primary transition-colors">
-                      <Flex align="center" gap={3}>
-                        <item.icon className="h-5 w-5 text-accent" />
-                        {item.trigger}
-                      </Flex>
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground text-sm pl-8">
-                      {item.content}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="w-full"
+          >
+            <Accordion type="single" collapsible className="w-full">
+              {philosophyItems.map((item) => (
+                <AccordionItem value={item.value} key={item.value}>
+                  <AccordionTrigger className="text-base font-semibold hover:text-primary transition-colors">
+                    <Flex align="center" gap={3}>
+                      <item.icon className="h-5 w-5 text-accent" />
+                      {item.trigger}
+                    </Flex>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm pl-8">
+                    {item.content}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </motion.div>
 
           <motion.div
