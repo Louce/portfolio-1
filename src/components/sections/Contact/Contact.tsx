@@ -206,5 +206,3 @@ export const Contact: React.FC = () => {
 };
 
 Contact.displayName = 'ContactSection';
-
-    
