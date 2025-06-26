@@ -14,15 +14,11 @@ import {
   TooltipTrigger,
 } from '@/components/ui/Tooltip/tooltip';
 
-// HSL color values from globals.css for a perfect match.
-const THEME_COLORS = {
-  dark: 'hsl(0 0% 7%)',
-  light: 'hsl(220 50% 98%)',
-};
-
 /**
  * A theme-switching button that provides a high-quality, performant, and visually
- * seamless transition between light and dark modes using a "color wipe" effect.
+ * seamless transition between light and dark modes using a "fluid light" effect.
+ * This version uses a physics-based spring animation and a one-way fade-out for a
+ * "buttery smooth" and natural feel.
  *
  * @returns {React.ReactElement} A button to toggle the application's theme, with a portal-based animation overlay.
  */
@@ -38,39 +34,32 @@ export function ThemeSwitcher() {
     setIsAnimating(true);
     
     const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
-    const targetColor = THEME_COLORS[newTheme];
-    
     const { clientX, clientY } = event;
     
-    // Set the overlay to the target theme's color
-    scope.current.style.backgroundColor = targetColor;
-
-    // Position the overlay at the click position and animate its expansion.
+    // Configure the glassmorphic overlay
+    scope.current.style.backgroundColor = "hsl(var(--background) / 0.5)";
+    scope.current.style.backdropFilter = "blur(8px)";
+    scope.current.style.webkitBackdropFilter = "blur(8px)";
+    
+    // Animate IN with a physics-based spring for a natural feel
     await animate(
       scope.current,
-      {
-        clipPath: `circle(150% at ${clientX}px ${clientY}px)`,
-      },
-      { duration: 0.7, ease: "easeIn" }
+      { clipPath: `circle(150vw at ${clientX}px ${clientY}px)` },
+      { type: "spring", stiffness: 100, damping: 20, mass: 0.7 }
     );
     
-    // Once the screen is covered, instantly change the theme.
+    // Change the theme once the screen is covered, ensuring a seamless switch
     setTheme(newTheme);
 
-    // After the theme is changed, animate the overlay out with a graceful fade.
+    // Animate OUT with a simple, elegant fade. This is faster and more fluid.
     await animate(
       scope.current,
-      {
-        opacity: [1, 0]
-      },
-      {
-        duration: 0.4,
-        ease: 'easeOut'
-      }
-    )
-
-    // Reset the clipPath and opacity for the next transition.
-    await animate(scope.current, { clipPath: `circle(0% at ${clientX}px ${clientY}px)` }, { duration: 0 });
+      { opacity: [1, 0] },
+      { duration: 0.4, ease: "easeOut" }
+    );
+    
+    // Reset overlay styles for the next transition
+    scope.current.style.clipPath = `circle(0% at ${clientX}px ${clientY}px)`;
     scope.current.style.opacity = '1';
 
     setIsAnimating(false);
@@ -129,6 +118,7 @@ export function ThemeSwitcher() {
             width: '100vw',
             height: '100vh',
             zIndex: 9999,
+            borderRadius: '50%',
             clipPath: 'circle(0% at 50% 50%)' // Initial state
           }}
         />,
