@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -61,20 +61,7 @@ Ticker.displayName = "Ticker";
  * @returns {React.ReactElement} The animated display component.
  */
 export const SplitFlapDisplay = ({ phrase, maxLength, className }) => {
-  const [height, setHeight] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
   const key = useMemo(() => Math.random(), [phrase]);
-
-  // Use useLayoutEffect to measure the container's height after DOM mutations
-  // but before the browser paints. This is more reliable for measurements.
-  useLayoutEffect(() => {
-    if (containerRef.current) {
-      const parentHeight = containerRef.current.offsetHeight;
-      if (parentHeight > 0) {
-        setHeight(parentHeight);
-      }
-    }
-  }, [phrase]); // Rerun when the phrase changes
 
   const characters = useMemo(() => {
     // Pad the phrase with spaces to ensure it is always centered based on maxLength.
@@ -86,16 +73,13 @@ export const SplitFlapDisplay = ({ phrase, maxLength, className }) => {
   
   return (
     <div
-      ref={containerRef}
       className={cn("flex h-full items-center justify-center text-center", className)}
-      style={{ height: height > 0 ? `${height}px` : 'auto' }}
     >
-      {height > 0 && characters.map((char, index) => {
-          let charStyle = 'text-chromatic-aberration'; // Default style
+      {characters.map((char, index) => {
+          let charStyle = 'text-chromatic-aberration'; 
           if (char.trim() === '') {
-              charStyle = ''; // No style for spaces
+              charStyle = ''; 
           } else if (char === '/') {
-              // Check previous character to determine which slash this is
               if (index > 0 && characters[index - 1] === '/') {
                   charStyle = 'text-accent/70'; // Second slash
               } else {
