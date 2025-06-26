@@ -7,12 +7,13 @@ import { SectionWrapper } from '@/components/layout';
 import { SectionTitle } from '@/components/common';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
 import { coreSkillsData, subSkillsData, skillCategories } from '@/data/skillsData';
-import { SkillCard } from './components';
+import { SkillGroup } from './components';
 
 /**
  * The Skills section of the portfolio.
  * It uses a tabbed interface to categorize and display different areas of expertise,
- * such as core competencies and technologies. Each skill is presented in a `SkillCard`.
+ * such as core competencies and technologies. Each skill is presented in a `SkillGroup`
+ * which contains a visual chart of proficiencies.
  * It includes a subtle, theme-aware grid background with a radial mask.
  *
  * @returns {React.ReactElement} The Skills section component.
@@ -46,13 +47,13 @@ export const Skills: React.FC = React.memo(() => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
+                    className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
                   >
                     {category.skills.map(skillId => {
                       const coreSkill = coreSkillsData.find(s => s.id === skillId);
                       if (!coreSkill) return null;
                       const relatedSubSkills = subSkillsData.filter(s => s.coreSkillId === skillId);
-                      return <SkillCard key={skillId} skill={coreSkill} subSkills={relatedSubSkills} />;
+                      return <SkillGroup key={skillId} skill={coreSkill} subSkills={relatedSubSkills} />;
                     })}
                   </motion.div>
                 </AnimatePresence>

@@ -1,4 +1,4 @@
 /**
  * @fileoverview Barrel file for exporting sub-components of the Skills section.
  */
-export * from './SkillCard';
+export * from './SkillGroup';
