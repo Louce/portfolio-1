@@ -8,7 +8,7 @@ import { Mail } from 'lucide-react';
 /**
  * The application's footer component.
  * It serves as a consistent, final element on the page, providing copyright
- * information and essential professional links.
+ * information and essential professional links in a clean and accessible manner.
  *
  * @returns {React.ReactElement} The footer component.
  */
@@ -47,3 +47,5 @@ export const Footer: React.FC = React.memo(() => {
 });
 
 Footer.displayName = 'Footer';
+
+    

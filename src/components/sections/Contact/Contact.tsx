@@ -33,7 +33,8 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
  * The "Get In Touch" section, serving as the primary call-to-action for the portfolio.
  * It features a fully-validated contact form built with React Hook Form and Zod.
  * This section is designed to be the final step in the user's journey, making it easy
- * for potential clients or employers to reach out.
+ * for potential clients or employers to reach out. Social links are intentionally omitted
+ * here to keep the focus on the form, as they are already present in the global footer.
  *
  * @returns {React.ReactElement} The Contact section component.
  */
@@ -58,6 +59,7 @@ export const Contact: React.FC = () => {
    */
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     console.log("Form submitted with data:", data);
+    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     toast({ title: "Message Sent!", description: "Thanks for reaching out. I'll get back to you soon." });
     form.reset();
@@ -100,6 +102,7 @@ export const Contact: React.FC = () => {
                           placeholder="Your Name" 
                           {...field} 
                           className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm" 
+                          aria-label="Your Name"
                         />
                       </FormControl>
                       <FormMessage />
@@ -118,6 +121,7 @@ export const Contact: React.FC = () => {
                           placeholder="your.email@example.com" 
                           {...field} 
                           className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm"
+                          aria-label="Your Email Address"
                         />
                       </FormControl>
                       <FormMessage />
@@ -132,7 +136,7 @@ export const Contact: React.FC = () => {
                       <FormLabel>Reason for Inquiry</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm">
+                          <SelectTrigger aria-label="Reason for Inquiry" className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm">
                             <SelectValue placeholder="Select a reason" />
                           </SelectTrigger>
                         </FormControl>
@@ -158,6 +162,7 @@ export const Contact: React.FC = () => {
                           placeholder="Let's talk about..." 
                           {...field} 
                           className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out min-h-[120px] text-sm"
+                          aria-label="Your Message"
                         />
                       </FormControl>
                       <FormMessage />
@@ -177,6 +182,7 @@ export const Contact: React.FC = () => {
                         <Switch
                           checked={field.value}
                           onCheckedChange={field.onChange}
+                          aria-label="Subscribe to newsletter"
                         />
                       </FormControl>
                     </FormItem>
@@ -200,3 +206,5 @@ export const Contact: React.FC = () => {
 };
 
 Contact.displayName = 'ContactSection';
+
+    

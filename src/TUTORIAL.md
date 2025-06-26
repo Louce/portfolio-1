@@ -75,7 +75,7 @@ npx shadcn-ui@latest init
 In the terminal, run the following command to add all necessary UI components.
 
 ```bash
-npx shadcn-ui@latest add button card sheet input textarea label toast form badge carousel accordion alert-dialog avatar dialog dropdown-menu popover progress radio-group scroll-area select separator slider switch table tabs tooltip
+npx shadcn-ui@latest add button card sheet input textarea label toast form badge carousel accordion alert-dialog avatar dialog dropdown-menu popover progress radio-group scroll-area select separator slider switch tabs tooltip
 ```
 
 **[ON-SCREEN: Show the `src/components/ui` folder being populated with dozens of component files.]**
@@ -198,71 +198,14 @@ Replace the entire contents of `src/app/globals.css` with the following code.
 "We need to replace the boilerplate in here with our own fully configured layout. This will include our optimized web font, providers for theming and tooltips, and our main structural components like the Navbar and Footer."
 
 **[ACTION]:**
-Replace the contents of `src/app/layout.tsx` with the following.
-
-```typescript
-import type { Metadata, Viewport } from 'next';
-import { ThemeProvider } from 'next-themes';
-import './globals.css';
-import { Toaster, TooltipProvider } from "@/components/ui";
-import { CookieConsentBanner, Navbar, Footer } from '@/components/layout';
-import { Inter } from 'next/font/google';
-import { SpeedInsights } from "@vercel/speed-insights/next";
-
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter'
-});
-
-const getSiteUrl = () => { /* ... Function remains the same ... */ };
-const SITE_URL = getSiteUrl();
-
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: 'Dendi Rivaldi - Python, Automation & Game Dev Enthusiast',
-  description: 'Portfolio of Dendi Rivaldi, showcasing skills in Python, automation, game development, and design.',
-  // ... other metadata remains the same
-};
-
-export const viewport: Viewport = {
-  // ... viewport config remains the same
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode; }) {
-  return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} scroll-smooth`}>
-      <head>
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="preconnect" href="https://ipwhois.app" />
-      </head>
-      <body className="font-body antialiased bg-background text-foreground min-h-screen transition-colors duration-300 ease-in-out">
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            disableTransitionOnChange={false}
-        >
-          <TooltipProvider delayDuration={100}>
-            <Navbar />
-            {children}
-            <Footer />
-            <Toaster />
-            <CookieConsentBanner />
-          </TooltipProvider>
-        </ThemeProvider>
-        <SpeedInsights />
-      </body>
-    </html>
-  );
-}
-```
+Replace the contents of `src/app/layout.tsx` with its final, polished version.
 
 **[PRESENTER]:**
 "Inside the `<body>`, we're setting up our global providers. `<ThemeProvider>` handles our light and dark mode switching. Then we have `<TooltipProvider>` from Shadcn, which enables all tooltips across the app. Crucially, I've placed our `<Navbar>` at the top and the `<Footer>` at the bottom, outside the `children`. This ensures they frame every page of our application."
 
 ---
 
-### **(12:30) Chapter 4: The Core Build - The Projects Section**
+### **(12:30) Chapter 4: The Core Build - A Component Deep Dive**
 
 **[ON-SCREEN: Show the VS Code sidebar. Highlight the `src/data` and `src/components/sections/Projects` directories.]**
 
@@ -272,11 +215,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
 To achieve this, we'll create a dedicated data layer."
 
 **[ACTION]:**
-Create a new file at `src/data/projectsData.ts`. Paste the following code into the new file.
-
-```typescript
-// ... The content of projectsData.ts, which is already up-to-date ...
-```
+Create a new file at `src/data/projectsData.ts`. Paste the project data into the new file.
 
 **[PRESENTER]:**
 "By defining our data and its TypeScript types here, our project becomes incredibly easy to update. Want to add a new project? You just edit this array. You don't have to touch any of our complex React components. This is a senior-level practice that pays huge dividends."
@@ -413,3 +352,5 @@ I really hope you found this masterclass valuable. If you did, do me a huge favo
 Thanks so much for watching, and I'll see you in the next one. Happy coding!"
 
 **[Video End: Outro music fades in, and an end screen appears with links to other videos and social media profiles.]**
+
+    
