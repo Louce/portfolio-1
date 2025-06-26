@@ -2,19 +2,17 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { SectionTitle } from '@/components/common';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
-import { coreSkillsData, subSkillsData, skillCategories } from '@/data/skillsData';
-import { SkillGroup } from './components';
+import { coreSkillsData, subSkillsData } from '@/data/skillsData';
+import { SkillCard } from './components';
 
 /**
  * The Skills section of the portfolio.
- * It uses a tabbed interface to categorize and display different areas of expertise,
- * such as core competencies and technologies. Each skill is presented in a `SkillGroup`
- * which contains a visual chart of proficiencies.
- * It includes a subtle, theme-aware grid background with a radial mask.
+ * It now displays a clean grid of "Skill Cards," which are more modern and scannable
+ * than the previous chart-based implementation. This design is optimized for quick
+ * review by recruiters and AI tools.
  *
  * @returns {React.ReactElement} The Skills section component.
  */
@@ -31,35 +29,14 @@ export const Skills: React.FC = React.memo(() => {
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.5 }}
         >
-          <Tabs defaultValue="competencies" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8">
-              {skillCategories.map(category => (
-                <TabsTrigger key={category.id} value={category.id}>{category.name}</TabsTrigger>
-              ))}
-            </TabsList>
-            
-            {skillCategories.map(category => (
-              <TabsContent key={category.id} value={category.id}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={category.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
-                  >
-                    {category.skills.map(skillId => {
-                      const coreSkill = coreSkillsData.find(s => s.id === skillId);
-                      if (!coreSkill) return null;
-                      const relatedSubSkills = subSkillsData.filter(s => s.coreSkillId === skillId);
-                      return <SkillGroup key={skillId} skill={coreSkill} subSkills={relatedSubSkills} />;
-                    })}
-                  </motion.div>
-                </AnimatePresence>
-              </TabsContent>
-            ))}
-          </Tabs>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {coreSkillsData.map((skill) => {
+              const relatedSubSkills = subSkillsData.filter(
+                (s) => s.coreSkillId === skill.id
+              );
+              return <SkillCard key={skill.id} skill={skill} subSkills={relatedSubSkills} />;
+            })}
+          </div>
         </motion.div>
       </div>
     </SectionWrapper>
