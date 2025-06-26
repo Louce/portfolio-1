@@ -10,18 +10,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/Tooltip/tooltip';
-import { useThemeAnimation } from '@/context';
 
 /**
- * A theme-switching component that triggers a global, animated theme transition.
- * It is decoupled from the animation logic itself, which is handled by the
- * ThemeAnimationContext at the root layout level.
+ * A theme-switching component that toggles between light and dark modes.
+ * It uses a simple, clean implementation with a smooth cross-fade
+ * transition handled globally via CSS.
  *
  * @returns {React.ReactElement} A button to toggle the application's theme.
  */
 export function ThemeSwitcher() {
-  const { resolvedTheme } = useTheme();
-  const { triggerThemeAnimation, isAnimating } = useThemeAnimation();
+  const { setTheme, resolvedTheme } = useTheme();
   const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -37,6 +35,10 @@ export function ThemeSwitcher() {
     );
   }
 
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+  };
+
   const label = resolvedTheme === 'dark' ? 'Enable Light Mode' : 'Enable Dark Mode';
 
   return (
@@ -45,8 +47,7 @@ export function ThemeSwitcher() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={triggerThemeAnimation}
-          disabled={isAnimating}
+          onClick={toggleTheme}
           className="group relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200 hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
           aria-label={label}
         >
