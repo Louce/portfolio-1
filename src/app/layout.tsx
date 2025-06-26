@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from 'next-themes';
 import './globals.css';
 import { Toaster, TooltipProvider } from "@/components/ui";
-import { CookieConsentBanner, Navbar, Footer, ThemeTransition } from '@/components/layout';
+import { CookieConsentBanner, Navbar, Footer } from '@/components/layout';
 import { Inter } from 'next/font/google';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -135,7 +135,6 @@ export default function RootLayout({
             disableTransitionOnChange
         >
           <TooltipProvider delayDuration={100}>
-            <ThemeTransition />
             <Navbar />
             <main>{children}</main>
             <Footer />
