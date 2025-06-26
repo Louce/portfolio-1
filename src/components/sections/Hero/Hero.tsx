@@ -12,11 +12,12 @@ import { motion } from 'framer-motion';
 
 /**
  * An array of dynamic headlines that cycle in the SplitFlapDisplay component.
+ * These are crafted to be concise and impactful on all screen sizes.
  */
 const dynamicSubHeadlines = [
-  "PYTHON // AUTOMATION // GAME DEV",
-  "DESIGN // INNOVATION // SOLUTIONS",
-  "LOGIC // CREATIVITY // EFFICIENCY",
+  "PYTHON // AUTOMATION // GAMES",
+  "DESIGN // BUILD // INNOVATE",
+  "LOGIC // CREATIVITY // IMPACT",
   "CODE // BUILD // PLAY"
 ];
 
@@ -114,7 +115,7 @@ export const Hero: React.FC = React.memo(() => {
         >
           <SplitFlapDisplay 
             phrases={dynamicSubHeadlines} 
-            className="h-12 text-xl sm:text-2xl md:text-3xl font-light tracking-wider text-center tabular-nums"
+            className="h-12 text-lg sm:text-2xl md:text-3xl font-light tracking-wider text-center tabular-nums"
           />
         </motion.div>
         
