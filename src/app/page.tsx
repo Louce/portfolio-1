@@ -27,8 +27,8 @@ export default function PortfolioPage() {
         <About />
         <Skills />
         <Projects />
-        <Contact />
         <Feedback />
+        <Contact />
       </main>
       <Footer />
     </Box>
