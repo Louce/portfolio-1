@@ -43,6 +43,7 @@ function ThemeAnimationWrapper({ children }: { children: React.ReactNode }) {
       await animate(overlay, { opacity: [1, 0] }, { duration: 0.4, at: "+0.1" });
       
     } finally {
+      // This is the crucial fix: reset the overlay for the next animation.
       overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
       overlay.style.opacity = '1';
       setIsAnimating(false);
