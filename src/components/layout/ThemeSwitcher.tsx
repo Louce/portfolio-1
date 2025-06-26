@@ -14,64 +14,68 @@ import {
   TooltipTrigger,
 } from '@/components/ui/Tooltip/tooltip';
 
+// HSL color values from globals.css for a perfect match.
+const THEME_COLORS = {
+  dark: 'hsl(0 0% 7%)',
+  light: 'hsl(220 50% 98%)',
+};
+
 /**
- * A theme-switching button that toggles between light and dark modes.
- * It uses a performant, glassmorphic "circular wipe" transition to provide
- * a smooth and visually engaging blend between themes, orchestrated with
- * modern animation hooks for a robust, sequenced effect.
+ * A theme-switching button that provides a high-quality, performant, and visually
+ * seamless transition between light and dark modes using a "color wipe" effect.
  *
  * @returns {React.ReactElement} A button to toggle the application's theme, with a portal-based animation overlay.
  */
 export function ThemeSwitcher() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
   const [scope, animate] = useAnimate();
 
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const toggleTheme = async (event: React.MouseEvent<HTMLButtonElement>) => {
     if (isAnimating || !scope.current) return;
-    setIsAnimating(true);
-
+    
     const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
+    const targetColor = THEME_COLORS[newTheme];
 
-    // 1. Position the overlay at the click position and make it visible.
+    setIsAnimating(true);
+    
+    // Set the overlay to the target theme's color
+    scope.current.style.backgroundColor = targetColor;
+
+    // Position the overlay at the click position and make it visible.
     await animate(
       scope.current,
       {
-        top: `${event.clientY}px`,
-        left: `${event.clientX}px`,
-        transform: 'translate(-50%, -50%) scale(0)',
-        opacity: 1,
+        clipPath: `circle(0% at ${event.clientX}px ${event.clientY}px)`,
       },
       { duration: 0 }
     );
     
-    // 2. Change the theme and start the expansion animation simultaneously.
-    setTheme(newTheme);
-    await animate(
+    // Animate the expansion to cover the screen.
+    const animationPromise = animate(
       scope.current,
-      { transform: 'translate(-50%, -50%) scale(150)' },
-      { duration: 0.7, ease: 'easeIn' }
+      { clipPath: `circle(150% at ${event.clientX}px ${event.clientY}px)` },
+      { duration: 0.6, ease: 'easeIn' }
     );
+    
+    // Change the theme concurrently with the animation start for a seamless blend.
+    setTheme(newTheme);
 
-    // 3. Quickly fade out the overlay to reveal the new theme.
-    await animate(
-      scope.current, 
-      { opacity: 0 }, 
-      { duration: 0.3, ease: 'easeOut' }
-    );
-
-    // 4. Reset scale for the next run (happens while invisible).
-    await animate(scope.current, { transform: 'translate(-50%, -50%) scale(0)' }, { duration: 0 });
+    await animationPromise;
+    
+    // Reset for the next run
+    await animate(scope.current, { clipPath: 'circle(0% at 0px 0px)' }, { duration: 0 });
 
     setIsAnimating(false);
   };
   
-  if (!mounted) {
+  const isMounted = React.useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+
+  if (!isMounted) {
     return (
       <Button
         variant="ghost"
@@ -107,23 +111,18 @@ export function ThemeSwitcher() {
         <TooltipContent side="bottom"><p>{label}</p></TooltipContent>
       </Tooltip>
       
-      {mounted && createPortal(
+      {isMounted && createPortal(
         <div
           ref={scope}
           className="pointer-events-none"
           style={{
             position: 'fixed',
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
             zIndex: 9999,
-            transformOrigin: 'center',
-            opacity: 0,
-            transform: 'translate(-50%, -50%) scale(0)',
-            // The "lens flare" effect: a blurred radial gradient.
-            backgroundImage: 'radial-gradient(circle, hsl(var(--background)/0.1), transparent 70%)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
+            clipPath: 'circle(0% at 0px 0px)'
           }}
         />,
         document.body
