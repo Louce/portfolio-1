@@ -81,14 +81,16 @@ export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({
     return () => clearInterval(interval);
   }, [phrases, phraseDuration]);
   
-  // Pad all phrases to the same length to prevent layout shifts during transitions.
   const maxLength = Math.max(...phrases.map(p => p.length));
-  const paddedPhrase = currentPhrase.padEnd(maxLength, ' ');
+  // Center the current phrase by adding padding to both sides.
+  const diff = maxLength - currentPhrase.length;
+  const paddingStart = Math.floor(diff / 2);
+  const paddingEnd = Math.ceil(diff / 2);
+  const paddedPhrase = ' '.repeat(paddingStart) + currentPhrase + ' '.repeat(paddingEnd);
 
   return (
     <div 
       ref={ref} 
-      // Ensure the component fills its parent container and centers its content.
       className={cn("flex justify-center items-center overflow-hidden h-full", className)} 
       aria-label={currentPhrase}
     >
