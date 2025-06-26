@@ -1,104 +1,99 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { motion, useAnimate } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-// ====================================================================================
-// True Split-Flap Character Component
-// ====================================================================================
+// A defined set of characters for the ticker reel animation.
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789// ";
+// The height of each character in 'em' units, tied to the font size for responsiveness.
+const CHARACTER_HEIGHT_EM = 1.2;
+// A quick, snappy animation duration.
+const ANIMATION_DURATION = 0.25;
 
-interface SplitFlapCharacterProps {
+/**
+ * Props for the TickerCharacter component.
+ */
+interface TickerCharacterProps {
+  /** The character to display. */
   char: string;
+  /** Optional class names for styling. */
   className?: string;
 }
 
-const SplitFlapCharacter: React.FC<SplitFlapCharacterProps> = React.memo(({ char, className }) => {
+/**
+ * An animated character component that mimics one column of a ticker or slot machine.
+ * It scrolls a "reel" of characters to the correct position.
+ * This component is memoized for performance.
+ */
+const TickerCharacter: React.FC<TickerCharacterProps> = React.memo(({ char, className }) => {
   const [scope, animate] = useAnimate();
-  const [currentChar, setCurrentChar] = useState(char);
-  const [previousChar, setPreviousChar] = useState(char);
 
   useEffect(() => {
-    if (char !== currentChar) {
-      setPreviousChar(currentChar);
-      setCurrentChar(char);
-
-      animate(scope.current, { rotateX: -180 }, { duration: 0.5, ease: 'easeInOut' })
-        .then(() => {
-          // Reset without animation
-          animate(scope.current, { rotateX: 0 }, { duration: 0 });
-        });
-    }
-  }, [char, currentChar, animate, scope]);
+    // Find the index of the character in our reel.
+    const charIndex = CHARS.indexOf(char.toUpperCase());
+    // Calculate the vertical offset to scroll to.
+    const yOffset = -charIndex * CHARACTER_HEIGHT_EM;
+    
+    // Animate the 'y' property to the calculated offset.
+    animate(scope.current, { y: `${yOffset}em` }, { duration: ANIMATION_DURATION, ease: 'easeOut' });
+  }, [char, animate, scope]);
   
-  const charToDisplay = char === ' ' ? '\u00A0' : char;
-  const prevCharToDisplay = previousChar === ' ' ? '\u00A0' : previousChar;
+  // Use a non-breaking space for empty characters to maintain layout integrity.
+  const displayChars = CHARS.split('').map(c => c === ' ' ? '\u00A0' : c);
 
   return (
-    <div className={cn("relative w-[0.6em] h-full tabular-nums perspective-[120px]", className)}>
-      {/* New character - top static half */}
-      <div className="absolute top-0 left-0 right-0 h-1/2 overflow-hidden">
-        {charToDisplay}
-      </div>
-      {/* Old character - bottom static half */}
-      <div className="absolute bottom-0 left-0 right-0 h-1/2 overflow-hidden flex items-end">
-        {currentChar !== previousChar ? prevCharToDisplay : charToDisplay}
-      </div>
-
-      {/* The rotating flap */}
-      <motion.div
-        ref={scope}
-        className="absolute top-0 left-0 right-0 h-1/2 overflow-hidden transform-style-3d"
-        style={{ transformOrigin: 'bottom', rotateX: 0 }}
-      >
-        {/* Front of the flap (old character top) */}
-        <div className="absolute inset-0 backface-hidden">
-          {prevCharToDisplay}
-        </div>
-        {/* Back of the flap (new character bottom) */}
-        <div className="absolute inset-0 backface-hidden flex items-end" style={{ transform: 'rotateX(180deg)' }}>
-          {charToDisplay}
-        </div>
+    <div 
+      className={cn("h-full overflow-hidden", className)} 
+      style={{ height: `${CHARACTER_HEIGHT_EM}em` }}
+    >
+      <motion.div ref={scope} className="flex flex-col">
+        {displayChars.map((c, i) => (
+          <span key={i} className="flex items-center justify-center" style={{ height: `${CHARACTER_HEIGHT_EM}em` }}>
+            {c}
+          </span>
+        ))}
       </motion.div>
     </div>
   );
 });
+TickerCharacter.displayName = 'TickerCharacter';
 
-SplitFlapCharacter.displayName = 'SplitFlapCharacter';
-
-
-// ====================================================================================
-// Main Split-Flap Display Container
-// ====================================================================================
-
+/**
+ * Props for the SplitFlapDisplay component.
+ */
 interface SplitFlapDisplayProps {
+  /** The full phrase to display and animate. */
   phrase: string;
 }
 
+/**
+ * A container component that renders a phrase using the TickerCharacter animation.
+ * It handles the logic for applying specific styles to different characters,
+ * such as the multi-colored separator.
+ */
 export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({ phrase }) => {
   const characters = phrase.split('');
 
   return (
-    <div className="flex h-full items-center justify-center text-xl sm:text-2xl md:text-3xl font-light text-foreground tracking-wider text-center">
+    <div className="flex items-center justify-center gap-x-1 text-xl sm:text-2xl md:text-3xl font-light text-foreground tracking-wider text-center tabular-nums">
       {characters.map((char, index) => {
         let charStyle = 'text-chromatic-aberration';
         
-        // Check for the '//' pattern
-        if (char === '/') {
-          if (index > 0 && characters[index - 1] === '/') {
-            // This is the second '/'
-            charStyle = 'text-accent/70';
-          } else {
-            // This is the first '/'
-            charStyle = 'text-primary/70';
-          }
+        // This logic correctly applies the distinct primary and accent colors to the slashes.
+        if (char === '/' && index < characters.length - 1 && characters[index + 1] === '/') {
+          // This is the first '/' of a '//' pair
+          charStyle = 'text-primary/70';
+        } else if (char === '/' && index > 0 && characters[index - 1] === '/') {
+          // This is the second '/' of a '//' pair
+          charStyle = 'text-accent/70';
         } else if (char.trim() === '') {
-          // Make spaces transparent
+          // Make spaces transparent but ensure they still occupy space in the layout.
           charStyle = 'text-transparent';
         }
 
-        return <SplitFlapCharacter key={index} char={char} className={charStyle} />;
+        return <TickerCharacter key={index} char={char} className={charStyle} />;
       })}
     </div>
   );
