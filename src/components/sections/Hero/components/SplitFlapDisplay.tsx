@@ -38,7 +38,7 @@ const Character = React.memo(({ value, height }: { value: string; height: number
     <div style={{ height }} className="overflow-hidden">
       <motion.div style={{ y }} className="flex flex-col items-center">
         {ALL_CHARS.split("").map((char, i) => (
-          <span key={i} style={{ height }}>
+          <span key={i} style={{ height }} className="flex items-center justify-center">
             {/* Use a non-breaking space for spaces to maintain layout integrity */}
             {char === " " ? "\u00A0" : char}
           </span>
@@ -86,8 +86,14 @@ export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({
   const paddedPhrase = currentPhrase.padEnd(maxLength, ' ');
 
   return (
-    <div ref={ref} className={cn("flex justify-center items-center overflow-hidden", className)} aria-label={currentPhrase}>
-       {paddedPhrase.split("").map((char, index) => (
+    <div 
+      ref={ref} 
+      // Ensure the component fills its parent container to guarantee a measurable height.
+      className={cn("flex justify-center items-center overflow-hidden h-full", className)} 
+      aria-label={currentPhrase}
+    >
+       {/* Only render characters after the height has been measured to prevent glitches. */}
+       {height > 0 && paddedPhrase.split("").map((char, index) => (
         <Character key={index} value={char.toUpperCase()} height={height} />
       ))}
     </div>
