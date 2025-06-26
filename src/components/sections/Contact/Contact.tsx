@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -11,8 +10,7 @@ import { Flex, Text, Box } from '@/components/primitives';
 import { SectionTitle } from '@/components/common';
 import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch } from '@/components/ui';
 import { useToast } from "@/components/ui/use-toast";
-import { GitHubIcon, LinkedInIcon } from '@/components/icons';
-import { Mail, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 
 /**
  * Defines the validation schema for the contact form using Zod.
@@ -62,12 +60,6 @@ export const Contact: React.FC = () => {
     toast({ title: "Message Sent!", description: "Thanks for reaching out. I'll get back to you soon." });
     form.reset();
   };
-
-  const socialLinks = [
-    { name: 'GitHub', icon: GitHubIcon, url: 'https://github.com/Louce', ariaLabel: 'View Dendi Rivaldi\'s GitHub profile' },
-    { name: 'LinkedIn', icon: LinkedInIcon, url: 'https://www.linkedin.com/in/dendyrivaldi/', ariaLabel: 'Connect with Dendi Rivaldi on LinkedIn' },
-    { name: 'Email', icon: Mail, url: 'mailto:rivaldydendy459@gmail.com', ariaLabel: 'Send an email to Dendi Rivaldi' },
-  ];
 
   return (
     <SectionWrapper id="contact" className="bg-card">
@@ -200,26 +192,6 @@ export const Contact: React.FC = () => {
             </Form>
           </Box>
         </motion.div>
-
-        <Flex justify="center" gap="1.5rem" className="mt-6 md:mt-8">
-          {socialLinks.map((link, index) => (
-            <motion.a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.ariaLabel}
-              className="text-foreground/70 hover:text-primary transition-colors duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.5 }}
-              transition={{ duration: 0.5, delay: 0.2 * index }}
-              whileHover={{ scale: 1.1, y: -2 }}
-            >
-              <link.icon className="w-8 h-8 md:w-10 md:h-10" />
-            </motion.a>
-          ))}
-        </Flex>
       </Flex>
     </SectionWrapper>
   );
