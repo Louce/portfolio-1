@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
@@ -41,10 +41,11 @@ export const Hero: React.FC = React.memo(() => {
 
   // This is the crucial fix for centering:
   // 1. Find the length of the longest string in the array.
-  const maxLength = React.useMemo(() => 
-    Math.max(...dynamicSubHeadlines.map(s => s.length)), 
-  [/* No dependencies, this is calculated once */]);
-  
+  const maxLength = useMemo(() =>
+    Math.max(...dynamicSubHeadlines.map(s => s.length)),
+    [] // No dependencies, this is calculated once
+  );
+
   // 2. Center the current phrase within a string of `maxLength` by padding it with spaces.
   // This ensures the visual block of text remains centered, regardless of content length.
   const currentPhrase = dynamicSubHeadlines[headlineIndex];
@@ -85,6 +86,7 @@ export const Hero: React.FC = React.memo(() => {
           </span>
         </h1>
         
+        {/* The container that defines the size and position of the animation */}
         <div className="text-center h-12 w-full flex items-center justify-center">
             <SplitFlapDisplay phrase={displayPhrase} />
         </div>

@@ -9,32 +9,48 @@ import { cn } from '@/lib/utils';
  */
 interface AnimatedCharProps {
   char: string;
-  className?: string;
+  charIndex: number; // Index of character in the full phrase
+  fullPhrase: string; // The entire phrase for context
 }
 
 /**
- * An individual animated character component.
- * It uses Framer Motion's AnimatePresence to create a "flipping" effect
- * when the character value changes.
+ * An individual character reel for the slot-machine style display.
+ * It animates vertically when the character changes.
+ * This component also handles the specific coloring for letters vs. separators.
  */
-const AnimatedChar: React.FC<AnimatedCharProps> = ({ char, className }) => (
-  <motion.span
-    // The key is crucial for AnimatePresence to detect when the character changes.
-    key={char}
-    initial={{ y: '100%', opacity: 0, rotateX: -90 }}
-    animate={{ y: '0%', opacity: 1, rotateX: 0 }}
-    exit={{ y: '-100%', opacity: 0, rotateX: 90 }}
-    transition={{ duration: 0.4, ease: 'easeInOut' }}
-    // Position absolute is used to stack characters during the animation transition.
-    className={cn("absolute inset-0 flex items-center justify-center", className)}
-    style={{ transformStyle: 'preserve-3d' }}
-  >
-    {/* Use a non-breaking space to ensure spaces occupy layout space. */}
-    {char === ' ' ? '\u00A0' : char}
-  </motion.span>
-);
-AnimatedChar.displayName = 'AnimatedChar';
+const AnimatedChar: React.FC<AnimatedCharProps> = ({ char, charIndex, fullPhrase }) => {
+  let charStyle = 'text-chromatic-aberration'; // Default style for letters
 
+  // Logic to correctly apply distinct primary and accent colors to the slashes.
+  if (char === '/' && charIndex > 0 && fullPhrase[charIndex - 1] === '/') {
+    // This is the RIGHT slash. It should be magenta (accent).
+    charStyle = 'text-accent';
+  } else if (char === '/' && charIndex < fullPhrase.length - 1 && fullPhrase[charIndex + 1] === '/') {
+    // This is the LEFT slash. It should be cyan (primary).
+    charStyle = 'text-primary';
+  }
+
+  return (
+    // The container acts as a mask with overflow:hidden.
+    <div className="relative h-full w-[0.7em] overflow-hidden">
+      <AnimatePresence>
+        <motion.span
+          // The key is crucial for AnimatePresence to detect when the character changes.
+          key={char + charIndex}
+          initial={{ y: '100%' }}
+          animate={{ y: '0%' }}
+          exit={{ y: '-100%' }}
+          transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+          className={cn("absolute inset-0 flex items-center justify-center h-full w-full", charStyle)}
+        >
+          {/* Use a non-breaking space to ensure spaces occupy layout space. */}
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
+};
+AnimatedChar.displayName = 'AnimatedChar';
 
 /**
  * Props for the SplitFlapDisplay component.
@@ -44,37 +60,20 @@ interface SplitFlapDisplayProps {
 }
 
 /**
- * A container component that renders a phrase using the AnimatedChar component.
- * It creates an effect reminiscent of a split-flap (airport clock) display.
- * It correctly applies specific colors to the separators and the chromatic
- * aberration effect to the letters.
+ * A "slot-machine" or "airport clock" style display that animates characters vertically.
+ * This component correctly centers the text regardless of length and applies specific
+ * styles for letters and separators.
  */
 export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({ phrase }) => {
   const characters = phrase.split('');
 
   return (
-    <div className="flex items-center justify-center gap-x-1 text-xl sm:text-2xl md:text-3xl font-light tracking-wider text-center tabular-nums">
-      {characters.map((char, index) => {
-        let charStyle = 'text-chromatic-aberration';
-        
-        // This logic correctly applies distinct primary and accent colors to the slashes.
-        if (char === '/' && index > 0 && characters[index - 1] === '/') {
-          // This is the RIGHT slash. It should be magenta (accent).
-          charStyle = 'text-accent'; 
-        } else if (char === '/' && index < characters.length - 1 && characters[index + 1] === '/') {
-          // This is the LEFT slash. It should be cyan (primary).
-          charStyle = 'text-primary';
-        }
-
-        return (
-          // Each character is wrapped in a container to manage its animation state.
-          <div key={index} className="relative h-12 w-[0.7em]">
-            <AnimatePresence>
-              <AnimatedChar char={char} className={charStyle} />
-            </AnimatePresence>
-          </div>
-        );
-      })}
+    // The main container sets the font styles and overall layout.
+    <div className="flex items-center justify-center h-12 text-xl sm:text-2xl md:text-3xl font-light tracking-wider text-center tabular-nums">
+      {characters.map((char, index) => (
+        // Each character is rendered in its own animated component.
+        <AnimatedChar key={index} char={char} charIndex={index} fullPhrase={phrase} />
+      ))}
     </div>
   );
 };
