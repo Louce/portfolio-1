@@ -43,9 +43,10 @@ export function ThemeSwitcher() {
   const label = resolvedTheme === 'dark' ? 'Enable Light Mode' : 'Enable Dark Mode';
   
   const spring = {
-    type: 'spring',
-    stiffness: 700,
-    damping: 30,
+    type: "spring",
+    stiffness: 300,
+    damping: 25,
+    mass: 0.5,
   };
 
   return (
@@ -60,14 +61,14 @@ export function ThemeSwitcher() {
         >
           <motion.div
             className="absolute"
-            animate={{ scale: resolvedTheme === 'dark' ? 0 : 1, rotate: resolvedTheme === 'dark' ? 90 : 0 }}
+            animate={{ scale: resolvedTheme === 'dark' ? 0 : 1, rotate: resolvedTheme === 'dark' ? 180 : 0 }}
             transition={spring}
           >
             <Sun className="h-5 w-5 text-foreground/80" />
           </motion.div>
           <motion.div
             className="absolute"
-            animate={{ scale: resolvedTheme === 'dark' ? 1 : 0, rotate: resolvedTheme === 'dark' ? 0 : -90 }}
+            animate={{ scale: resolvedTheme === 'dark' ? 1 : 0, rotate: resolvedTheme === 'dark' ? 0 : -180 }}
             transition={spring}
           >
             <Moon className="h-5 w-5 text-foreground/80" />
