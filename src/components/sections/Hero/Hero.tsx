@@ -96,7 +96,7 @@ export const Hero: React.FC = React.memo(() => {
           initial="hidden"
           animate="visible"
           aria-label="Dendi Rivaldi"
-          className="flex justify-center text-center pt-16 md:pt-0 font-headline text-7xl sm:text-8xl md:text-9xl lg:text-display-lg xl:text-display-xl font-bold tracking-tight text-primary drop-shadow-md dark:drop-shadow-lg [perspective:800px]"
+          className="flex justify-center text-center pt-16 md:pt-0 font-headline text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-display-xl font-bold tracking-tight text-primary drop-shadow-md dark:drop-shadow-lg [perspective:800px]"
         >
           {name.map((letter, index) => (
             <motion.span
