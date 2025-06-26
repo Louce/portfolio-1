@@ -64,7 +64,7 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <SectionWrapper id="contact" className="bg-card">
+    <SectionWrapper id="contact" className="bg-transparent">
       <div className="absolute inset-0 z-0 bg-grid-pattern masked-radial-gradient"></div>
       <Flex direction="col" align="center" justify="center" className="h-full w-full space-y-8 md:space-y-10 relative z-10">
         <SectionTitle>Get In Touch</SectionTitle>

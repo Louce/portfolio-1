@@ -58,7 +58,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
           </Avatar>
           <Text as="h3" className="text-2xl md:text-3xl font-semibold text-primary">Welcome, {currentUser}!</Text>
         </Flex>
-        <Button variant="outline" onClick={onLogout} className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+        <Button variant="outline" onClick={onLogout} className="border-accent text-accent hover:bg-accent hover:text-accent-foreground" aria-label="Log out">
           <LogOut className="mr-2 h-4 w-4" /> Logout
         </Button>
       </Flex>
@@ -91,7 +91,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
               aria-label="Feedback Content"
               required
             />
-            <Button type="submit" className="bg-accent hover:bg-accent/90 text-accent-foreground">Submit Feedback</Button>
+            <Button type="submit" className="bg-accent hover:bg-accent/90 text-accent-foreground" aria-label="Submit new feedback">Submit Feedback</Button>
           </form>
         </CardContent>
       </Card>

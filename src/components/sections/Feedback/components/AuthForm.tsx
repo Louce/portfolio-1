@@ -77,7 +77,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ authType, onAuthSubmit, onSw
             aria-label="Password"
             className="bg-background/50 focus:bg-background"
           />
-          <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
+          <Button type="submit" className="w-full bg-primary hover:bg-primary/90" aria-label={authType === 'login' ? 'Submit login form' : 'Submit sign up form'}>
             {authType === 'login' ? 'Login' : 'Sign Up'}
           </Button>
         </form>

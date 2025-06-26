@@ -82,7 +82,7 @@ export const FeedbackList: React.FC<FeedbackListProps> = ({
                           </CardDescription>
                         </Box>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" onClick={() => setFeedbackToDelete(item.id)} aria-label="Delete feedback item" className="text-destructive hover:text-destructive/80 hover:bg-destructive/10">
+                          <Button variant="ghost" size="icon" onClick={() => setFeedbackToDelete(item.id)} aria-label={`Delete feedback item titled "${item.title}"`} className="text-destructive hover:text-destructive/80 hover:bg-destructive/10">
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </AlertDialogTrigger>
@@ -98,6 +98,7 @@ export const FeedbackList: React.FC<FeedbackListProps> = ({
                             onClick={() => onAiReview(item)}
                             disabled={!!analyzingId}
                             className="text-primary border-primary/50 hover:bg-primary/10 hover:text-primary"
+                            aria-label={`Get AI review for feedback item titled "${item.title}"`}
                           >
                             {analyzingId === item.id ? (
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
