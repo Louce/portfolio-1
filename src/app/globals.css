@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -108,5 +109,17 @@
 
   .text-chromatic-aberration {
     text-shadow: 1px 1px 0px hsl(var(--primary) / 0.7), -1px -1px 0px hsl(var(--accent) / 0.7);
+  }
+
+  /* Utilities for the Split Flap Display */
+  .perspective-\[120px\] {
+    perspective: 120px;
+  }
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 }

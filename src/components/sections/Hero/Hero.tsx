@@ -36,7 +36,7 @@ export const Hero: React.FC = React.memo(() => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setHeadlineIndex((prevIndex) => (prevIndex + 1) % dynamicSubHeadlines.length);
-    }, 3000);
+    }, 4000); // Increased interval for the new animation
     return () => clearInterval(intervalId);
   }, []);
 
@@ -78,12 +78,10 @@ export const Hero: React.FC = React.memo(() => {
           </span>
         </h1>
         
-        <div className="text-center h-8 sm:h-10 md:h-12 w-full">
+        <div className="text-center h-8 sm:h-10 md:h-12 w-full flex items-center justify-center">
             <SplitFlapDisplay
                 key={headlineIndex}
-                phrase={dynamicSubHeadlines[headlineIndex]}
-                maxLength={maxLength}
-                className="text-xl sm:text-2xl md:text-3xl font-light text-foreground tracking-wider text-center"
+                phrase={dynamicSubHeadlines[headlineIndex].padEnd(maxLength, ' ')}
             />
         </div>
         

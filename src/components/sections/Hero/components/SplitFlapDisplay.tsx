@@ -1,101 +1,106 @@
 
 'use client';
 
-import React, { useMemo } from 'react';
-import { motion, useSpring, useTransform } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useAnimate } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-// All possible characters in the animation reel.
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,':()?!@#$ ".split("");
+// ====================================================================================
+// True Split-Flap Character Component
+// ====================================================================================
 
-/**
- * A single character "ticker" that animates by scrolling through the CHARS array.
- * This version uses a more robust layout where each character in the reel
- * occupies the full height of the container, making percentage-based transforms reliable.
- * @param {object} props
- * @param {string} props.anikey - A unique key to trigger re-animation.
- * @param {string} props.children - The target character to display.
- * @param {string} [props.className] - Optional class name for styling the character.
- * @returns {React.ReactElement} A single animated character.
- */
-const Ticker = ({ anikey, children: targetChar, className: passedClassName }) => {
-  const targetIndex = CHARS.indexOf(targetChar) ?? 0;
+interface SplitFlapCharacterProps {
+  char: string;
+  className?: string;
+}
 
-  // useSpring will animate from its last value to the new initial value on re-render.
-  const spring = useSpring(targetIndex, {
-    damping: 12,
-    stiffness: 150,
-    mass: 0.5,
-  });
+const SplitFlapCharacter: React.FC<SplitFlapCharacterProps> = React.memo(({ char, className }) => {
+  const [scope, animate] = useAnimate();
+  const [currentChar, setCurrentChar] = useState(char);
+  const [previousChar, setPreviousChar] = useState(char);
 
-  // Transform the spring value (the target index) into a `y` transform.
-  // Since each character span inside is 100% height, `y: -val * 100%`
-  // correctly shifts the strip up by `val` items.
-  const y = useTransform(spring, (val) => `-${val * 100}%`);
+  useEffect(() => {
+    if (char !== currentChar) {
+      setPreviousChar(currentChar);
+      setCurrentChar(char);
+
+      animate(scope.current, { rotateX: -180 }, { duration: 0.5, ease: 'easeInOut' })
+        .then(() => {
+          // Reset without animation
+          animate(scope.current, { rotateX: 0 }, { duration: 0 });
+        });
+    }
+  }, [char, currentChar, animate, scope]);
+  
+  const charToDisplay = char === ' ' ? '\u00A0' : char;
+  const prevCharToDisplay = previousChar === ' ' ? '\u00A0' : previousChar;
 
   return (
-    <div key={anikey} className="h-full overflow-hidden">
-      <motion.div style={{ y }} className={cn("h-full", passedClassName)}>
-        {CHARS.map((char) => (
-          <span
-            key={char}
-            className="flex h-full w-full items-center justify-center tabular-nums"
-          >
-            {char === " " ? "\u00A0" : char}
-          </span>
-        ))}
+    <div className={cn("relative w-[0.6em] h-full tabular-nums perspective-[120px]", className)}>
+      {/* New character - top static half */}
+      <div className="absolute top-0 left-0 right-0 h-1/2 overflow-hidden">
+        {charToDisplay}
+      </div>
+      {/* Old character - bottom static half */}
+      <div className="absolute bottom-0 left-0 right-0 h-1/2 overflow-hidden flex items-end">
+        {currentChar !== previousChar ? prevCharToDisplay : charToDisplay}
+      </div>
+
+      {/* The rotating flap */}
+      <motion.div
+        ref={scope}
+        className="absolute top-0 left-0 right-0 h-1/2 overflow-hidden transform-style-3d"
+        style={{ transformOrigin: 'bottom', rotateX: 0 }}
+      >
+        {/* Front of the flap (old character top) */}
+        <div className="absolute inset-0 backface-hidden">
+          {prevCharToDisplay}
+        </div>
+        {/* Back of the flap (new character bottom) */}
+        <div className="absolute inset-0 backface-hidden flex items-end" style={{ transform: 'rotateX(180deg)' }}>
+          {charToDisplay}
+        </div>
       </motion.div>
     </div>
   );
-};
-Ticker.displayName = "Ticker";
+});
+
+SplitFlapCharacter.displayName = 'SplitFlapCharacter';
 
 
-/**
- * A component that displays a string with a "split-flap" or "slot machine" animation effect.
- * It animates each character individually and ensures the entire phrase is centered.
- * @param {object} props
- * @param {string} props.phrase - The string to display.
- * @param {number} props.maxLength - The maximum length of any phrase in the cycle, for centering.
- * @param {string} [props.className] - Optional class name for styling.
- * @returns {React.ReactElement} The animated display component.
- */
-export const SplitFlapDisplay = ({ phrase, maxLength, className }) => {
-  const key = useMemo(() => Math.random(), [phrase]);
+// ====================================================================================
+// Main Split-Flap Display Container
+// ====================================================================================
 
-  const characters = useMemo(() => {
-    // Pad the phrase with spaces to ensure it is always centered based on maxLength.
-    const diff = maxLength - phrase.length;
-    const padding = " ".repeat(Math.floor(diff / 2));
-    const finalPhrase = `${padding}${phrase}${padding}${diff % 2 === 1 ? ' ' : ''}`;
-    return finalPhrase.split('');
-  }, [phrase, maxLength]);
-  
+interface SplitFlapDisplayProps {
+  phrase: string;
+}
+
+export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({ phrase }) => {
+  const characters = phrase.split('');
+
   return (
-    <div
-      className={cn("flex h-full items-center justify-center text-center", className)}
-    >
+    <div className="flex h-full items-center justify-center text-xl sm:text-2xl md:text-3xl font-light text-foreground tracking-wider text-center">
       {characters.map((char, index) => {
-          let charStyle = 'text-chromatic-aberration'; 
-          if (char.trim() === '') {
-              charStyle = ''; 
-          } else if (char === '/') {
-              if (index > 0 && characters[index - 1] === '/') {
-                  charStyle = 'text-accent/70'; // Second slash
-              } else {
-                  charStyle = 'text-primary/70'; // First slash
-              }
+        let charStyle = 'text-chromatic-aberration';
+        
+        // Check for the '//' pattern
+        if (char === '/') {
+          if (index > 0 && characters[index - 1] === '/') {
+            // This is the second '/'
+            charStyle = 'text-accent/70';
+          } else {
+            // This is the first '/'
+            charStyle = 'text-primary/70';
           }
-          
-          return (
-            <div key={`${key}-${index}`} className="h-full">
-              <Ticker anikey={`${key}-${index}`} className={charStyle}>
-                {char}
-              </Ticker>
-            </div>
-          );
+        } else if (char.trim() === '') {
+          // Make spaces transparent
+          charStyle = 'text-transparent';
+        }
+
+        return <SplitFlapCharacter key={index} char={char} className={charStyle} />;
       })}
     </div>
   );
 };
-SplitFlapDisplay.displayName = "SplitFlapDisplay";
+SplitFlapDisplay.displayName = 'SplitFlapDisplay';
