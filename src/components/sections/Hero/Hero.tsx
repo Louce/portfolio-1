@@ -2,12 +2,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { Flex, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/Button/button';
 import { useVisitorLocation } from '@/hooks';
+import { SplitFlapDisplay } from './components/SplitFlapDisplay';
 
 // Static text content for the hero section.
 const subHeadlineBase = "A Python, Automation, and Game Development enthusiast, blending logic with creative design.";
@@ -19,32 +19,6 @@ const dynamicSubHeadlines = [
   "LOGIC // CREATIVITY // EFFICIENCY",
   "CODE // BUILD // PLAY"
 ];
-
-/**
- * Renders a phrase with styled separators.
- * This function allows for granular control over the colors of the slashes.
- * @param {string} phrase - The string to format.
- * @returns {React.ReactElement} A React fragment with the styled text.
- */
-const renderStyledPhrase = (phrase: string) => {
-  const parts = phrase.split('//');
-  return (
-    <>
-      {parts.map((part, i) => (
-        <React.Fragment key={i}>
-          <span className="text-chromatic-aberration">{part.trim()}</span>
-          {i < parts.length - 1 && (
-            <span className="mx-2 font-light tracking-normal">
-              <span className="text-primary/70">/</span>
-              <span className="text-accent/70">/</span>
-            </span>
-          )}
-        </React.Fragment>
-      ))}
-    </>
-  );
-};
-
 
 /**
  * The Hero section component.
@@ -66,16 +40,17 @@ export const Hero: React.FC = React.memo(() => {
     return () => clearInterval(intervalId);
   }, []);
 
+  const maxLength = React.useMemo(() => 
+    Math.max(...dynamicSubHeadlines.map(s => s.length)), 
+  []);
+
   return (
     <section id="hero" className="relative flex flex-col min-h-screen w-full items-center justify-center text-foreground overflow-hidden pointer-events-auto">
       
       <div className="absolute inset-0 z-0 bg-background bg-grid-pattern masked-radial-gradient" />
 
       {visitorLocation && (
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+        <div 
           className="absolute top-20 left-0 right-0 z-10 text-center"
           aria-label={`Visitor location: ${visitorLocation}`}
         >
@@ -87,16 +62,13 @@ export const Hero: React.FC = React.memo(() => {
           <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-primary/80" />
           <Text as="span" className="text-xs sm:text-sm text-foreground/70">{visitorLocation}</Text>
         </Flex>
-        </motion.div>
+        </div>
       )}
       
       <div 
         className="relative z-10 flex flex-col items-center justify-center h-full space-y-4 md:space-y-6 text-center px-4 pointer-events-auto"
       >
-        <motion.h1
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        <h1
           className="text-center pt-16 md:pt-0"
         >
           <span
@@ -104,27 +76,18 @@ export const Hero: React.FC = React.memo(() => {
           >
             Dendi Rivaldi
           </span>
-        </motion.h1>
-
-        <div className="text-center h-8 sm:h-10 md:h-12">
-            <AnimatePresence mode="wait">
-                <motion.h2
-                    key={dynamicSubHeadlines[headlineIndex]}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ ease: 'easeInOut', duration: 0.4 }}
-                    className="text-xl sm:text-2xl md:text-3xl font-light text-foreground tracking-wider text-center"
-                >
-                    {renderStyledPhrase(dynamicSubHeadlines[headlineIndex])}
-                </motion.h2>
-            </AnimatePresence>
+        </h1>
+        
+        <div className="text-center h-8 sm:h-10 md:h-12 w-full">
+            <SplitFlapDisplay
+                key={headlineIndex}
+                phrase={dynamicSubHeadlines[headlineIndex]}
+                maxLength={maxLength}
+                className="text-xl sm:text-2xl md:text-3xl font-light text-foreground tracking-wider text-center"
+            />
         </div>
         
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.7 }}
+        <div
           className="max-w-xl text-center px-4"
         >
             <Text 
@@ -135,12 +98,9 @@ export const Hero: React.FC = React.memo(() => {
             >
               {subHeadlineBase}
             </Text>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
+        <div
           className="pt-2"
         >
           <Button asChild
@@ -151,13 +111,10 @@ export const Hero: React.FC = React.memo(() => {
           >
             <Link href="#projects">View My Work</Link>
           </Button>
-        </motion.div>
+        </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "backOut", delay: 1.2 }}
+      <div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <Link
@@ -165,14 +122,9 @@ export const Hero: React.FC = React.memo(() => {
           className="cursor-pointer p-2 rounded-full hover:bg-primary/10 focus-visible:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
           aria-label="Scroll to about section"
         >
-          <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
-          >
             <ChevronDown className="h-10 w-10 text-primary transition-opacity hover:opacity-75" />
-          </motion.div>
         </Link>
-      </motion.div>
+      </div>
     </section>
   );
 });
