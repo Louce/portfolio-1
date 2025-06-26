@@ -39,8 +39,8 @@ const Character: React.FC<CharacterProps> = React.memo(({ value, height, charInd
   // Determine the styling for the character based on its value.
   const getCharStyle = () => {
     if (value === '/') {
-      // Both slashes will now use the vibrant 'accent' color for a unified look.
-      return 'text-accent';
+      // Both slashes will now use the vibrant 'primary' color (cyan).
+      return 'text-primary';
     }
     if (value === ' ') {
       return ''; // No style for space
