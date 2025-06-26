@@ -9,6 +9,7 @@ import {
   Contact,
   Feedback,
 } from '@/components/sections';
+import { Footer } from '@/components/layout';
 import { Box } from '@/components/primitives';
 
 /**
@@ -29,6 +30,7 @@ export default function PortfolioPage() {
         <Contact />
         <Feedback />
       </main>
+      <Footer />
     </Box>
   );
 }
