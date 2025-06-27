@@ -4,7 +4,7 @@ Welcome to the KineticFolio project! This document serves as your primary guide 
 
 ## 1. Project Vision
 
-KineticFolio is a visually stunning, one-page portfolio for **Dendi Rivaldi**. It aims to be more than a static digital resume; it's designed to be an interactive art installation that showcases skills not just with words, but through the very experience of using it.
+KineticFolio is a visually stunning, one-page portfolio made by me **Dendi Rivaldi**. It aims to be more than a static digital resume; it's designed to be an interactive art installation that showcases skills not just with words, but through the very experience of using it.
 
 The core design philosophy is **"Kinetic Elegance,"** creating an "unfolding narrative" where each section animates into view, providing an engaging and memorable user experience.
 
