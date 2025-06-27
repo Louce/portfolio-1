@@ -80,6 +80,8 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
         <CardContent>
           <form onSubmit={handleAddFeedback} className="space-y-4">
             <Input
+              id="feedbackTitle"
+              name="feedbackTitle"
               type="text"
               placeholder="Feedback Title (Optional)"
               value={feedbackTitle}
@@ -88,6 +90,8 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
               aria-label="Feedback Title"
             />
             <Textarea
+              id="feedbackContent"
+              name="feedbackContent"
               placeholder="Your Feedback..."
               value={feedbackContent}
               onChange={(e) => setFeedbackContent(e.target.value)}

@@ -63,19 +63,25 @@ export const AuthForm: React.FC<AuthFormProps> = ({ authType, onAuthSubmit, onSw
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
+            id="username"
+            name="username"
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             aria-label="Username"
+            autoComplete="username"
             className="bg-background/50 focus:bg-background"
           />
           <Input
+            id="password"
+            name="password"
             type="password"
             placeholder="Password (demo only)"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             aria-label="Password"
+            autoComplete={authType === 'login' ? 'current-password' : 'new-password'}
             className="bg-background/50 focus:bg-background"
           />
           <Button type="submit" className="w-full bg-primary hover:bg-primary/90" aria-label={authType === 'login' ? 'Submit login form' : 'Submit sign up form'}>

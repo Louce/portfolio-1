@@ -99,6 +99,7 @@ export const Contact: React.FC = () => {
                         <Input 
                           placeholder="Your Name" 
                           {...field} 
+                          autoComplete="name"
                           className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm" 
                           aria-label="Your Name"
                         />
@@ -118,6 +119,7 @@ export const Contact: React.FC = () => {
                           type="email" 
                           placeholder="your.email@example.com" 
                           {...field} 
+                          autoComplete="email"
                           className="bg-background/50 focus:bg-background focus:ring-2 focus:ring-accent focus:border-accent/70 transition-all duration-200 ease-out text-sm"
                           aria-label="Your Email Address"
                         />

@@ -75,7 +75,7 @@ export const projectsData: Project[] = [
     coverDataAiHint: 'data dashboard',
     mediaGallery: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1280&auto=format&fit=crop', dataAiHint: 'main chart' },
-      { type: 'video', url: 'https://videos.pexels.com/video-files/3254013/3254013-hd.mp4', dataAiHint: 'map visualization' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1599387843533-34f5d6cd5413?q=80&w=1280&auto=format&fit=crop', dataAiHint: 'map visualization' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1280&auto=format&fit=crop', dataAiHint: 'report export' },
     ],
     techStack: ['React', 'TypeScript', 'D3.js', 'Framer Motion', 'Python (Flask)'],
