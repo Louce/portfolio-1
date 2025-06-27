@@ -5,7 +5,7 @@
 You can view the live application here: **[portfolio-1-steel-five.vercel.app](https://portfolio-1-steel-five.vercel.app/)**
 
 <p align="center">
-  <video src="https://github.com/Louce/portfolio-1/blob/final-update/public/preview.mp4" autoplay loop muted playsinline width="100%"></video>
+  <video src="https://github.com/Louce/portfolio-1/blob/final-update/public/preview.gif" autoplay loop muted playsinline width="100%"></video>
 </p>
 
 Welcome to the KineticFolio project! This document serves as your primary guide for understanding, running, and contributing to the application. It's written with a new developer in mind, so we'll cover everything from the high-level vision to the nitty-gritty of the code structure.
