@@ -1,8 +1,16 @@
 # KineticFolio: Developer Onboarding & Documentation
 
+## 🚀 Live Demo & Preview
+
+You can view the live application here: **[portfolio-1-steel-five.vercel.app](https://portfolio-1-steel-five.vercel.app/)**
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Louce/portfolio-1/final-update/public/preview.gif" alt="KineticFolio Live Preview" width="100%"/>
+</p>
+
 Welcome to the KineticFolio project! This document serves as your primary guide for understanding, running, and contributing to the application. It's written with a new developer in mind, so we'll cover everything from the high-level vision to the nitty-gritty of the code structure.
 
-## 1. Project Vision
+## 1. Project Vision.
 
 KineticFolio is a visually stunning, one-page portfolio made by me **Dendi Rivaldi**. It aims to be more than a static digital resume; it's designed to be an interactive art installation that showcases skills not just with words, but through the very experience of using it.
 
