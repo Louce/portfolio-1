@@ -19,7 +19,9 @@ interface SectionTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 /**
  * A reusable, animated title component for major sections of the page.
  * It uses Framer Motion for a subtle "fade-in and slide-down" effect,
- * creating a consistent and polished entrance for each section.
+ * creating a consistent and polished entrance for each section. This is an
+ * example of a reusable presentation component that helps enforce the
+ * DRY (Don't Repeat Yourself) principle.
  *
  * @param {SectionTitleProps} props - The properties for the component.
  * @returns {React.ReactElement} An animated section title (`<h2>`).

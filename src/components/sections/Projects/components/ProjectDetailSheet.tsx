@@ -29,8 +29,9 @@ interface ProjectDetailSheetProps {
 
 /**
  * A side sheet component that displays detailed information about a selected project.
- * It includes a media carousel with autoplay functionality, project descriptions,
- * tech stack, and links to the live site or repository.
+ * Its single responsibility is to present all the details of a project, including a
+ * media carousel with autoplay functionality, project descriptions, tech stack,
+ * and links to the live site or repository.
  *
  * @param {ProjectDetailSheetProps} props - The properties for the component.
  * @returns {React.ReactElement} A Sheet component containing the project details.

@@ -9,6 +9,8 @@ import { Mail } from 'lucide-react';
  * The application's footer component.
  * It serves as a consistent, final element on the page, providing copyright
  * information and essential professional links in a clean and accessible manner.
+ * Its single responsibility is to provide this concluding information, making it
+ * a classic layout component.
  *
  * @returns {React.ReactElement} The footer component.
  */

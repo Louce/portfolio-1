@@ -38,8 +38,9 @@ const itemVariants = {
 /**
  * A component that visualizes a core skill and its related technologies as a "spec card".
  * This scannable format is intentionally chosen over a chart because it is more
- * effective for quick review by recruiters and technical managers. It clearly communicates
- * core competencies and associated technologies, which is the primary goal of this section.
+ * effective for quick review by recruiters and technical managers. Its single
+ * responsibility is to present a skill group, making it a highly focused and
+ * reusable presentation component.
  *
  * @param {SkillGroupProps} props - The properties for the component.
  * @returns {React.ReactElement} A card containing a skill summary and technology badges.

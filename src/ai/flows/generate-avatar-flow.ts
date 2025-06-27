@@ -2,7 +2,8 @@
 /**
  * @fileOverview An AI flow to generate a styled avatar image using Genkit.
  * This flow randomly selects an artistic style and generates a developer-themed
- * portrait using an experimental Google AI image generation model.
+ * portrait using an experimental Google AI image generation model. It is a server-side
+ * action, ensuring that API calls and model interactions happen securely on the backend.
  *
  * @exports generateAvatar - The main server action to be called from the frontend.
  * @exports GenerateAvatarInput - The Zod schema type for the flow's input.
@@ -38,7 +39,10 @@ export type GenerateAvatarOutput = z.infer<typeof GenerateAvatarOutputSchema>;
 
 /**
  * Generates a stylized avatar image.
- * This function acts as a server-side entry point to the Genkit flow.
+ * This function acts as a server-side entry point to the Genkit flow. It demonstrates
+ * the Separation of Concerns principle, where the client component is unaware of the
+ * underlying AI model or logic, it simply calls this async function.
+ * 
  * @param {GenerateAvatarInput} input - The input object (currently empty).
  * @returns {Promise<GenerateAvatarOutput>} A promise that resolves to the generated image URL and style.
  */

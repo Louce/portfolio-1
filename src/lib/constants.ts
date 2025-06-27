@@ -2,7 +2,8 @@
  * @fileOverview
  * This file contains centralized constants used throughout the application.
  * Using a constants file helps prevent "magic strings" and typos, making the
- * code more maintainable and easier to refactor.
+ * code more maintainable and easier to refactor. It's a key practice for
+ * creating clean, professional codebases.
  */
 
 /**

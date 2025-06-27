@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -59,6 +58,7 @@ const letterVariants = {
  * - An animated "split-flap" display for cycling sub-headlines.
  * - Sequenced fade-ins for the description and call-to-action button.
  * - A hook-driven visitor location display for a personalized touch.
+ * Its single responsibility is to create this captivating introduction.
  *
  * @returns {React.ReactElement} The Hero section component.
  */

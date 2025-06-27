@@ -11,8 +11,8 @@ import { twMerge } from "tailwind-merge"
 /**
  * A utility function to merge Tailwind CSS classes conditionally and without conflicts.
  * It combines the functionality of `clsx` (for conditional classes) and `tailwind-merge`
- * (to resolve conflicting Tailwind classes). This is standard in projects
- * using Tailwind and component libraries like ShadCN.
+ * (to resolve conflicting Tailwind classes). This is a foundational utility that helps
+ * apply the DRY principle when building complex, conditional styles.
  *
  * @param {...ClassValue[]} inputs - A list of class names or conditional class objects.
  * @returns {string} The final, merged, and de-duplicated class string.

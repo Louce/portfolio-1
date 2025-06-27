@@ -5,8 +5,9 @@ import { Lightbulb, Code, Heart } from 'lucide-react';
 /**
  * @fileoverview
  * This file contains the static text and structured data for the "About Me" section.
- * Separating this content makes it easy to update the portfolio's narrative without
- * modifying the component logic.
+ * As part of our "Content Layer," separating this data from the presentation logic
+ * adheres to the Separation of Concerns principle. This makes it trivial to update
+ * the portfolio's narrative without modifying any React components.
  */
 
 /**

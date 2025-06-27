@@ -8,14 +8,14 @@ import { motion } from 'framer-motion';
 import { SectionWrapper } from '@/components/layout';
 import { Flex, Text, Box } from '@/components/primitives';
 import { SectionTitle } from '@/components/common';
-import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch } from '@/components/ui';
+import { Button, Input, Textarea, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
 import { useToast } from "@/components/ui/use-toast";
 import { Send } from 'lucide-react';
 
 /**
  * Defines the validation schema for the contact form using Zod.
  * This ensures that form data is valid before submission, providing a robust
- * and user-friendly validation experience.
+ * and user-friendly validation experience integrated with React Hook Form.
  */
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -24,7 +24,6 @@ const contactFormSchema = z.object({
     required_error: "Please select a reason for your inquiry."
   }),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
-  subscribe: z.boolean().default(false).optional(),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
@@ -47,7 +46,6 @@ export const Contact: React.FC = () => {
       email: '',
       inquiryType: 'general',
       message: '',
-      subscribe: false,
     },
   });
 
@@ -166,25 +164,6 @@ export const Contact: React.FC = () => {
                         />
                       </FormControl>
                       <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                 <FormField
-                  control={form.control}
-                  name="subscribe"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm bg-background/30">
-                      <div className="space-y-0.5">
-                        <FormLabel>Join the Newsletter</FormLabel>
-                        <FormMessage />
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          aria-label="Subscribe to newsletter"
-                        />
-                      </FormControl>
                     </FormItem>
                   )}
                 />

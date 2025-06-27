@@ -1,8 +1,10 @@
 /**
  * @fileOverview
  * This file contains the static data for the "My Expertise" (Skills) section.
- * It defines the structure for core skills and their related sub-skills,
- * making it easy to update the skills showcased in the portfolio.
+ * It defines the structure for core skills and their related sub-skills.
+ * As part of the "Content Layer," this file separates the skills data from
+ * the UI components that render it, adhering to the Separation of Concerns
+ * principle and making content updates simple and safe.
  */
 
 import React from 'react';

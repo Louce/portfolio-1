@@ -17,7 +17,8 @@ export const useVisitorLocation = () => {
   useEffect(() => {
     const fetchVisitorLocation = async () => {
       try {
-        // Simulate location for local development to avoid unnecessary API calls.
+        // Simulate location for local development to avoid unnecessary API calls and ensure
+        // the feature can be tested without hitting external rate limits.
         if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
             setVisitorLocation("California, USA (Simulated)"); 
             return; 

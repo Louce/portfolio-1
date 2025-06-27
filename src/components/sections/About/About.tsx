@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -16,7 +15,8 @@ import { AvatarGenerator } from './components';
  * It presents a biographical summary, core philosophies, and a downloadable resume.
  * A key feature is the AI-powered AvatarGenerator, which serves as a live demonstration
  * of AI integration skills. The section uses a two-column layout for visual balance
- * and is animated with Framer Motion for a dynamic entrance.
+ * and is animated with Framer Motion for a dynamic entrance. Its single responsibility
+ * is to lay out the content for this specific section.
  *
  * @returns {React.ReactElement} The About section component.
  */

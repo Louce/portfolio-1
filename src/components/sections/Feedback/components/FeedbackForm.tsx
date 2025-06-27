@@ -24,9 +24,10 @@ interface FeedbackFormProps {
 
 /**
  * A component for authenticated users to submit new feedback.
+ * Its single responsibility is to provide the UI for creating new feedback entries.
  * It includes a welcome message with the user's avatar, a form for the feedback
- * title and content, and a logout button. It clearly communicates its demo
- * nature to the user.
+ * title and content, and a logout button. It uses the `Alert` component to
+ * consistently and clearly communicate its demo nature to the user.
  *
  * @param {FeedbackFormProps} props - The properties for the component.
  * @returns {React.ReactElement} The feedback submission form component.

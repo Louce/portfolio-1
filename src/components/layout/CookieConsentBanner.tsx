@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -7,7 +6,6 @@ import { Text } from '@/components/primitives/Text';
 import { Box } from '@/components/primitives/Box';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cookie } from 'lucide-react';
-import { LOCAL_STORAGE_KEYS } from '@/lib/constants';
 
 // The key used to store the user's consent choice in cookies.
 const COOKIE_NAME = 'kineticfolio_cookie_consent';
@@ -26,6 +24,7 @@ export const CookieConsentBanner: React.FC = () => {
 
   useEffect(() => {
     // This effect runs only on the client side to interact with browser cookies.
+    // It checks if the consent cookie exists.
     const consentCookie = document.cookie
       .split('; ')
       .find(row => row.startsWith(`${COOKIE_NAME}=`));

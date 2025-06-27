@@ -12,7 +12,8 @@ import { SkillGroup } from './components';
  * It displays a grid of "Skill Cards," which are a modern, scannable, and visually
  * appealing way to present technical competencies. This design is optimized for quick
  * review by recruiters and AI crawlers, prioritizing clarity and impact over complex
- * visualizations like charts.
+ * visualizations like charts. This component's single responsibility is to orchestrate
+ * the layout of the skill groups.
  *
  * @returns {React.ReactElement} The Skills section component.
  */

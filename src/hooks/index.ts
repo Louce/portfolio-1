@@ -1,7 +1,7 @@
 /**
- * @fileoverview Barrel file for exporting all custom hooks and related types.
- * This also re-exports key types from the service layer to provide a unified
- * public API for the presentation layer.
+ * @fileoverview Barrel file for exporting all custom hooks.
+ * This provides a single, clean entry point for importing hooks
+ * into the application's components.
  */
 
 export { useVisitorLocation } from './use-visitor-location';

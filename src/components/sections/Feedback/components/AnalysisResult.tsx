@@ -19,6 +19,7 @@ interface AnalysisResultProps {
  * A dedicated sub-component to display the structured results of a Genkit AI
  * feedback analysis. It neatly formats the sentiment, summary, and suggested
  * action returned from the AI model, providing a clear and visually appealing summary.
+ * Its single responsibility is to present the analysis data it receives as props.
  *
  * @param {AnalysisResultProps} props - The properties for the component.
  * @returns {React.ReactElement} A formatted display of the AI analysis.

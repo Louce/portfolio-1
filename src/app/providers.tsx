@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -10,7 +9,8 @@ import { CookieConsentBanner, Navbar, Footer } from '@/components/layout';
  * A client-side component responsible for wrapping the application with all necessary context providers.
  * This component is a prime example of Separation of Concerns. It isolates client-side-only logic
  * (like theme management and tooltips) from the server-rendered `RootLayout`, allowing the layout
- * to remain a clean Server Component for better performance and SEO.
+ * to remain a clean Server Component for better performance and SEO. It also includes the main
+ * persistent layout elements like the Navbar and Footer.
  *
  * @param {{ children: React.ReactNode }} props - The children to be rendered within the providers.
  * @returns {React.ReactElement} The application tree wrapped in all necessary providers.

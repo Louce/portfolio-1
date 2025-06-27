@@ -7,8 +7,9 @@ import type React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {}
 
 /**
- * Renders a GitHub SVG icon.
- * This is a standard icon used for linking to GitHub profiles or repositories.
+ * Renders a GitHub SVG icon as a reusable React component.
+ * Encapsulating SVG icons as components makes them easy to import,
+ * style, and reuse throughout the application, following the DRY principle.
  *
  * @param {IconProps} props - Standard SVG props.
  * @returns {React.ReactElement} The GitHub icon as an SVG element.

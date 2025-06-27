@@ -22,7 +22,8 @@ type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
  * A primitive Flex component.
  * This component renders a `div` with `display: flex` and provides convenient props
  * for controlling flexbox alignment, justification, direction, and wrapping.
- * It simplifies the creation of flexbox layouts.
+ * It's a powerful DRY (Don't Repeat Yourself) abstraction that simplifies the
+ * creation of complex flexbox layouts without writing repetitive Tailwind classes.
  *
  * @param {FlexProps} props - The properties for the component.
  * @returns {React.ReactElement} A div element with flexbox styles.

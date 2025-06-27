@@ -1,4 +1,3 @@
-
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Inter } from 'next/font/google';
@@ -11,6 +10,13 @@ const inter = Inter({
   variable: '--font-inter'
 });
 
+/**
+ * A helper function to dynamically construct the site's base URL.
+ * It prioritizes environment variables in a specific order: a manually set
+ * site URL, a Vercel-provided URL, or a local development URL. This ensures
+ * that metadata URLs are always correct across different environments.
+ * @returns {string} The full, absolute URL of the site.
+ */
 const getSiteUrl = () => {
   if (process.env.NEXT_PUBLIC_SITE_URL) {
     return process.env.NEXT_PUBLIC_SITE_URL.startsWith('http')
@@ -25,6 +31,11 @@ const getSiteUrl = () => {
 
 const SITE_URL = getSiteUrl();
 
+/**
+ * The root metadata for the application.
+ * `metadataBase` is crucial for ensuring that all relative paths in Open Graph
+ * and other metadata fields are resolved correctly into absolute URLs.
+ */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'Dendi Rivaldi - Python, Automation & Game Dev Enthusiast',
@@ -79,7 +90,16 @@ export const viewport: Viewport = {
   ],
 };
 
-
+/**
+ * The root layout component for the entire application.
+ * As a Next.js Server Component, its primary responsibility is to define the
+ * main HTML structure (`<html>`, `<body>`) and provide site-wide context.
+ * It practices Separation of Concerns by delegating all client-side logic
+ * (like theme providers and interactive elements) to the `<AppProviders>` component.
+ *
+ * @param {Readonly<{ children: React.ReactNode }>} props - The child components to be rendered.
+ * @returns {React.ReactElement} The root layout of the application.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

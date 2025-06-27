@@ -38,9 +38,10 @@ interface FeedbackListProps {
 
 /**
  * Displays a list of feedback items submitted by the user.
- * It allows for deleting feedback and triggering an AI review for each item.
- * Includes a confirmation dialog for the delete action to prevent accidental data loss,
- * and a styled scroll area for managing long lists of feedback.
+ * Its single responsibility is to render the list of feedback and handle user
+ * interactions for deleting or analyzing items. It includes a confirmation
+ * dialog for the delete action to prevent accidental data loss, and a styled
+ * scroll area for managing long lists of feedback.
  *
  * @param {FeedbackListProps} props - The properties for the component.
  * @returns {React.ReactElement} The list of user-submitted feedback.

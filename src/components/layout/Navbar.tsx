@@ -11,6 +11,8 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 
 /**
  * Defines the structure for each navigation item in the Navbar.
+ * Centralizing this data makes it easy to add, remove, or reorder
+ * navigation links without changing the component's JSX structure.
  */
 const navItems = [
   { id: 'hero', label: 'Home', icon: HomeIcon },
@@ -25,7 +27,8 @@ const navItems = [
  * A floating, animated navigation bar for the single-page application.
  * It appears with a subtle animation and provides smooth-scrolling links to different
  * sections of the page. It consolidates primary navigation and the theme switcher
- * into a single, clean, and accessible component.
+ * into a single, clean, and accessible component. Its single responsibility is to
+ * handle the primary site navigation.
  *
  * @returns {React.ReactElement} The application's main navigation component.
  */

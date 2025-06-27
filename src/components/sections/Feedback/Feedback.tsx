@@ -18,6 +18,8 @@ import { AuthForm, FeedbackForm, FeedbackList } from './components';
  *
  * It acts as a controller, orchestrating the `AuthForm`, `FeedbackForm`,
  * and `FeedbackList` sub-components to create a complete interactive experience.
+ * Its single responsibility is to manage the overall state and flow of the
+ * feedback feature, delegating rendering to its children.
  *
  * @returns {React.ReactElement} The Feedback section component.
  */
@@ -61,7 +63,8 @@ export const Feedback: React.FC = () => {
   };
 
   // Render a loading state until the component is mounted on the client.
-  // This is a crucial step to prevent hydration errors when accessing `localStorage`.
+  // This is a crucial step to prevent hydration errors when accessing `localStorage`,
+  // which is only available in the browser.
   if (!isMounted) {
     return (
       <SectionWrapper id="feedback" className="bg-background">

@@ -1,4 +1,3 @@
-
 export * from './Accordion/accordion';
 export * from './Alert/alert';
 export * from './AlertDialog/alert-dialog';
@@ -31,6 +30,10 @@ export * from './Textarea/textarea';
 export * from './Toast/toast';
 export * from './Toaster/toaster';
 export * from './Tooltip/tooltip';
-export * from './use-toast'; // Standard ShadCN hook
 
-export * from './3d-card'; // Now references the new subdirectory
+// This custom hook provides the functionality for triggering toasts. It's a standard
+// pattern in ShadCN UI for managing ephemeral state like notifications.
+export * from './use-toast';
+
+// Custom 3D card component for advanced visual effects.
+export * from './3d-card';

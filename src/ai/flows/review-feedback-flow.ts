@@ -1,10 +1,10 @@
-
 'use server';
 /**
  * @fileOverview An AI flow to review user feedback using Genkit.
  * This file defines the structured input/output schemas with Zod and the Genkit
  * flow that communicates with the Gemini model to analyze sentiment, summarize, and
- * suggest actions for a given piece of feedback.
+ * suggest actions for a given piece of feedback. This is a server-side action,
+ * keeping AI logic and API keys secure on the backend.
  *
  * @exports reviewFeedback - The main server action to be called from the frontend.
  * @exports ReviewFeedbackInput - The Zod schema type for the flow's input.
@@ -45,6 +45,9 @@ export type ReviewFeedbackOutput = z.infer<typeof ReviewFeedbackOutputSchema>;
  * Analyzes a given piece of feedback text using an AI model.
  * This function acts as a server-side entry point to the Genkit flow,
  * providing a structured analysis including sentiment, a summary, and a suggested action.
+ * It demonstrates Separation of Concerns: the client calls this function without needing
+ * to know about the AI model, prompts, or API details.
+ * 
  * @param {ReviewFeedbackInput} input - The object containing the feedback text.
  * @returns {Promise<ReviewFeedbackOutput>} A promise that resolves to the structured analysis of the feedback.
  * @throws {Error} Throws an error if the AI model fails to return a structured response.
@@ -57,7 +60,8 @@ export async function reviewFeedback(input: ReviewFeedbackInput): Promise<Review
  * @internal
  * Defines the Genkit prompt for the feedback review task.
  * It specifies the AI model, the input/output schemas for structured prompting,
- * and the instructions for the AI.
+ * and the instructions for the AI. This structured approach ensures reliable,
+ * machine-readable output from the model.
  */
 const reviewPrompt = ai.definePrompt({
   name: 'reviewFeedbackPrompt',
@@ -79,6 +83,7 @@ Based on your analysis, determine the sentiment, provide a one-sentence summary,
  * @internal
  * Defines the main Genkit flow for reviewing feedback.
  * This flow takes the input, calls the defined prompt, and returns the structured output.
+ * It encapsulates the entire AI interaction into a single, reusable flow.
  */
 const reviewFeedbackFlow = ai.defineFlow(
   {

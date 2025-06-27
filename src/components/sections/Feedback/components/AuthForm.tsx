@@ -26,7 +26,8 @@ interface AuthFormProps {
  * A component that provides a user interface for login and signup.
  * This is a **mock authentication form**; no real accounts or passwords are handled.
  * Its purpose is to demonstrate UI state management and to allow users to "log in"
- * to access the feedback submission feature.
+ * to access the feedback submission feature. Its single responsibility is to handle
+ * the UI and state for the authentication flow.
  *
  * @param {AuthFormProps} props - The properties for the component.
  * @returns {React.ReactElement} The authentication form component.

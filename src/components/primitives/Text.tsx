@@ -15,7 +15,9 @@ type TextProps = React.HTMLAttributes<HTMLElement> & {
 /**
  * A polymorphic Text component for rendering typographic elements.
  * It allows rendering text with different HTML tags (`as` prop) and pre-defined
- * styles (`variant` prop), promoting semantic HTML and consistent typography.
+ * styles (`variant` prop), promoting semantic HTML and consistent typography. This
+ * component is a key part of our design system, enforcing the DRY principle for
+ * all text-based elements.
  *
  * @param {TextProps} props - The properties for the component.
  * @returns {React.ReactElement} A styled text element (e.g., <p>, <h1>, <span>).

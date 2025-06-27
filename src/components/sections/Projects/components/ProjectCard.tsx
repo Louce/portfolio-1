@@ -25,7 +25,8 @@ interface ProjectCardProps {
  * A card component that displays a summary of a single project.
  * It features a 3D tilt effect on hover, a cover image, title, description,
  * tech stack badges, and a button to view more details. This component adheres
- * to the Single Responsibility Principle by focusing solely on presentation.
+ * to the Single Responsibility Principle by focusing solely on presenting the
+ * project summary data it receives via props.
  *
  * @param {ProjectCardProps} props - The properties for the component.
  * @returns {React.ReactElement} A single project card with 3D hover effect.

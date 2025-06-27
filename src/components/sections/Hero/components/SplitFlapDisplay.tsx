@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -93,7 +92,8 @@ interface SplitFlapDisplayProps {
 /**
  * A component that displays a series of phrases with a split-flap "airport clock"
  * animation effect. It ensures phrases are centered and the layout remains stable
- * during transitions by padding all phrases to a consistent length.
+ * during transitions by padding all phrases to a consistent length. Its single
+ * responsibility is to manage this complex, multi-character animation.
  */
 export const SplitFlapDisplay: React.FC<SplitFlapDisplayProps> = ({
   phrases,

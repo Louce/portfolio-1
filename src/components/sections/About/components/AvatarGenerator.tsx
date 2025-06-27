@@ -22,7 +22,8 @@ const initialImage = {
  * An interactive component that demonstrates live AI image generation.
  * It displays a portrait image and a button that, when clicked, calls a Genkit
  * flow to generate a new avatar in a random artistic style. This serves as a
- * powerful "show, don't tell" feature for AI development skills.
+ * powerful "show, don't tell" feature for AI development skills. Its single
+ * responsibility is to manage the state and logic for this specific feature.
  *
  * @returns {React.ReactElement} The AI Avatar Generator component.
  */
