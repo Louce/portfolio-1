@@ -1,4 +1,3 @@
-
 # KineticFolio: A Senior Developer's Architectural Deep Dive
 
 ## Introduction: Thinking Like an Architect

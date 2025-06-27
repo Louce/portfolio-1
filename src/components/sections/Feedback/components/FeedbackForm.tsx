@@ -65,10 +65,10 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
       </Flex>
 
       <Box className="w-full max-w-3xl mx-auto px-4">
-        <Alert variant="warning">
+        <Alert variant="info">
           <AlertTitle>Demo Notice</AlertTitle>
           <AlertDescription>
-            This feedback feature is for demonstration purposes only. No real accounts are created, and feedback is stored only in your browser's local storage.
+            This feedback feature is for demonstration purposes. All data is stored only in your browser's local storage and is not sent to a server.
           </AlertDescription>
         </Alert>
       </Box>
