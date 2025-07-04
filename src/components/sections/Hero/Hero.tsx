@@ -115,7 +115,7 @@ export const Hero: React.FC = React.memo(() => {
         >
           <SplitFlapDisplay 
             phrases={dynamicSubHeadlines} 
-            className="h-12 text-base sm:text-xl md:text-2xl font-light tracking-normal sm:tracking-wider text-center tabular-nums"
+            className="h-10 sm:h-12 text-sm sm:text-lg md:text-xl font-light tracking-tighter sm:tracking-wider text-center tabular-nums"
           />
         </motion.div>
         
