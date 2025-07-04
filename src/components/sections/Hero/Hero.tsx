@@ -14,9 +14,9 @@ import { motion } from 'framer-motion';
  * These are crafted to be concise and impactful on all screen sizes.
  */
 const dynamicSubHeadlines = [
-  "PYTHON // AUTOMATION // GAMES",
-  "DESIGN // BUILD // INNOVATE",
-  "LOGIC // CREATIVITY // IMPACT",
+  "PYTHON // AUTO // GAMES",
+  "DESIGN // BUILD // SHIP",
+  "LOGIC // CREATE // IMPACT",
   "CODE // BUILD // PLAY"
 ];
 
