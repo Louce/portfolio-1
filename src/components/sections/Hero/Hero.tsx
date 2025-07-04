@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -14,10 +15,10 @@ import { motion } from 'framer-motion';
  * These are crafted to be concise and impactful on all screen sizes.
  */
 const dynamicSubHeadlines = [
-  "PYTHON // AUTO // GAMES",
-  "DESIGN // BUILD // SHIP",
-  "LOGIC // CREATE // IMPACT",
-  "CODE // BUILD // PLAY"
+  "ARCHITECT // AUTOMATE // ACCELERATE",
+  "DESIGN // IMMERSE // CAPTIVATE",
+  "ENGINEER // INNOVATE // TRANSFORM",
+  "CRAFT // LAUNCH // SCALE",
 ];
 
 /**
@@ -115,7 +116,7 @@ export const Hero: React.FC = React.memo(() => {
         >
           <SplitFlapDisplay 
             phrases={dynamicSubHeadlines} 
-            className="h-10 sm:h-12 text-sm sm:text-lg md:text-xl font-light tracking-tighter sm:tracking-wider text-center tabular-nums"
+            className="h-8 text-xs sm:h-12 sm:text-lg md:text-xl font-light tracking-tighter sm:tracking-wider text-center tabular-nums"
           />
         </motion.div>
         
