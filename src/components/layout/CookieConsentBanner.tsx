@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -43,11 +44,21 @@ export const CookieConsentBanner: React.FC = () => {
   /**
    * Handles the user's acceptance of the cookie policy.
    * Sets a cookie that expires in one year and hides the banner.
+   * It conditionally adds the 'Secure' flag based on the protocol, ensuring
+   * it works on both HTTPS (Vercel) and HTTP (localhost).
    */
   const handleAccept = () => {
     const expires = new Date();
     expires.setFullYear(expires.getFullYear() + 1);
-    document.cookie = `${COOKIE_NAME}=true; expires=${expires.toUTCString()}; path=/; SameSite=Lax; Secure`;
+    
+    let cookieString = `${COOKIE_NAME}=true; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
+    
+    // The 'Secure' attribute should only be added for HTTPS connections.
+    if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+      cookieString += '; Secure';
+    }
+
+    document.cookie = cookieString;
     setIsVisibleBasedOnConsent(false);
   };
 
