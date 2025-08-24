@@ -67,24 +67,31 @@ const generateAvatarFlow = ai.defineFlow(
     const style = avatarStyles[Math.floor(Math.random() * avatarStyles.length)];
     const prompt = `A stylized developer portrait of a man, focusing on code and creativity. Artistic style: ${style}.`;
 
-    const {media} = await ai.generate({
-      // Use the experimental image generation model from Google AI.
-      model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: prompt,
-      config: {
-        // The API requires both IMAGE and TEXT modalities for this model.
-        responseModalities: ['TEXT', 'IMAGE'],
-      },
-    });
+    try {
+      const {media} = await ai.generate({
+        // Use the experimental image generation model from Google AI.
+        model: 'googleai/gemini-2.0-flash-preview-image-generation',
+        prompt: prompt,
+        config: {
+          // The API requires both IMAGE and TEXT modalities for this model.
+          responseModalities: ['TEXT', 'IMAGE'],
+        },
+      });
 
-    // Handle the case where image generation might fail and not return media.
-    if (!media || !media.url) {
-      throw new Error('Image generation failed to return a data URI.');
+      // Handle the case where image generation might fail and not return media.
+      if (!media || !media.url) {
+        throw new Error('Image generation failed to return a data URI.');
+      }
+
+      return {
+        imageUrl: media.url,
+        style: style,
+      };
+    } catch (error) {
+      // Log the error for server-side debugging.
+      console.error("AI avatar generation failed:", error);
+      // Re-throw the error to be caught by the client-side caller.
+      throw new Error('Failed to generate AI avatar. Please try again.');
     }
-
-    return {
-      imageUrl: media.url,
-      style: style,
-    };
   }
 );

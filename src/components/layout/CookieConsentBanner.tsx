@@ -85,7 +85,7 @@ export const CookieConsentBanner: React.FC = () => {
                   Our Cookie Policy
                 </Text>
                 <Text as="p" id="cookie-consent-description" className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  We use cookies to enhance your browsing experience and ensure our website functions optimally. By clicking "Accept", you agree to our use of cookies.
+                  We use cookies to enhance your browsing experience and ensure our website functions optimally. By clicking &quot;Accept&quot;, you agree to our use of cookies.
                 </Text>
               </Box>
             </Box>

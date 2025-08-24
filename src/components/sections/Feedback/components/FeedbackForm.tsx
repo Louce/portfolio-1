@@ -68,7 +68,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({ currentUser, onLogou
         <Alert variant="info">
           <AlertTitle>Demo Notice</AlertTitle>
           <AlertDescription>
-            This feedback feature is for demonstration purposes. All data is stored only in your browser's local storage and is not sent to a server.
+            This feedback feature is for demonstration purposes. All data is stored only in your browser&apos;s local storage and is not sent to a server.
           </AlertDescription>
         </Alert>
       </Box>

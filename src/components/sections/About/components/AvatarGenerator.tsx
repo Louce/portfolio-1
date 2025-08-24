@@ -60,8 +60,14 @@ export const AvatarGenerator: React.FC = () => {
       viewport={{ once: false, amount: 0.25 }}
       transition={{ type: "spring", stiffness: 100, damping: 18, duration: 0.7, delay: 0.1 }}
       className="w-full max-w-sm lg:w-full relative"
+      aria-busy={isPending}
     >
       <Box className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group bg-card/80 backdrop-blur-lg border border-white/10">
+        {/* Visually hidden status for screen readers */}
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          {isPending ? 'Generating new avatar...' : `New avatar loaded: ${image.style} style.`}
+        </div>
+
         <AnimatePresence>
           <motion.div
             key={image.url}

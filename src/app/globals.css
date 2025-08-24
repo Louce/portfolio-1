@@ -111,6 +111,19 @@
     text-shadow: 1px 1px 0px hsl(var(--primary) / 0.7), -1px -1px 0px hsl(var(--accent) / 0.7);
   }
 
+  /* A utility for visually hiding elements while keeping them accessible to screen readers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
   /* Utilities for the Split Flap Display */
   .perspective-\[120px\] {
     perspective: 120px;

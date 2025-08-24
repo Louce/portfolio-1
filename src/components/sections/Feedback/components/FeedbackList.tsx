@@ -67,7 +67,7 @@ export const FeedbackList: React.FC<FeedbackListProps> = ({
       <Box className="w-full max-w-3xl mx-auto space-y-4">
         <Text as="h4" className="text-xl md:text-2xl font-semibold text-primary flex items-center px-4"><MessageSquareText className="mr-2" /> Your Submitted Feedback</Text>
         {feedbackItems.length === 0 ? (
-          <Text className="text-muted-foreground px-4">You haven't submitted any feedback yet.</Text>
+          <Text className="text-muted-foreground px-4">You haven&apos;t submitted any feedback yet.</Text>
         ) : (
           <ScrollArea className="h-[calc(100vh-400px)] md:h-[calc(100vh-450px)] w-full">
             <Box className="space-y-4 pr-3 pl-4 pb-4">
@@ -123,7 +123,7 @@ export const FeedbackList: React.FC<FeedbackListProps> = ({
           <AlertDialogTitle className="flex items-center gap-2"><AlertTriangle className="text-destructive" />Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
-            feedback from your browser's local storage.
+            feedback from your browser&apos;s local storage.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
